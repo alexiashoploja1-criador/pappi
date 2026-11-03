@@ -98,20 +98,30 @@
       transform: skew(-25deg) rotate(-15deg);
     }
 
-    .ponto-logo {
-      width: 9px;
-      height: 9px;
-      background: #ffffff;
+        .ponto-logo {
+      width: 15px;
+      height: 15px;
+      background: #0875ed;
       border-radius: 50%;
+      position: relative;
+      z-index: 2;
     }
-        /* NOME DA MARCA */
+    
+    /* NOME DA MARCA */
 
     .nome-pappi {
-      font-size: 38px;
+      font-size: 46px;
       font-weight: 800;
-      letter-spacing: 3px;
-      color: #172b55;
+      letter-spacing: 2px;
       line-height: 1;
+    }
+
+    .nome-azul {
+      color: #172b55;
+    }
+
+    .nome-claro {
+      color: #0875ed;
     }
 
     .slogan-pappi {
@@ -120,7 +130,8 @@
       margin-top: 8px;
       letter-spacing: 0.5px;
     }
-        /* AREA DOS BOTOES */
+
+    /* AREA DOS BOTOES */
 
     .area-botoes {
       width: 100%;
@@ -172,7 +183,9 @@
         <span class="ponto-logo"></span>
       </div>
 
-      <div class="nome-pappi">PAPPI</div>
+      <div class="nome-pappi">
+  <span class="nome-azul">PAP</span><span class="nome-claro">PI</span>
+</div>
 
     </div>
 
