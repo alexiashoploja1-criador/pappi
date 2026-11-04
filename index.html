@@ -341,11 +341,11 @@
 </div>
   </div>
 </div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
   const SUPABASE_URL = "https://fvltrubujyvkbzijbobq.supabase.co";
-
   const SUPABASE_ANON_KEY = "sb_publishable_hXx1ZShKPY6iUiXtGJ9rUQ_HbuYGhQ2";
 
   const cliente = window.supabase.createClient(
@@ -356,6 +356,113 @@
   const botao = document.getElementById("continuar");
   const campoEmail = document.getElementById("email");
   const mensagem = document.getElementById("mensagem");
+
+  let telaPrincipalCriada = false;
+
+  function abrirTelaPrincipal(usuario) {
+    if (telaPrincipalCriada) return;
+
+    telaPrincipalCriada = true;
+
+    document.querySelector(".pagina").style.display = "none";
+
+    const estilo = document.createElement("style");
+    estilo.textContent = `
+      .pappi-principal {
+        min-height: 100vh;
+        background: #f5f8ff;
+        font-family: Arial, sans-serif;
+      }
+      .pappi-topo {
+        background: white;
+        padding: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 2px 10px #0000000d;
+      }
+      .pappi-marca {
+        font-size: 27px;
+        font-weight: 800;
+        font-style: italic;
+        letter-spacing: 1px;
+      }
+      .pappi-marca span:first-child {
+        color: #0875ed;
+      }
+      .pappi-marca span:last-child {
+        color: #172b55;
+      }
+      .pappi-conteudo {
+        max-width: 700px;
+        margin: 35px auto;
+        padding: 20px;
+      }
+      .pappi-painel {
+        background: white;
+        border-radius: 18px;
+        padding: 25px;
+        box-shadow: 0 4px 20px #0000000a;
+      }
+      .pappi-sair {
+        border: none;
+        background: #0875ed;
+        color: white;
+        padding: 11px 17px;
+        border-radius: 9px;
+        font-size: 14px;
+      }
+    `;
+    document.head.appendChild(estilo);
+
+    const principal = document.createElement("main");
+    principal.id = "app-principal";
+    principal.className = "pappi-principal";
+
+    principal.innerHTML = `
+      <header class="pappi-topo">
+        <div class="pappi-marca">
+          <span>PAP</span><span>PI</span>
+        </div>
+        <button class="pappi-sair" id="sair-pappi">
+          Sair
+        </button>
+      </header>
+
+      <section class="pappi-conteudo">
+        <div class="pappi-painel">
+          <h2>Bem-vindo ao PAPPI</h2>
+          <p id="usuario-pappi"></p>
+          <hr style="margin:20px 0; opacity:.15">
+          <h3>Conversas</h3>
+          <p style="margin-top:12px;color:#718096">
+            Sua área de conversas está pronta para ser desenvolvida.
+          </p>
+        </div>
+      </section>
+    `;
+
+    document.body.appendChild(principal);
+
+    document.getElementById("usuario-pappi").textContent =
+      usuario.email || "";
+
+    document.getElementById("sair-pappi").addEventListener(
+      "click",
+      async function () {
+        await cliente.auth.signOut();
+      }
+    );
+  }
+
+  function voltarParaEntrada() {
+    telaPrincipalCriada = false;
+
+    const principal = document.getElementById("app-principal");
+    if (principal) principal.remove();
+
+    document.querySelector(".pagina").style.display = "";
+  }
 
   botao.addEventListener("click", async function () {
     const email = campoEmail.value.trim();
@@ -372,7 +479,8 @@
       const { error } = await cliente.auth.signInWithOtp({
         email: email,
         options: {
-          emailRedirectTo: "https://alexiashoploja1-criador.github.io/pappi/"
+          emailRedirectTo:
+            "https://alexiashoploja1-criador.github.io/pappi/"
         }
       });
 
@@ -389,6 +497,21 @@
       botao.disabled = false;
     }
   });
+
+  cliente.auth.onAuthStateChange(function (evento, sessao) {
+    if (sessao && sessao.user) {
+      abrirTelaPrincipal(sessao.user);
+    } else if (evento === "SIGNED_OUT") {
+      voltarParaEntrada();
+    }
+  });
+
+  cliente.auth.getSession().then(function ({ data, error }) {
+    if (!error && data.session) {
+      abrirTelaPrincipal(data.session.user);
+    }
+  });
 </script>
+
 </body>
 </html>
