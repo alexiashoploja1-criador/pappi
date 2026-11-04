@@ -103,15 +103,43 @@ function mostrarEntrada(mensagemTexto="",cadastro=false){
  <input class="campo" id="email" type="email" placeholder="Digite seu e-mail" autocomplete="email">
  ${cadastro?"":'<input class="campo" id="senha" type="password" placeholder="Sua senha" autocomplete="current-password">'}
  <button class="botao" id="acao">${cadastro?"Enviar link de confirmação →":"Entrar →"}</button>
+ ${cadastro?"":'<button class="link" id="recuperar">Esqueci minha senha</button>'}
  <button class="link" id="alternar">${cadastro?"Já tem conta? Entrar":"Ainda não tem conta? Criar conta"}</button>
  <p class="mensagem" id="mensagem">${mensagemTexto}</p>
  <p class="legal">Ao continuar, você concorda com nossos Termos de Uso e Política de Privacidade.</p>
  </section></main>`;
  document.getElementById("alternar").onclick=()=>mostrarEntrada("",!cadastro);
  document.getElementById("acao").onclick=()=>cadastro?enviarLink():entrar();
+ const recuperar=document.getElementById("recuperar");
+ if(recuperar)recuperar.onclick=recuperarSenha;
 }
 
-function mensagemPerfil(txt,erro=false){
+async function recuperarSenha(){
+ const email=document.getElementById("email").value.trim();
+ const msg=document.getElementById("mensagem");
+ const btn=document.getElementById("recuperar");
+
+ if(!email){
+  msg.textContent="Digite seu e-mail para recuperar a senha.";
+  return;
+ }
+
+ btn.disabled=true;
+ msg.textContent="Enviando link de recuperação...";
+
+ const {error}=await cliente.auth.resetPasswordForEmail(email,{
+  redirectTo:URL_PAPPI
+ });
+
+ btn.disabled=false;
+
+ if(error){
+  msg.textContent="Não foi possível enviar o link. Tente novamente.";
+ }else{
+  msg.textContent="Se o e-mail estiver cadastrado, enviaremos um link para redefinir sua senha. Verifique também o Spam.";
+ }
+} 
+ function mensagemPerfil(txt,erro=false){
  const el=document.getElementById("mensagemPerfil");
  if(el){el.textContent=txt;el.style.color=erro?"#c0392b":"#0875ed";}
 }
@@ -282,7 +310,54 @@ function escapar(valor){
  return String(valor||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
+ function mostrarTelaNovaSenha(){
+ telaAtual="recuperacao";
+ app.innerHTML=`
+ <main class="pagina">
+ <section class="cartao">
+ <div class="logo">${logo}
+ <div class="nome-marca"><span class="azul">PAP</span><span class="marinho">PI</span></div>
+ <div class="slogan">Sua conversa. Seu mundo.</div></div>
+ <h1>Nova senha</h1>
+ <p class="descricao">Crie uma nova senha para acessar sua conta PAPPI.</p>
+ <input class="campo" id="novaSenha" type="password" placeholder="Nova senha (mínimo 6 caracteres)">
+ <input class="campo" id="confirmarNovaSenha" type="password" placeholder="Confirme a nova senha">
+ <button class="botao" id="salvarNovaSenha">Salvar nova senha</button>
+ <p class="mensagem" id="mensagemNovaSenha"></p>
+ </section>
+ </main>`;
+
+ document.getElementById("salvarNovaSenha").onclick=async()=>{
+  const senha=document.getElementById("novaSenha").value;
+  const confirmar=document.getElementById("confirmarNovaSenha").value;
+  const msg=document.getElementById("mensagemNovaSenha");
+  const btn=document.getElementById("salvarNovaSenha");
+
+  if(senha.length<6){msg.textContent="A senha precisa ter pelo menos 6 caracteres.";return;}
+  if(senha!==confirmar){msg.textContent="As senhas não são iguais.";return;}
+
+  btn.disabled=true;
+  btn.textContent="Salvando...";
+
+  const {error}=await cliente.auth.updateUser({password:senha});
+
+  if(error){
+   msg.textContent="Não foi possível alterar a senha. Solicite outro link.";
+   btn.disabled=false;
+   btn.textContent="Salvar nova senha";
+   return;
+  }
+
+  msg.textContent="Senha alterada com sucesso!";
+  setTimeout(()=>direcionarUsuario(usuarioAtual),1200);
+ };
+}
 cliente.auth.onAuthStateChange((evento,sessao)=>{
+ if(evento==="PASSWORD_RECOVERY"){
+  usuarioAtual=sessao?.user||null;
+  mostrarTelaNovaSenha();
+  return;
+ }
  if(sessao&&sessao.user){
   if(telaAtual!=="perfil"&&telaAtual!=="principal"){
    setTimeout(()=>{if(telaAtual!=="perfil"&&telaAtual!=="principal")direcionarUsuario(sessao.user);},0);
