@@ -263,6 +263,13 @@
     line-height: 1.4;
   }
 }
+    .mensagem-pappi {
+  min-height: 20px;
+  margin-top: 12px;
+  font-size: 14px;
+  color: #0875ed;
+  text-align: center;
+}
   </style>
 </head>
 
@@ -327,12 +334,61 @@
   </button>
 
 </div>
-
+<p id="mensagem" class="mensagem-pappi"></p>
 <div class="texto-legal">
   Ao continuar, você concorda com nossos
   Termos de Uso e Política de Privacidade.
 </div>
   </div>
 </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  const SUPABASE_URL = "https://fvltrubujyvkbzijbobq.supabase.co";
+
+  const SUPABASE_ANON_KEY = "sb_publishable_hXx1ZShKPY6iUiXtGJ9rUQ_HbuYGhQ2";
+
+  const cliente = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+  const botao = document.getElementById("continuar");
+  const campoEmail = document.getElementById("email");
+  const mensagem = document.getElementById("mensagem");
+
+  botao.addEventListener("click", async function () {
+    const email = campoEmail.value.trim();
+
+    if (!email) {
+      mensagem.textContent = "Digite seu e-mail.";
+      return;
+    }
+
+    botao.disabled = true;
+    mensagem.textContent = "Enviando link de acesso...";
+
+    try {
+      const { error } = await cliente.auth.signInWithOtp({
+        email: email,
+        options: {
+          emailRedirectTo: "https://alexiashoploja1-criador.github.io/pappi/"
+        }
+      });
+
+      if (error) {
+        mensagem.textContent = error.message;
+      } else {
+        mensagem.textContent =
+          "Verifique seu e-mail para entrar no PAPPI.";
+      }
+    } catch (erro) {
+      mensagem.textContent =
+        "Não foi possível enviar. Tente novamente.";
+    } finally {
+      botao.disabled = false;
+    }
+  });
+</script>
 </body>
 </html>
