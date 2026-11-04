@@ -1,868 +1,302 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PAPPI - Sua conversa. Seu mundo.</title>
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      min-height: 100vh;
-      background: #ffffff;
-      font-family: Arial, sans-serif;
-      color: #172b55;
-       }
-        /* FUNDO DA PAGINA PAPPI */
-    .pagina {
-      min-height: 100vh;
-      width: 100%;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #ffffff;
-    }
-
-    .forma-azul {
-      position: absolute;
-      width: 230px;
-      height: 230px;
-      background: #1769e8;
-      border-radius: 50%;
-      opacity: 0.08;
-      z-index: 0;
-    }
-
-    .forma-superior {
-      top: -130px;
-      right: -100px;
-    }
-
-    .forma-inferior {
-      bottom: -140px;
-      left: -100px;
-    }
-      /* IDENTIDADE VISUAL PAPPI */
-
-    .conteudo-principal {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      max-width: 420px;
-      padding: 30px 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-    /* LOGOTIPO PAPPI */
-
-    .logo-pappi {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-        .simbolo-pappi {
-  width: 180px;
-  height: auto;
-  display: block;
-  overflow: visible;
-}
-
-        .ponto-logo {
-      width: 15px;
-      height: 15px;
-      background: #0875ed;
-      border-radius: 50%;
-      position: relative;
-      z-index: 2;
-    }
-    
-    /* NOME DA MARCA */
-
-    .nome-pappi {
-  font-family: "Arial Black", Arial, sans-serif;
-  font-size: 52px;
-  font-weight: 900;
-  font-style: italic;
-  letter-spacing: 1px;
-  line-height: 1;
-}
-
-    .nome-azul {
-  color: #0875ed;
-}
-
-.nome-claro {
-  color: #172b55;
-}
-
-    .slogan-pappi {
-      font-size: 14px;
-      color: #64748b;
-      margin-top: 8px;
-      letter-spacing: 0.5px;
-    }
-
-    .titulo-entrada {
-  margin-top: 55px;
-  font-size: 38px;
-  font-weight: 900;
-  color: #102653;
-  text-align: center;
-}
-
-.descricao-entrada {
-  margin-top: 18px;
-  font-size: 19px;
-  line-height: 1.5;
-  color: #405779;
-  text-align: center;
-}
-    .texto-legal {
-  margin-top: 25px;
-  max-width: 330px;
-  font-size: 13px;
-  line-height: 1.7;
-  color: #64748b;
-  text-align: center;
-}
-    /* AREA DOS BOTOES */
-
-    .campo-email {
-  width: 100%;
-  height: 60px;
-  margin-top: 30px;
-  padding: 0 20px;
-  border: 2px solid #dce5f1;
-  border-radius: 15px;
-  background: #ffffff;
-  color: #172b55;
-  font-size: 17px;
-  outline: none;
-}
-
-.campo-email:focus {
-  border-color: #0875ed;
-}
-
-.botao-continuar {
-  width: 100%;
-  height: 60px;
-  margin-top: 16px;
-  border: none;
-  border-radius: 15px;
-  background: #0875ed;
-  color: #ffffff;
-  font-size: 18px;
-  font-weight: 900;
-  cursor: pointer;
-}
-    .area-botoes {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      margin-top: 38px;
-    }
-
-    .botao-entrar {
-      width: 100%;
-      height: 54px;
-      border: none;
-      border-radius: 14px;
-      background: #1769e8;
-      color: #ffffff;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .botao-cadastrar {
-      width: 100%;
-      height: 54px;
-      border: 2px solid #1769e8;
-      border-radius: 14px;
-      background: #ffffff;
-      color: #1769e8;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    @media (max-width: 480px) {
-
-  .pagina {
-    min-height: 100svh;
-    padding: 8px 0;
-  }
-
-  .conteudo-principal {
-    padding: 10px 22px;
-  }
-
-  .logo-pappi {
-    gap: 5px;
-    margin-bottom: 5px;
-  }
-
-  .simbolo-pappi {
-    width: 115px;
-  }
-
-  .nome-pappi {
-    font-size: 38px;
-    letter-spacing: 1px;
-  }
-
-  .slogan-pappi {
-    font-size: 12px;
-    margin-top: 3px;
-  }
-
-  .titulo-entrada {
-    margin-top: 16px;
-    font-size: 27px;
-  }
-
-  .descricao-entrada {
-    margin-top: 8px;
-    font-size: 14px;
-    line-height: 1.4;
-  }
-
-  .area-botoes {
-    margin-top: 8px;
-    gap: 8px;
-  }
-
-  .campo-email {
-    height: 48px;
-    margin-top: 12px;
-    font-size: 15px;
-  }
-
-  .botao-continuar {
-    height: 48px;
-    margin-top: 4px;
-    font-size: 16px;
-  }
-
-  .texto-legal {
-    margin-top: 10px;
-    font-size: 11px;
-    line-height: 1.4;
-  }
-}
-    .mensagem-pappi {
-  min-height: 20px;
-  margin-top: 12px;
-  font-size: 14px;
-  color: #0875ed;
-  text-align: center;
-}
-
-.campo-cadastro {
-  display: none;
-  width: 100%;
-  height: 54px;
-  padding: 0 18px;
-  border: 1px solid #dce5f2;
-  border-radius: 12px;
-  font-size: 16px;
-  outline: none;
-}
-
-.campo-cadastro:focus {
-  border-color: #0875ed;
-}
-
-.alternar-modo {
-  margin-top: 18px;
-  border: none;
-  background: transparent;
-  color: #0875ed;
-  font-size: 14px;
-  cursor: pointer;
-}
-  </style>
-</head>
-
-<body>
-<div class="pagina">
-
-  <div class="forma-azul forma-superior"></div>
-
-  <div class="forma-azul forma-inferior"></div>
-  <div class="conteudo-principal">
-
-    <div class="logo-pappi">
-
-      <svg class="simbolo-pappi" viewBox="0 0 360 300" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="azul-pappi" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0875ed"/>
-      <stop offset="100%" stop-color="#172b8c"/>
-    </linearGradient>
-  </defs>
-
-  <path d="M105 25 C55 25 25 55 25 105 V150 C25 190 45 215 80 230 L65 285 L135 245 H255 C300 245 335 215 335 170 V100 C335 55 305 25 260 25 Z"
-  fill="#ffffff"
-  stroke="url(#azul-pappi)"
-  stroke-width="25"
-  stroke-linejoin="round"/>
-
-  <circle cx="125" cy="145" r="23" fill="url(#azul-pappi)"/>
-  <circle cx="180" cy="145" r="23" fill="url(#azul-pappi)"/>
-  <circle cx="235" cy="145" r="23" fill="url(#azul-pappi)"/>
-</svg>
-
-      <div class="nome-pappi">
-  <span class="nome-azul">PAP</span><span class="nome-claro">PI</span>
-</div>
-
-    </div>
-
-    <div class="slogan-pappi">
-      Sua conversa. Seu mundo.
-    </div>
-    <div class="titulo-entrada">
-  Entre no PAPPI
-</div>
-
-<div class="descricao-entrada">
-  Sua conexão com pessoas, grupos e comunidades em um só lugar.
-</div>
-
-<div class="area-botoes">
-
-  <input
-    class="campo-cadastro"
-    type="text"
-    id="nome"
-    placeholder="Seu nome"
-    autocomplete="name"
-  >
-
-  <input
-    class="campo-email"
-    type="email"
-    id="email"
-    placeholder="Digite seu melhor e-mail"
-    autocomplete="email"
-  >
-
-  <input
-    class="campo-cadastro"
-    type="password"
-    id="senha"
-    placeholder="Crie uma senha (mínimo 6 caracteres)"
-    autocomplete="new-password"
-  >
-
-  <button class="botao-continuar" id="continuar">
-    Entrar →
-  </button>
-
-  <button class="alternar-modo" id="alternarModo">
-    Ainda não tem conta? Criar conta
-  </button>
-
-</div>
-
-<p id="mensagem" class="mensagem-pappi"></p>
-<div class="texto-legal">
-  Ao continuar, você concorda com nossos
-  Termos de Uso e Política de Privacidade.
-</div>
-  </div>
-</div>
-  
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PAPPI - Sua conversa. Seu mundo.</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;color:#172b55;background:#f4f7fc}
+button,input{font:inherit}
+button{cursor:pointer}
+#app{min-height:100vh}
+.pagina{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:#fff;position:relative;overflow:hidden}
+.forma{position:absolute;width:230px;height:230px;border-radius:50%;background:#1769e8;opacity:.08}
+.forma.a{top:-130px;right:-100px}
+.forma.b{bottom:-140px;left:-100px}
+.cartao{position:relative;z-index:1;width:100%;max-width:430px;padding:28px 24px;text-align:center}
+.logo{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:10px}
+.simbolo{width:125px;height:auto}
+.nome-marca{font-family:"Arial Black",Arial,sans-serif;font-size:42px;font-weight:900;font-style:italic;letter-spacing:1px}
+.azul{color:#0875ed}.marinho{color:#172b55}
+.slogan{font-size:13px;color:#64748b;letter-spacing:.5px;margin-top:2px}
+h1{font-size:29px;margin:25px 0 10px;color:#102653}
+.descricao{font-size:15px;line-height:1.5;color:#526681;margin-bottom:22px}
+.campo{width:100%;height:52px;padding:0 15px;border:1px solid #dce5f1;border-radius:12px;margin:7px 0;background:white;color:#172b55;outline:none}
+.campo:focus{border:2px solid #0875ed}
+.botao{width:100%;height:52px;border:0;border-radius:12px;background:#0875ed;color:white;font-weight:bold;margin-top:12px}
+.botao:disabled{opacity:.6;cursor:wait}
+.link{border:0;background:transparent;color:#0875ed;margin-top:17px;font-size:14px}
+.mensagem{min-height:22px;margin-top:14px;font-size:14px;line-height:1.5;color:#0875ed}
+.legal{font-size:11px;line-height:1.5;color:#7b899f;margin-top:18px}
+.oculto{display:none!important}
+.foto-area{margin:14px auto 18px}
+.foto-preview{width:94px;height:94px;border-radius:50%;object-fit:cover;background:#eaf1fb;border:3px solid #dce8f8;display:block;margin:0 auto 10px}
+.foto-label{display:inline-block;color:#0875ed;font-size:14px;cursor:pointer}
+.app{min-height:100vh;background:#f4f7fc}
+.cabecalho{height:70px;background:#fff;border-bottom:1px solid #e8edf5;display:flex;align-items:center;justify-content:space-between;padding:0 5%}
+.marca-pequena{display:flex;align-items:center;gap:9px;font-size:25px;font-weight:900;font-style:italic}
+.marca-pequena svg{width:40px;height:40px}
+.sair{border:1px solid #0875ed;background:white;color:#0875ed;border-radius:9px;padding:9px 15px;font-weight:bold}
+.layout{max-width:1150px;min-height:calc(100vh - 110px);margin:20px auto;padding:0 15px;display:grid;grid-template-columns:330px 1fr;gap:16px}
+.lateral,.conversa{background:white;border:1px solid #e7edf6;border-radius:15px;overflow:hidden}
+.lateral{padding:20px}
+.lateral h2{font-size:22px;margin-bottom:15px}
+.busca{width:100%;height:43px;border:1px solid #e1e8f2;background:#f7f9fd;border-radius:9px;padding:0 12px}
+.nova{width:100%;height:43px;margin-top:12px;border:0;border-radius:9px;background:#0875ed;color:white;font-weight:bold}
+.vazia{padding:30px 12px;text-align:center;color:#8190a8;font-size:14px;line-height:1.6}
+.conversa{display:flex;align-items:center;justify-content:center;text-align:center;padding:25px}
+.boas-vindas{max-width:390px}
+.avatar-principal{width:85px;height:85px;border-radius:50%;object-fit:cover;margin-bottom:15px;background:#eaf1fb}
+.boas-vindas h2{font-size:24px;margin-bottom:10px}
+.boas-vindas p{color:#7b899f;line-height:1.6;font-size:14px}
+.dados-perfil{margin-top:18px;color:#0875ed;font-size:13px;line-height:1.8;overflow-wrap:anywhere}
+@media(max-width:650px){
+ .cartao{padding:15px 18px}
+ .simbolo{width:105px}
+ .nome-marca{font-size:37px}
+ h1{font-size:26px;margin-top:20px}
+ .cabecalho{padding:0 15px}
+ .layout{display:flex;flex-direction:column;height:auto;margin:12px auto}
+ .lateral{min-height:220px}
+ .conversa{min-height:330px}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
 
 <script>
 const SUPABASE_URL = "https://fvltrubujyvkbzijbobq.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_hXx1ZShKPY6iUiXtGJ9rUQ_HbuYGhQ2";
+const cliente = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+const URL_PAPPI = "https://alexiashoploja1-criador.github.io/pappi/";
+const app = document.getElementById("app");
 
-const cliente = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+let telaAtual = "";
+let usuarioAtual = null;
+let fotoSelecionada = null;
 
-const botao = document.getElementById("continuar");
-const campoEmail = document.getElementById("email");
-const campoNome = document.getElementById("nome");
-const campoSenha = document.getElementById("senha");
-const alternarModo = document.getElementById("alternarModo");
-const mensagem = document.getElementById("mensagem");
+const logo = `
+<svg class="simbolo" viewBox="0 0 360 300" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="azulPappi" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#0875ed"/><stop offset="100%" stop-color="#172b8c"/>
+</linearGradient></defs>
+<path d="M105 25 C55 25 25 55 25 105 V150 C25 190 45 215 80 230 L65 285 L135 245 H255 C300 245 335 215 335 170 V100 C335 55 305 25 260 25 Z" fill="#fff" stroke="url(#azulPappi)" stroke-width="25" stroke-linejoin="round"/>
+<circle cx="125" cy="145" r="23" fill="url(#azulPappi)"/>
+<circle cx="180" cy="145" r="23" fill="url(#azulPappi)"/>
+<circle cx="235" cy="145" r="23" fill="url(#azulPappi)"/>
+</svg>`;
 
-let modoCadastro = false;
-let telaPrincipalCriada = false;
-
-function atualizarModo() {
-  campoNome.style.display = modoCadastro ? "block" : "none";
-  campoSenha.style.display = "block";
-
-  botao.textContent = modoCadastro ? "Criar conta →" : "Entrar →";
-
-  alternarModo.textContent = modoCadastro
-    ? "Já tem conta? Entrar"
-    : "Ainda não tem conta? Criar conta";
-
-  campoSenha.autocomplete = modoCadastro
-    ? "new-password"
-    : "current-password";
-
-  mensagem.textContent = "";
+function mostrarEntrada(mensagemTexto="",cadastro=false){
+ telaAtual="entrada";
+ app.innerHTML=`
+ <main class="pagina">
+ <div class="forma a"></div><div class="forma b"></div>
+ <section class="cartao">
+ <div class="logo">${logo}
+ <div class="nome-marca"><span class="azul">PAP</span><span class="marinho">PI</span></div>
+ <div class="slogan">Sua conversa. Seu mundo.</div></div>
+ <h1>${cadastro?"Crie sua conta":"Entre no PAPPI"}</h1>
+ <p class="descricao">${cadastro?"Informe seu e-mail. Enviaremos um link para confirmar seu acesso.":"Sua conexão com pessoas, grupos e comunidades em um só lugar."}</p>
+ <input class="campo" id="email" type="email" placeholder="Digite seu e-mail" autocomplete="email">
+ ${cadastro?"":'<input class="campo" id="senha" type="password" placeholder="Sua senha" autocomplete="current-password">'}
+ <button class="botao" id="acao">${cadastro?"Enviar link de confirmação →":"Entrar →"}</button>
+ <button class="link" id="alternar">${cadastro?"Já tem conta? Entrar":"Ainda não tem conta? Criar conta"}</button>
+ <p class="mensagem" id="mensagem">${mensagemTexto}</p>
+ <p class="legal">Ao continuar, você concorda com nossos Termos de Uso e Política de Privacidade.</p>
+ </section></main>`;
+ document.getElementById("alternar").onclick=()=>mostrarEntrada("",!cadastro);
+ document.getElementById("acao").onclick=()=>cadastro?enviarLink():entrar();
 }
 
-alternarModo.addEventListener("click", function () {
-  modoCadastro = !modoCadastro;
-  atualizarModo();
-});
-
-atualizarModo();
-
-function abrirTelaPrincipal(usuario) {
-  if (telaPrincipalCriada) return;
-
-  telaPrincipalCriada = true;
-  document.querySelector(".pagina").style.display = "none";
-
-  const estilo = document.createElement("style");
-  estilo.textContent = `
-    .app-pappi {
-      min-height: 100vh;
-      background: #f4f7fc;
-      color: #172b55;
-      font-family: Arial, sans-serif;
-    }
-
-    .app-cabecalho {
-      height: 76px;
-      background: white;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 5%;
-      border-bottom: 1px solid #e8edf5;
-    }
-
-    .app-marca {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .app-marca svg {
-      width: 42px;
-      height: 42px;
-    }
-
-    .app-nome {
-      font-size: 27px;
-      font-weight: 800;
-      font-style: italic;
-      letter-spacing: 1px;
-    }
-
-    .app-nome span:first-child { color: #0875ed; }
-    .app-nome span:last-child { color: #172b55; }
-
-    .app-sair {
-      background: white;
-      color: #0875ed;
-      border: 1px solid #0875ed;
-      padding: 10px 17px;
-      border-radius: 9px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .app-layout {
-      max-width: 1150px;
-      min-height: 650px;
-      height: calc(100vh - 110px);
-      margin: 24px auto;
-      padding: 0 15px;
-      display: grid;
-      grid-template-columns: 340px 1fr;
-      gap: 18px;
-    }
-
-    .app-lateral, .app-conversa {
-      background: white;
-      border: 1px solid #e7edf6;
-      border-radius: 16px;
-      overflow: hidden;
-    }
-
-    .app-lateral-topo {
-      padding: 22px 20px 16px;
-    }
-
-    .app-lateral-topo h2 {
-      font-size: 23px;
-      margin-bottom: 17px;
-    }
-
-    .app-busca {
-      width: 100%;
-      height: 43px;
-      border: 1px solid #e1e8f2;
-      background: #f7f9fd;
-      border-radius: 9px;
-      padding: 0 13px;
-      outline: none;
-      font-size: 14px;
-    }
-
-    .app-nova {
-      width: 100%;
-      margin-top: 13px;
-      height: 43px;
-      border: none;
-      border-radius: 9px;
-      background: #0875ed;
-      color: white;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .app-lista-vazia {
-      padding: 35px 22px;
-      text-align: center;
-      color: #8190a8;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .app-conversa {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 25px;
-    }
-
-    .app-boas-vindas {
-      max-width: 380px;
-    }
-
-    .app-simbolo-grande {
-      width: 78px;
-      height: 78px;
-      margin: 0 auto 20px;
-    }
-
-    .app-boas-vindas h2 {
-      font-size: 25px;
-      margin-bottom: 12px;
-    }
-
-    .app-boas-vindas p {
-      color: #7b899f;
-      font-size: 15px;
-      line-height: 1.6;
-    }
-
-    .app-usuario {
-      margin-top: 25px;
-      color: #0875ed;
-      font-size: 13px;
-      overflow-wrap: anywhere;
-    }
-
-    .app-modal-fundo {
-      position: fixed;
-      inset: 0;
-      background: #10234480;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 9999;
-    }
-
-    .app-modal {
-      width: 100%;
-      max-width: 390px;
-      background: white;
-      border-radius: 16px;
-      padding: 25px;
-    }
-
-    .app-modal h3 {
-      margin-bottom: 12px;
-      font-size: 21px;
-    }
-
-    .app-modal p {
-      color: #718096;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .app-modal-fechar {
-      margin-top: 20px;
-      width: 100%;
-      height: 43px;
-      border: none;
-      border-radius: 9px;
-      background: #0875ed;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    @media (max-width: 700px) {
-      .app-cabecalho {
-        height: 68px;
-        padding: 0 17px;
-      }
-
-      .app-layout {
-        height: auto;
-        min-height: calc(100vh - 85px);
-        margin: 12px auto;
-        grid-template-columns: 1fr;
-        gap: 12px;
-      }
-
-      .app-lateral {
-        min-height: 250px;
-      }
-
-      .app-conversa {
-        min-height: 330px;
-      }
-
-      .app-nome { font-size: 24px; }
-    }
-  `;
-  document.head.appendChild(estilo);
-
-  const principal = document.createElement("main");
-  principal.id = "app-principal";
-  principal.className = "app-pappi";
-
-  principal.innerHTML = `
-    <header class="app-cabecalho">
-      <div class="app-marca">
-        <svg viewBox="0 0 48 48" aria-label="Símbolo PAPPI">
-          <path d="M10 4h27a8 8 0 0 1 8 8v17a8 8 0 0 1-8 8H23l-13 8v-8a8 8 0 0 1-8-8V12a8 8 0 0 1 8-8z"
-            fill="#0875ed"/>
-          <circle cx="15" cy="21" r="2.5" fill="white"/>
-          <circle cx="24" cy="21" r="2.5" fill="white"/>
-          <circle cx="33" cy="21" r="2.5" fill="white"/>
-        </svg>
-        <div class="app-nome"><span>PAP</span><span>PI</span></div>
-      </div>
-      <button class="app-sair" id="sair-pappi">Sair</button>
-    </header>
-
-    <div class="app-layout">
-      <aside class="app-lateral">
-        <div class="app-lateral-topo">
-          <h2>Conversas</h2>
-          <input
-            class="app-busca"
-            id="busca-pappi"
-            type="search"
-            placeholder="Buscar conversas..."
-          >
-          <button class="app-nova" id="nova-conversa">
-            + Nova conversa
-          </button>
-        </div>
-        <div class="app-lista-vazia" id="lista-conversas">
-          Suas conversas aparecerão aqui.
-          <br>
-          Comece uma nova conversa com alguém.
-        </div>
-      </aside>
-
-      <section class="app-conversa">
-        <div class="app-boas-vindas">
-          <svg class="app-simbolo-grande" viewBox="0 0 48 48">
-            <path d="M10 4h27a8 8 0 0 1 8 8v17a8 8 0 0 1-8 8H23l-13 8v-8a8 8 0 0 1-8-8V12a8 8 0 0 1 8-8z"
-              fill="#0875ed"/>
-            <circle cx="15" cy="21" r="2.5" fill="white"/>
-            <circle cx="24" cy="21" r="2.5" fill="white"/>
-            <circle cx="33" cy="21" r="2.5" fill="white"/>
-          </svg>
-          <h2>Bem-vindo ao PAPPI</h2>
-          <p>
-            Sua conversa. Seu mundo.
-            <br>
-            Selecione uma conversa ou comece uma nova.
-          </p>
-          <div class="app-usuario" id="usuario-pappi"></div>
-        </div>
-      </section>
-    </div>
-
-    <div class="app-modal-fundo" id="modal-pappi">
-      <div class="app-modal">
-        <h3>Nova conversa</h3>
-        <p>
-          A busca de pessoas e a criação de conversas serão
-          conectadas na próxima etapa.
-        </p>
-        <button class="app-modal-fechar" id="fechar-modal">
-          Entendi
-        </button>
-      </div>
-    </div>
-  `;
-
-  document.body.appendChild(principal);
-
-  document.getElementById("usuario-pappi").textContent =
-    "Conectado como " + (usuario.email || "");
-
-  document.getElementById("sair-pappi").addEventListener(
-    "click",
-    async function () {
-      await cliente.auth.signOut();
-    }
-  );
-
-  document.getElementById("nova-conversa").addEventListener(
-    "click",
-    function () {
-      document.getElementById("modal-pappi").style.display = "flex";
-    }
-  );
-
-  document.getElementById("fechar-modal").addEventListener(
-    "click",
-    function () {
-      document.getElementById("modal-pappi").style.display = "none";
-    }
-  );
+function mensagemPerfil(txt,erro=false){
+ const el=document.getElementById("mensagemPerfil");
+ if(el){el.textContent=txt;el.style.color=erro?"#c0392b":"#0875ed";}
 }
 
-function voltarParaEntrada() {
-  telaPrincipalCriada = false;
-
-  const principal = document.getElementById("app-principal");
-  if (principal) principal.remove();
-
-  document.querySelector(".pagina").style.display = "";
+async function enviarLink(){
+ const email=document.getElementById("email").value.trim();
+ const msg=document.getElementById("mensagem");
+ const btn=document.getElementById("acao");
+ if(!email){msg.textContent="Digite seu e-mail.";return;}
+ btn.disabled=true;btn.textContent="Enviando...";
+ const {error}=await cliente.auth.signInWithOtp({
+  email,
+  options:{emailRedirectTo:URL_PAPPI,shouldCreateUser:true}
+ });
+ btn.disabled=false;btn.textContent="Enviar link de confirmação →";
+ msg.textContent=error?"Não foi possível enviar: "+error.message:"Enviamos um link para seu e-mail. Abra a mensagem para continuar o cadastro.";
 }
 
-botao.addEventListener("click", async function () {
-  const email = campoEmail.value.trim();
-  const senha = campoSenha.value;
-  const nome = campoNome.value.trim();
+async function entrar(){
+ const email=document.getElementById("email").value.trim();
+ const senha=document.getElementById("senha").value;
+ const msg=document.getElementById("mensagem");
+ const btn=document.getElementById("acao");
+ if(!email||!senha){msg.textContent="Informe seu e-mail e sua senha.";return;}
+ btn.disabled=true;btn.textContent="Entrando...";
+ const {data,error}=await cliente.auth.signInWithPassword({email,password:senha});
+ btn.disabled=false;btn.textContent="Entrar →";
+ if(error){msg.textContent="Não foi possível entrar: "+error.message;return;}
+ await direcionarUsuario(data.user);
+}
 
-  mensagem.textContent = "";
+async function direcionarUsuario(usuario){
+ if(!usuario)return;
+ usuarioAtual=usuario;
+ const {data,error}=await cliente.from("profiles").select("*").eq("user_id",usuario.id).maybeSingle();
+ if(error){
+  mostrarEntrada("Não foi possível consultar seu perfil: "+error.message);
+  return;
+ }
+ if(data){abrirTelaPrincipal(usuario,data);}
+ else{mostrarCompletarPerfil(usuario);}
+}
 
-  if (!email || !senha) {
-    mensagem.textContent = "Digite seu e-mail e sua senha.";
-    return;
+function mostrarCompletarPerfil(usuario){
+ telaAtual="perfil";
+ fotoSelecionada=null;
+ app.innerHTML=`
+ <main class="pagina"><section class="cartao">
+ <div class="logo">${logo}
+ <div class="nome-marca"><span class="azul">PAP</span><span class="marinho">PI</span></div>
+ <div class="slogan">Sua conversa. Seu mundo.</div></div>
+ <h1>Complete seu perfil</h1>
+ <p class="descricao">Agora escolha sua foto, seu nome, seu usuário e sua senha.</p>
+ <div class="foto-area">
+ <img id="fotoPreview" class="foto-preview" src="https://placehold.co/120x120/eaf1fb/0875ed?text=Foto" alt="Prévia da foto">
+ <label class="foto-label" for="foto">Adicionar foto (opcional)</label>
+ <input id="foto" class="oculto" type="file" accept="image/jpeg,image/png,image/webp">
+ </div>
+ <input class="campo" id="nomeCompleto" placeholder="Seu nome" autocomplete="name">
+ <input class="campo" id="username" placeholder="Nome de usuário (ex.: alex123)" autocomplete="username">
+ <input class="campo" id="senhaNova" type="password" placeholder="Crie sua senha (mínimo 6 caracteres)" autocomplete="new-password">
+ <input class="campo" id="senhaConfirmar" type="password" placeholder="Confirme sua senha" autocomplete="new-password">
+ <button class="botao" id="salvarPerfil">Salvar e entrar →</button>
+ <p class="mensagem" id="mensagemPerfil"></p>
+ </section></main>`;
+ document.getElementById("foto").onchange=evento=>{
+  const arquivo=evento.target.files[0];
+  if(!arquivo)return;
+  if(!["image/jpeg","image/png","image/webp"].includes(arquivo.type)){
+   mensagemPerfil("Use uma imagem JPG, PNG ou WEBP.",true);return;
   }
-
-  if (modoCadastro && !nome) {
-    mensagem.textContent = "Digite seu nome.";
-    return;
+  if(arquivo.size>2*1024*1024){
+   mensagemPerfil("A foto deve ter no máximo 2 MB.",true);return;
   }
+  fotoSelecionada=arquivo;
+  document.getElementById("fotoPreview").src=URL.createObjectURL(arquivo);
+ };
+ document.getElementById("salvarPerfil").onclick=salvarPerfil;
+}
 
-  if (senha.length < 6) {
-    mensagem.textContent = "A senha precisa ter pelo menos 6 caracteres.";
-    return;
+async function salvarPerfil(){
+ const nome=document.getElementById("nomeCompleto").value.trim();
+ const username=document.getElementById("username").value.trim().toLowerCase();
+ const senha=document.getElementById("senhaNova").value;
+ const confirmar=document.getElementById("senhaConfirmar").value;
+ const btn=document.getElementById("salvarPerfil");
+ if(nome.length<2){mensagemPerfil("Informe seu nome completo.",true);return;}
+ if(!/^[a-z0-9_]{3,20}$/.test(username)){
+  mensagemPerfil("O usuário deve ter de 3 a 20 caracteres: letras sem acento, números ou _.",true);return;
+ }
+ if(senha.length<6){mensagemPerfil("A senha precisa ter pelo menos 6 caracteres.",true);return;}
+ if(senha!==confirmar){mensagemPerfil("As senhas não são iguais.",true);return;}
+ btn.disabled=true;btn.textContent="Salvando...";
+ let avatarUrl=null;
+ try{
+  const {data:authData,error:authError}=await cliente.auth.updateUser({
+   password:senha,
+   data:{nome:nome,username:username}
+  });
+  if(authError)throw authError;
+  const usuario=authData.user||usuarioAtual;
+  if(fotoSelecionada){
+   const extensao=fotoSelecionada.type==="image/png"?"png":fotoSelecionada.type==="image/webp"?"webp":"jpg";
+   const caminho=usuario.id+"/"+Date.now()+"."+extensao;
+   const {error:uploadError}=await cliente.storage.from("fotos-perfil").upload(caminho,fotoSelecionada,{contentType:fotoSelecionada.type});
+   if(uploadError)throw uploadError;
+   const {data:urlData}=cliente.storage.from("fotos-perfil").getPublicUrl(caminho);
+   avatarUrl=urlData.publicUrl;
   }
-
-  botao.disabled = true;
-  mensagem.textContent = modoCadastro
-    ? "Criando sua conta..."
-    : "Entrando no PAPPI...";
-
-  try {
-    if (modoCadastro) {
-      const { data, error } = await cliente.auth.signUp({
-        email: email,
-        password: senha,
-        options: {
-          data: { nome: nome },
-          emailRedirectTo: "https://alexiashoploja1-criador.github.io/pappi/"
-        }
-      });
-
-      if (error) {
-        const erro = error.message.toLowerCase();
-
-        if (erro.includes("password should contain")) {
-          mensagem.textContent =
-            "Sua senha deve conter uma letra minúscula, uma maiúscula, um número e um símbolo especial.";
-        } else if (erro.includes("email rate limit")) {
-          mensagem.textContent =
-            "Limite de envio de e-mails atingido. Tente novamente mais tarde.";
-        } else if (erro.includes("already registered")) {
-          mensagem.textContent =
-            "Este e-mail já possui cadastro. Tente entrar.";
-        } else {
-          mensagem.textContent = "Não foi possível criar a conta. Verifique os dados e tente novamente.";
-        }
-
-      } else if (data.session) {
-        abrirTelaPrincipal(data.user);
-      } else {
-        mensagem.textContent =
-          "Cadastro iniciado. Confira seu e-mail para confirmar a conta. Depois, entre com seu e-mail e senha.";
-      }
-
-    } else {
-      const { data, error } = await cliente.auth.signInWithPassword({
-        email: email,
-        password: senha
-      });
-
-      if (error) {
-        if (error.message.toLowerCase().includes("invalid login credentials")) {
-          mensagem.textContent = "E-mail ou senha incorretos.";
-        } else if (error.message.toLowerCase().includes("email not confirmed")) {
-          mensagem.textContent = "Confirme seu e-mail antes de entrar no PAPPI.";
-        } else {
-          mensagem.textContent = "Não foi possível entrar. Tente novamente.";
-        }
-      } else {
-        abrirTelaPrincipal(data.user);
-      }
-    }
-
-  } catch (erro) {
-    mensagem.textContent = "Ocorreu um erro. Tente novamente.";
-  } finally {
-    botao.disabled = false;
+  const {error:insertError}=await cliente.from("profiles").insert({
+   user_id:usuario.id,
+   full_name:nome,
+   username:username,
+   avatar_url:avatarUrl
+  });
+  if(insertError){
+   if(insertError.code==="23505")throw new Error("Esse nome de usuário já está em uso. Escolha outro.");
+   throw insertError;
   }
+  const {data:perfil}=await cliente.from("profiles").select("*").eq("user_id",usuario.id).single();
+  abrirTelaPrincipal(usuario,perfil);
+ }catch(error){
+  mensagemPerfil(error.message||"Não foi possível salvar o perfil.",true);
+  btn.disabled=false;btn.textContent="Salvar e entrar →";
+ }
+}
+
+function abrirTelaPrincipal(usuario,perfil){
+ if(!usuario||!perfil)return;
+ telaAtual="principal";
+ usuarioAtual=usuario;
+ const foto=perfil.avatar_url?`<img class="avatar-principal" src="${escapar(perfil.avatar_url)}" alt="Foto do perfil">`:`<div class="avatar-principal" style="display:inline-flex;align-items:center;justify-content:center;font-size:32px;color:#0875ed">P</div>`;
+ app.innerHTML=`
+ <main class="app">
+ <header class="cabecalho">
+ <div class="marca-pequena">${logo}<span><span class="azul">PAP</span><span class="marinho">PI</span></span></div>
+ <button class="sair" id="sair">Sair</button>
+ </header>
+ <section class="layout">
+ <aside class="lateral">
+ <h2>Conversas</h2>
+ <input class="busca" placeholder="Buscar conversas..." disabled>
+ <button class="nova" id="nova">+ Nova conversa</button>
+ <div class="vazia">Suas conversas aparecerão aqui.</div>
+ </aside>
+ <section class="conversa">
+ <div class="boas-vindas">
+ ${foto}
+ <h2>Bem-vindo(a), ${escapar(perfil.full_name)}!</h2>
+ <p>Sua conta PAPPI está pronta. Em breve você poderá encontrar pessoas e começar suas conversas.</p>
+ <div class="dados-perfil">@${escapar(perfil.username)}<br>${escapar(usuario.email||"")}</div>
+ </div>
+ </section>
+ </section></main>`;
+ document.getElementById("sair").onclick=async()=>{
+  await cliente.auth.signOut();
+  mostrarEntrada();
+ };
+ document.getElementById("nova").onclick=()=>{
+  alert("A busca de usuários e as conversas serão implementadas na próxima etapa.");
+ };
+}
+
+function escapar(valor){
+ return String(valor||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+cliente.auth.onAuthStateChange((evento,sessao)=>{
+ if(sessao&&sessao.user){
+  if(telaAtual!=="perfil"&&telaAtual!=="principal"){
+   setTimeout(()=>{if(telaAtual!=="perfil"&&telaAtual!=="principal")direcionarUsuario(sessao.user);},0);
+  }
+ }else if(evento==="SIGNED_OUT"){
+  mostrarEntrada();
+ }
 });
-cliente.auth.onAuthStateChange(function (evento, sessao) {
-  if (sessao && sessao.user) {
-    abrirTelaPrincipal(sessao.user);
-  } else if (evento === "SIGNED_OUT") {
-    voltarParaEntrada();
-  }
-});
 
-cliente.auth.getSession().then(function ({ data, error }) {
-  if (!error && data.session) {
-    abrirTelaPrincipal(data.session.user);
-  }
-});
+async function iniciar(){
+ mostrarEntrada();
+ const {data,error}=await cliente.auth.getSession();
+ if(!error&&data.session){
+  await direcionarUsuario(data.session.user);
+ }
+}
+iniciar();
 </script>
-
 </body>
 </html>
