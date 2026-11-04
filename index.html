@@ -796,20 +796,32 @@ botao.addEventListener("click", async function () {
         email: email,
         password: senha,
         options: {
-          data: {
-            nome: nome
-          },
+          data: { nome: nome },
           emailRedirectTo: "https://alexiashoploja1-criador.github.io/pappi/"
         }
       });
 
       if (error) {
-        mensagem.textContent = error.message;
+        const erro = error.message.toLowerCase();
+
+        if (erro.includes("password should contain")) {
+          mensagem.textContent =
+            "Sua senha deve conter uma letra minúscula, uma maiúscula, um número e um símbolo especial.";
+        } else if (erro.includes("email rate limit")) {
+          mensagem.textContent =
+            "Limite de envio de e-mails atingido. Tente novamente mais tarde.";
+        } else if (erro.includes("already registered")) {
+          mensagem.textContent =
+            "Este e-mail já possui cadastro. Tente entrar.";
+        } else {
+          mensagem.textContent = "Não foi possível criar a conta. Verifique os dados e tente novamente.";
+        }
+
       } else if (data.session) {
         abrirTelaPrincipal(data.user);
       } else {
         mensagem.textContent =
-          "Cadastro iniciado. Confira seu e-mail para confirmar a conta. Depois, entre no PAPPI com seu e-mail e senha.";
+          "Cadastro iniciado. Confira seu e-mail para confirmar a conta. Depois, entre com seu e-mail e senha.";
       }
 
     } else {
@@ -819,7 +831,13 @@ botao.addEventListener("click", async function () {
       });
 
       if (error) {
-        mensagem.textContent = error.message;
+        if (error.message.toLowerCase().includes("invalid login credentials")) {
+          mensagem.textContent = "E-mail ou senha incorretos.";
+        } else if (error.message.toLowerCase().includes("email not confirmed")) {
+          mensagem.textContent = "Confirme seu e-mail antes de entrar no PAPPI.";
+        } else {
+          mensagem.textContent = "Não foi possível entrar. Tente novamente.";
+        }
       } else {
         abrirTelaPrincipal(data.user);
       }
@@ -827,11 +845,10 @@ botao.addEventListener("click", async function () {
 
   } catch (erro) {
     mensagem.textContent = "Ocorreu um erro. Tente novamente.";
+  } finally {
+    botao.disabled = false;
   }
-
-  botao.disabled = false;
 });
-
 cliente.auth.onAuthStateChange(function (evento, sessao) {
   if (sessao && sessao.user) {
     abrirTelaPrincipal(sessao.user);
