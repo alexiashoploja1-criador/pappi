@@ -270,6 +270,30 @@
   color: #0875ed;
   text-align: center;
 }
+
+.campo-cadastro {
+  display: none;
+  width: 100%;
+  height: 54px;
+  padding: 0 18px;
+  border: 1px solid #dce5f2;
+  border-radius: 12px;
+  font-size: 16px;
+  outline: none;
+}
+
+.campo-cadastro:focus {
+  border-color: #0875ed;
+}
+
+.alternar-modo {
+  margin-top: 18px;
+  border: none;
+  background: transparent;
+  color: #0875ed;
+  font-size: 14px;
+  cursor: pointer;
+}
   </style>
 </head>
 
@@ -322,6 +346,14 @@
 <div class="area-botoes">
 
   <input
+    class="campo-cadastro"
+    type="text"
+    id="nome"
+    placeholder="Seu nome"
+    autocomplete="name"
+  >
+
+  <input
     class="campo-email"
     type="email"
     id="email"
@@ -329,11 +361,24 @@
     autocomplete="email"
   >
 
+  <input
+    class="campo-cadastro"
+    type="password"
+    id="senha"
+    placeholder="Crie uma senha (mínimo 6 caracteres)"
+    autocomplete="new-password"
+  >
+
   <button class="botao-continuar" id="continuar">
-    Continuar →
+    Entrar →
+  </button>
+
+  <button class="alternar-modo" id="alternarModo">
+    Ainda não tem conta? Criar conta
   </button>
 
 </div>
+
 <p id="mensagem" class="mensagem-pappi"></p>
 <div class="texto-legal">
   Ao continuar, você concorda com nossos
@@ -356,9 +401,37 @@ const cliente = window.supabase.createClient(
 
 const botao = document.getElementById("continuar");
 const campoEmail = document.getElementById("email");
+const campoNome = document.getElementById("nome");
+const campoSenha = document.getElementById("senha");
+const alternarModo = document.getElementById("alternarModo");
 const mensagem = document.getElementById("mensagem");
 
+let modoCadastro = false;
 let telaPrincipalCriada = false;
+
+function atualizarModo() {
+  campoNome.style.display = modoCadastro ? "block" : "none";
+  campoSenha.style.display = "block";
+
+  botao.textContent = modoCadastro ? "Criar conta →" : "Entrar →";
+
+  alternarModo.textContent = modoCadastro
+    ? "Já tem conta? Entrar"
+    : "Ainda não tem conta? Criar conta";
+
+  campoSenha.autocomplete = modoCadastro
+    ? "new-password"
+    : "current-password";
+
+  mensagem.textContent = "";
+}
+
+alternarModo.addEventListener("click", function () {
+  modoCadastro = !modoCadastro;
+  atualizarModo();
+});
+
+atualizarModo();
 
 function abrirTelaPrincipal(usuario) {
   if (telaPrincipalCriada) return;
@@ -692,36 +765,71 @@ function voltarParaEntrada() {
 
 botao.addEventListener("click", async function () {
   const email = campoEmail.value.trim();
+  const senha = campoSenha.value;
+  const nome = campoNome.value.trim();
 
-  if (!email) {
-    mensagem.textContent = "Digite seu e-mail.";
+  mensagem.textContent = "";
+
+  if (!email || !senha) {
+    mensagem.textContent = "Digite seu e-mail e sua senha.";
+    return;
+  }
+
+  if (modoCadastro && !nome) {
+    mensagem.textContent = "Digite seu nome.";
+    return;
+  }
+
+  if (senha.length < 6) {
+    mensagem.textContent = "A senha precisa ter pelo menos 6 caracteres.";
     return;
   }
 
   botao.disabled = true;
-  mensagem.textContent = "Enviando link de acesso...";
+  mensagem.textContent = modoCadastro
+    ? "Criando sua conta..."
+    : "Entrando no PAPPI...";
 
   try {
-    const { error } = await cliente.auth.signInWithOtp({
-      email: email,
-      options: {
-        emailRedirectTo:
-          "https://alexiashoploja1-criador.github.io/pappi/"
-      }
-    });
+    if (modoCadastro) {
+      const { data, error } = await cliente.auth.signUp({
+        email: email,
+        password: senha,
+        options: {
+          data: {
+            nome: nome
+          },
+          emailRedirectTo: "https://alexiashoploja1-criador.github.io/pappi/"
+        }
+      });
 
-    if (error) {
-      mensagem.textContent = error.message;
+      if (error) {
+        mensagem.textContent = error.message;
+      } else if (data.session) {
+        abrirTelaPrincipal(data.user);
+      } else {
+        mensagem.textContent =
+          "Cadastro iniciado. Confira seu e-mail para confirmar a conta. Depois, entre no PAPPI com seu e-mail e senha.";
+      }
+
     } else {
-      mensagem.textContent =
-        "Verifique seu e-mail para entrar no PAPPI.";
+      const { data, error } = await cliente.auth.signInWithPassword({
+        email: email,
+        password: senha
+      });
+
+      if (error) {
+        mensagem.textContent = error.message;
+      } else {
+        abrirTelaPrincipal(data.user);
+      }
     }
+
   } catch (erro) {
-    mensagem.textContent =
-      "Não foi possível enviar. Tente novamente.";
-  } finally {
-    botao.disabled = false;
+    mensagem.textContent = "Ocorreu um erro. Tente novamente.";
   }
+
+  botao.disabled = false;
 });
 
 cliente.auth.onAuthStateChange(function (evento, sessao) {
