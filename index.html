@@ -73,30 +73,11 @@
     }
 
         .simbolo-pappi {
-      width: 150px;
-      height: 115px;
-      background: #ffffff;
-      border: 9px solid #0875ed;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 12px;
-      position: relative;
-    }
-
-    .simbolo-pappi::after {
-      content: "";
-      position: absolute;
-      bottom: -17px;
-      left: 10px;
-      width: 25px;
-      height: 25px;
-      background: #ffffff;
-      border-left: 8px solid #0875ed;
-      border-bottom: 8px solid #0875ed;
-      transform: skew(-25deg) rotate(-15deg);
-    }
+  width: 180px;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
 
         .ponto-logo {
       width: 15px;
@@ -177,11 +158,24 @@
 
     <div class="logo-pappi">
 
-      <div class="simbolo-pappi">
-        <span class="ponto-logo"></span>
-        <span class="ponto-logo"></span>
-        <span class="ponto-logo"></span>
-      </div>
+      <svg class="simbolo-pappi" viewBox="0 0 360 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="azul-pappi" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0875ed"/>
+      <stop offset="100%" stop-color="#172b8c"/>
+    </linearGradient>
+  </defs>
+
+  <path d="M180 25 C90 25 30 75 30 145 C30 190 55 220 85 235 L65 285 L130 245 C150 250 170 252 190 252 C280 252 330 205 330 140 C330 75 270 25 180 25 Z"
+    fill="#ffffff"
+    stroke="url(#azul-pappi)"
+    stroke-width="20"
+    stroke-linejoin="round"/>
+
+  <circle cx="125" cy="145" r="23" fill="url(#azul-pappi)"/>
+  <circle cx="180" cy="145" r="23" fill="url(#azul-pappi)"/>
+  <circle cx="235" cy="145" r="23" fill="url(#azul-pappi)"/>
+</svg>
 
       <div class="nome-pappi">
   <span class="nome-azul">PAP</span><span class="nome-claro">PI</span>
