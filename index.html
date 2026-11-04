@@ -92,19 +92,20 @@
 
     .nome-pappi {
   font-family: "Arial Black", Arial, sans-serif;
-  font-size: 46px;
+  font-size: 52px;
   font-weight: 900;
-  letter-spacing: 2px;
+  font-style: italic;
+  letter-spacing: 1px;
   line-height: 1;
 }
 
     .nome-azul {
-      color: #172b55;
-    }
+  color: #0875ed;
+}
 
-    .nome-claro {
-      color: #0875ed;
-    }
+.nome-claro {
+  color: #172b55;
+}
 
     .slogan-pappi {
       font-size: 14px;
@@ -113,8 +114,60 @@
       letter-spacing: 0.5px;
     }
 
+    .titulo-entrada {
+  margin-top: 55px;
+  font-size: 38px;
+  font-weight: 900;
+  color: #102653;
+  text-align: center;
+}
+
+.descricao-entrada {
+  margin-top: 18px;
+  font-size: 19px;
+  line-height: 1.5;
+  color: #405779;
+  text-align: center;
+}
+    .texto-legal {
+  margin-top: 25px;
+  max-width: 330px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #64748b;
+  text-align: center;
+}
     /* AREA DOS BOTOES */
 
+    .campo-email {
+  width: 100%;
+  height: 60px;
+  margin-top: 30px;
+  padding: 0 20px;
+  border: 2px solid #dce5f1;
+  border-radius: 15px;
+  background: #ffffff;
+  color: #172b55;
+  font-size: 17px;
+  outline: none;
+}
+
+.campo-email:focus {
+  border-color: #0875ed;
+}
+
+.botao-continuar {
+  width: 100%;
+  height: 60px;
+  margin-top: 16px;
+  border: none;
+  border-radius: 15px;
+  background: #0875ed;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 900;
+  cursor: pointer;
+}
     .area-botoes {
       width: 100%;
       display: flex;
@@ -167,11 +220,11 @@
     </linearGradient>
   </defs>
 
-  <path d="M100 25 H260 Q335 25 335 100 V165 Q335 240 260 240 H145 L65 285 L85 225 Q25 200 25 145 V100 Q25 25 100 25 Z"
-    fill="#ffffff"
-    stroke="url(#azul-pappi)"
-    stroke-width="25"
-    stroke-linejoin="round"/>
+  <path d="M105 25 C55 25 25 55 25 105 V150 C25 190 45 215 80 230 L65 285 L135 245 H255 C300 245 335 215 335 170 V100 C335 55 305 25 260 25 Z"
+  fill="#ffffff"
+  stroke="url(#azul-pappi)"
+  stroke-width="25"
+  stroke-linejoin="round"/>
 
   <circle cx="125" cy="145" r="23" fill="url(#azul-pappi)"/>
   <circle cx="180" cy="145" r="23" fill="url(#azul-pappi)"/>
@@ -187,17 +240,34 @@
     <div class="slogan-pappi">
       Sua conversa. Seu mundo.
     </div>
-    <div class="area-botoes">
+    <div class="titulo-entrada">
+  Entre no PAPPI
+</div>
 
-      <button class="botao-entrar">
-        Entrar
-      </button>
+<div class="descricao-entrada">
+  Sua conexão com pessoas, grupos e comunidades em um só lugar.
+</div>
 
-      <button class="botao-cadastrar">
-        Criar minha conta
-      </button>
+<div class="area-botoes">
 
-    </div>
+  <input
+    class="campo-email"
+    type="email"
+    id="email"
+    placeholder="Digite seu melhor e-mail"
+    autocomplete="email"
+  >
+
+  <button class="botao-continuar" id="continuar">
+    Continuar →
+  </button>
+
+</div>
+
+<div class="texto-legal">
+  Ao continuar, você concorda com nossos
+  Termos de Uso e Política de Privacidade.
+</div>
   </div>
 </div>
 </body>
