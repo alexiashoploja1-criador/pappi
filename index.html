@@ -691,35 +691,34 @@ async function iniciarOndaAudio(){
   await contextoVisualAudio.resume();
 
   const analisador=contextoVisualAudio.createAnalyser();
-  analisador.fftSize=256;
-  analisador.smoothingTimeConstant=0.8;
+  analisador.fftSize=512;
+  analisador.smoothingTimeConstant=0.65;
 
   const fonte=contextoVisualAudio.createMediaStreamSource(fluxoAudio);
   fonte.connect(analisador);
 
-  const dados=new Uint8Array(analisador.frequencyBinCount);
+  const dados=new Uint8Array(analisador.fftSize);
   const barras=[...indicadorAudio.querySelectorAll(".ondaAudio span")];
-  const faixas=[[1,3],[4,8],[9,16],[17,30],[31,50]];
 
   function animar(){
-   analisador.getByteFrequencyData(dados);
-let volume=0;
-for(let n=1;n<dados.length;n++){
- volume+=dados[n];
-}
-volume=volume/dados.length;
-indicadorAudio.querySelector(".ondaAudio").classList.toggle("falando",volume>12);   barras.forEach((barra,i)=>{
-    const [inicio,fim]=faixas[i];
-    let total=0;
+   analisador.getByteTimeDomainData(dados);
 
-    for(let n=inicio;n<=fim;n++){
-     total+=dados[n];
-    }
+   let energia=0;
 
-    const media=total/(fim-inicio+1);
-    const altura=4+Math.min(1,media/90)*22;
+   for(let n=0;n<dados.length;n++){
+    const valor=(dados[n]-128)/128;
+    energia+=valor*valor;
+   }
 
-    barra.style.height=altura+"px";
+   const volume=Math.sqrt(energia/dados.length);
+   const falando=volume>0.025;
+
+   barras.forEach((barra,i)=>{
+    const variacao=falando
+     ? Math.min(1,volume*12)*(8+Math.abs(Math.sin(Date.now()/90+i))*18)
+     : 4;
+
+    barra.style.height=variacao+"px";
    });
 
    quadroOndaAudio=requestAnimationFrame(animar);
