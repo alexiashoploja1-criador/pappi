@@ -420,8 +420,11 @@ document.querySelector(".layout").classList.add("somente-conversa");
  </label>
 
  <input id="fotoMensagem" type="file" accept="image/jpeg,image/png,image/webp" hidden>
-<button type="button" id="gravarAudio" style="background:#eaf2ff;color:#0875ed;padding:12px;border:0;border-radius:9px;cursor:pointer;font-weight:bold;white-space:nowrap">
- Gravar áudio
+<button type="button" id="gravarAudio" title="Gravar áudio" aria-label="Gravar áudio" style="background:#eaf2ff;color:#0875ed;width:44px;height:44px;padding:10px;border:0;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+ <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="9" y="2" width="6" height="12" rx="3"></rect>
+  <path d="M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8"></path>
+ </svg>
 </button>
  <input id="textoMensagem" class="busca" placeholder="Digite sua mensagem..." style="flex:1;min-width:0">
 
