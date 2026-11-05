@@ -331,18 +331,21 @@ async function iniciarConversa(outroUserId){
  }
 
  if(!conversa){
-  const {data:nova,error}=await cliente
+    const novoId=crypto.randomUUID();
+
+  const {error}=await cliente
    .from("conversations")
-   .insert({created_by:usuarioAtual.id})
-   .select("id")
-   .single();
+   .insert({
+    id:novoId,
+    created_by:usuarioAtual.id
+   });
 
   if(error){
-   alert("Não foi possível criar a conversa.");
+   alert("Não foi possível criar a conversa: "+error.message);
    return;
   }
 
-  conversa=nova.id;
+  conversa=novoId;
 
   const {error:erroMembros}=await cliente
    .from("conversation_members")
