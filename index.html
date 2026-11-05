@@ -444,7 +444,11 @@ document.querySelector(".layout").classList.add("somente-conversa");
  </svg>
 </button>
  <input id="textoMensagem" class="busca" placeholder="Digite sua mensagem..." style="flex:1;min-width:0">
+<div id="indicadorAudio" class="oculto" style="flex:1;text-align:center;color:#0875ed;font-size:14px">
+ <span>●</span> Gravando áudio...
+</div>
 
+<button type="button" id="cancelarAudio" class="oculto" title="Cancelar gravação" style="width:36px;height:36px;border:0;border-radius:50%;background:#ffecec;color:#d33;font-size:23px;flex-shrink:0">×</button>
  <button class="nova" type="submit" style="width:auto;margin:0;padding:0 18px">Enviar</button>
 
 </form>
