@@ -120,6 +120,10 @@ h1{font-size:29px;margin:25px 0 10px;color:#102653}
 <script>
 const SUPABASE_URL = "https://fvltrubujyvkbzijbobq.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_hXx1ZShKPY6iUiXtGJ9rUQ_HbuYGhQ2";
+if(!window.supabase||!window.supabase.createClient){
+ document.getElementById("app").innerHTML='<div style="padding:30px;text-align:center;color:#172b55">Não foi possível carregar o sistema PAPPI. Verifique a conexão e atualize a página.</div>';
+ throw new Error("Biblioteca Supabase não carregada");
+}
 const cliente = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 const URL_PAPPI = "https://alexiashoploja1-criador.github.io/pappi/";
 const app = document.getElementById("app");
