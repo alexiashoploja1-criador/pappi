@@ -561,6 +561,16 @@ document.querySelector(".layout").classList.add("somente-conversa");
 
 lista.innerHTML=mensagensHTML.join("");
 
+lista.querySelectorAll("img").forEach(imagem=>{
+ if(imagem.complete){
+  lista.scrollTop=lista.scrollHeight;
+ }else{
+  imagem.addEventListener("load",()=>{
+   lista.scrollTop=lista.scrollHeight;
+  },{once:true});
+ }
+});
+
 lista.scrollTop=lista.scrollHeight;
 }
 
