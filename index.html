@@ -574,14 +574,7 @@ document.getElementById("formMensagem").onsubmit=async evento=>{
 
   campo.disabled=false;
 
-  if(error){
-   alert("Não foi possível enviar a mensagem.");
-   return;
-  }
-
-  campo.value="";
-  await carregarMensagens();
- };
+  if(
 
  await carregarMensagens();
 document.getElementById("fotoMensagem").onchange=async(evento)=>{
