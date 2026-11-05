@@ -766,6 +766,131 @@ function abrirTelaPrincipal(usuario,perfil){
  };
 }
 
+ function abrirEditarPerfil(usuario,perfil){
+ let fotoNova=null;
+ let removerFoto=false;
+
+ app.innerHTML=`
+ <main class="pagina">
+  <section class="cartao">
+   <h1>Meu perfil</h1>
+   <p class="descricao">Atualize suas informações no PAPPI.</p>
+
+   <div style="text-align:center;margin:20px">
+    <div id="previewFoto" style="margin:auto;width:100px;height:100px;border-radius:50%;overflow:hidden;background:#e8f1ff;display:flex;align-items:center;justify-content:center;font-size:40px;color:#0875ed">
+     ${perfil.avatar_url?`<img src="${escapar(perfil.avatar_url)}" style="width:100%;height:100%;object-fit:cover">`:"P"}
+    </div>
+   </div>
+
+   <label class="campo" style="display:block;text-align:center">
+    Escolher foto
+    <input id="novaFotoPerfil" type="file" accept="image/jpeg,image/png,image/webp" style="margin-top:10px">
+   </label>
+
+   <button class="nova" id="removerFoto" type="button">Remover foto</button>
+
+   <input class="campo" id="editarNome" value="${escapar(perfil.full_name)}" placeholder="Nome completo">
+   <input class="campo" id="editarUsuario" value="${escapar(perfil.username)}" placeholder="Nome de usuário">
+
+   <button class="botao" id="salvarEdicao">Salvar alterações</button>
+   <button class="nova" id="voltarPerfil">Voltar</button>
+   <p class="mensagem" id="mensagemEdicao"></p>
+  </section>
+ </main>`;
+
+ const mensagem=document.getElementById("mensagemEdicao");
+
+ document.getElementById("novaFotoPerfil").onchange=(e)=>{
+  const arquivo=e.target.files[0];
+  if(!arquivo)return;
+
+  if(!["image/jpeg","image/png","image/webp"].includes(arquivo.type)){
+   mensagem.textContent="Escolha uma imagem JPG, PNG ou WEBP.";
+   e.target.value="";
+   return;
+  }
+
+  if(arquivo.size>2*1024*1024){
+   mensagem.textContent="A foto deve ter no máximo 2 MB.";
+   e.target.value="";
+   return;
+  }
+
+  fotoNova=arquivo;
+  removerFoto=false;
+  document.getElementById("previewFoto").innerHTML=
+   `<img src="${URL.createObjectURL(arquivo)}" style="width:100%;height:100%;object-fit:cover">`;
+  mensagem.textContent="";
+ };
+
+ document.getElementById("removerFoto").onclick=()=>{
+  fotoNova=null;
+  removerFoto=true;
+  document.getElementById("novaFotoPerfil").value="";
+  document.getElementById("previewFoto").innerHTML="P";
+ };
+
+ document.getElementById("voltarPerfil").onclick=()=>{
+  abrirTelaPrincipal(usuario,perfil);
+ };
+
+ document.getElementById("salvarEdicao").onclick=async()=>{
+  const nome=document.getElementById("editarNome").value.trim();
+  const username=document.getElementById("editarUsuario").value.trim().toLowerCase();
+  const botao=document.getElementById("salvarEdicao");
+
+  if(nome.length<2){
+   mensagem.textContent="Informe seu nome completo.";
+   return;
+  }
+
+  if(!/^[a-z0-9_]{3,20}$/.test(username)){
+   mensagem.textContent="O usuário deve ter de 3 a 20 caracteres, usando letras, números ou _.";
+   return;
+  }
+
+  botao.disabled=true;
+  botao.textContent="Salvando...";
+
+  try{
+   let avatarUrl=perfil.avatar_url;
+
+   if(fotoNova){
+    const extensao=fotoNova.type==="image/png"?"png":fotoNova.type==="image/webp"?"webp":"jpg";
+    const caminho=usuario.id+"/"+Date.now()+"."+extensao;
+
+    const {error:uploadError}=await cliente.storage.from("fotos-perfil").upload(caminho,fotoNova,{contentType:fotoNova.type});
+    if(uploadError)throw uploadError;
+
+    const {data:urlData}=cliente.storage.from("fotos-perfil").getPublicUrl(caminho);
+    avatarUrl=urlData.publicUrl;
+   }
+
+   if(removerFoto)avatarUrl=null;
+
+   const {error}=await cliente.from("profiles").update({
+    full_name:nome,
+    username:username,
+    avatar_url:avatarUrl
+   }).eq("user_id",usuario.id);
+
+   if(error){
+    if(error.code==="23505")throw new Error("Esse nome de usuário já está em uso.");
+    throw error;
+   }
+
+   const {data:perfilAtualizado,error:erroBusca}=await cliente.from("profiles").select("*").eq("user_id",usuario.id).single();
+   if(erroBusca)throw erroBusca;
+
+   abrirTelaPrincipal(usuario,perfilAtualizado);
+
+  }catch(error){
+   mensagem.textContent=error.message||"Não foi possível salvar as alterações.";
+   botao.disabled=false;
+   botao.textContent="Salvar alterações";
+  }
+ };
+}
 function escapar(valor){
  return String(valor||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
