@@ -269,7 +269,221 @@ async function salvarPerfil(){
   btn.disabled=false;btn.textContent="Salvar e entrar →";
  }
 }
+async function buscarUsuarios(){
+ const termo=document.getElementById("buscaUsuarios").value.trim().replace(/^@/,"").toLowerCase();
+ const resultados=document.getElementById("resultadosBusca");
 
+ if(termo.length<3){
+  resultados.innerHTML='<div class="vazia">Digite pelo menos 3 letras do usuário.</div>';
+  return;
+ }
+
+ resultados.innerHTML='<div class="vazia">Buscando pessoas...</div>';
+
+ const {data,error}=await cliente
+  .from("profiles")
+  .select("user_id,full_name,username,avatar_url")
+  .ilike("username","%"+termo+"%")
+  .neq("user_id",usuarioAtual.id)
+  .limit(10);
+
+ if(error){
+  resultados.innerHTML='<div class="vazia">Não foi possível buscar usuários.</div>';
+  return;
+ }
+
+ if(!data||data.length===0){
+  resultados.innerHTML='<div class="vazia">Nenhum usuário encontrado.</div>';
+  return;
+ }
+
+ resultados.innerHTML=data.map(p=>`
+  <div class="vazia">
+   <strong>${escapar(p.full_name)}</strong>
+   <div>@${escapar(p.username)}</div>
+   <button class="nova" data-user-id="${escapar(p.user_id)}">Conversar</button>
+  </div>
+ `).join("");
+
+ resultados.querySelectorAll("button[data-user-id]").forEach(botao=>{
+  botao.onclick=()=>iniciarConversa(botao.dataset.userId);
+ });
+}
+async function iniciarConversa(outroUserId){
+ const {data:minhas}=await cliente
+  .from("conversation_members")
+  .select("conversation_id")
+  .eq("user_id",usuarioAtual.id);
+
+ const ids=(minhas||[]).map(item=>item.conversation_id);
+ let conversa=null;
+
+ if(ids.length){
+  const {data:existente}=await cliente
+   .from("conversation_members")
+   .select("conversation_id")
+   .eq("user_id",outroUserId)
+   .in("conversation_id",ids)
+   .limit(1)
+   .maybeSingle();
+
+  if(existente) conversa=existente.conversation_id;
+ }
+
+ if(!conversa){
+  const {data:nova,error}=await cliente
+   .from("conversations")
+   .insert({created_by:usuarioAtual.id})
+   .select("id")
+   .single();
+
+  if(error){
+   alert("Não foi possível criar a conversa.");
+   return;
+  }
+
+  conversa=nova.id;
+
+  const {error:erroMembros}=await cliente
+   .from("conversation_members")
+   .insert([
+    {conversation_id:conversa,user_id:usuarioAtual.id},
+    {conversation_id:conversa,user_id:outroUserId}
+   ]);
+
+  if(erroMembros){
+   alert("Não foi possível adicionar os participantes.");
+   return;
+  }
+ }
+
+ const {data:perfil,error}=await cliente
+  .from("profiles")
+  .select("user_id,full_name,username,avatar_url")
+  .eq("user_id",outroUserId)
+  .single();
+
+ if(error||!perfil){
+  alert("Não foi possível carregar o perfil.");
+  return;
+ }
+
+ abrirConversa(conversa,perfil);
+}
+ async function abrirConversa(conversaId,perfil){
+ const area=document.querySelector(".conversa");
+
+ if(!area)return;
+
+ if(abrirConversa.canal){
+  await cliente.removeChannel(abrirConversa.canal);
+  abrirConversa.canal=null;
+ }
+
+ area.innerHTML=`
+  <div style="height:100%;display:flex;flex-direction:column;padding:18px">
+   <div style="display:flex;align-items:center;gap:12px;padding-bottom:15px;border-bottom:1px solid #e1e8f2">
+    <button id="voltarConversas" class="nova" style="width:auto;margin:0;padding:0 15px">Voltar</button>
+    <div>
+     <strong>${escapar(perfil.full_name)}</strong>
+     <div style="color:#8190a8;font-size:13px">@${escapar(perfil.username)}</div>
+    </div>
+   </div>
+
+   <div id="listaMensagens" style="flex:1;overflow-y:auto;padding:15px 0">
+    <div class="vazia">Carregando mensagens...</div>
+   </div>
+
+   <form id="formMensagem" style="display:flex;gap:8px;padding-top:12px;border-top:1px solid #e1e8f2">
+    <input id="textoMensagem" class="busca" placeholder="Digite sua mensagem..." style="flex:1">
+    <button class="nova" type="submit" style="width:auto;margin:0;padding:0 18px">Enviar</button>
+   </form>
+  </div>
+ `;
+
+ document.getElementById("voltarConversas").onclick=async()=>{
+  const {data:meuPerfil}=await cliente
+   .from("profiles")
+   .select("*")
+   .eq("user_id",usuarioAtual.id)
+   .single();
+
+  if(meuPerfil)abrirTelaPrincipal(usuarioAtual,meuPerfil);
+ };
+
+ async function carregarMensagens(){
+  const {data,error}=await cliente
+   .from("messages")
+   .select("id,sender_id,content,created_at")
+   .eq("conversation_id",conversaId)
+   .order("created_at",{ascending:true});
+
+  const lista=document.getElementById("listaMensagens");
+  if(!lista)return;
+
+  if(error){
+   lista.innerHTML='<div class="vazia">Não foi possível carregar as mensagens.</div>';
+   return;
+  }
+
+  if(!data||data.length===0){
+   lista.innerHTML='<div class="vazia">Esta conversa ainda não tem mensagens. Envie a primeira!</div>';
+   return;
+  }
+
+  lista.innerHTML=data.map(m=>{
+   const minha=m.sender_id===usuarioAtual.id;
+   return `<div style="display:flex;justify-content:${minha?"flex-end":"flex-start"};margin:8px 0">
+    <div style="max-width:80%;padding:10px 14px;border-radius:12px;background:${minha?"#0875ed":"#edf2f8"};color:${minha?"white":"#243247"};overflow-wrap:anywhere">
+     ${escapar(m.content)}
+    </div>
+   </div>`;
+  }).join("");
+
+  lista.scrollTop=lista.scrollHeight;
+ }
+
+ document.getElementById("formMensagem").onsubmit=async evento=>{
+  evento.preventDefault();
+
+  const campo=document.getElementById("textoMensagem");
+  const texto=campo.value.trim();
+
+  if(!texto)return;
+
+  campo.disabled=true;
+
+  const {error}=await cliente
+   .from("messages")
+   .insert({
+    conversation_id:conversaId,
+    sender_id:usuarioAtual.id,
+    content:texto
+   });
+
+  campo.disabled=false;
+
+  if(error){
+   alert("Não foi possível enviar a mensagem.");
+   return;
+  }
+
+  campo.value="";
+  await carregarMensagens();
+ };
+
+ await carregarMensagens();
+
+ abrirConversa.canal=cliente
+  .channel("mensagens-"+conversaId)
+  .on("postgres_changes",{
+   event:"INSERT",
+   schema:"public",
+   table:"messages",
+   filter:"conversation_id=eq."+conversaId
+  },()=>carregarMensagens())
+  .subscribe();
+}
 function abrirTelaPrincipal(usuario,perfil){
  if(!usuario||!perfil)return;
  telaAtual="principal";
@@ -303,6 +517,7 @@ function abrirTelaPrincipal(usuario,perfil){
   await cliente.auth.signOut();
   mostrarEntrada();
  };
+ document.getElementById("buscarUsuarios").onclick=buscarUsuarios;
  document.getElementById("nova").onclick=()=>{
   alert("A busca de usuários e as conversas serão implementadas na próxima etapa.");
  };
