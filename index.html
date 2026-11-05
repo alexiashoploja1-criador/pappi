@@ -500,6 +500,13 @@ async function iniciarConversa(outroUserId){
   lista.innerHTML='<div class="vazia">Não foi possível carregar as conversas.</div>';
   return;
  }
+    await cliente.from("messages")
+   .update({read_at:new Date().toISOString()})
+   .eq("conversation_id",conversaId)
+   .neq("sender_id",usuarioAtual.id)
+   .is("read_at",null);
+
+  await carregarConversas();
 
  if(!minhas||minhas.length===0){
   lista.innerHTML='<div class="vazia">Suas conversas aparecerão aqui.</div>';
