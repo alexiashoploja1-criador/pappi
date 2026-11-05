@@ -616,16 +616,27 @@ document.getElementById("fotoMensagem").onchange=async(evento)=>{
   let gravadorAudio=null;
 let partesAudio=[];
 let fluxoAudio=null;
+let cancelarGravacaoAudio=false;
 
 const botaoAudio=document.getElementById("gravarAudio");
+const botaoCancelarAudio=document.getElementById("cancelarAudio");
+const indicadorAudio=document.getElementById("indicadorAudio");
+const campoTexto=document.getElementById("textoMensagem");
+const botaoAnexos=document.getElementById("abrirAnexos");
+
+function restaurarCompositorAudio(){
+ campoTexto.classList.remove("oculto");
+ botaoAudio.classList.remove("oculto");
+ botaoAnexos.classList.remove("oculto");
+ indicadorAudio.classList.add("oculto");
+ botaoCancelarAudio.classList.add("oculto");
+ botaoAudio.disabled=false;
+ botaoAudio.title="Gravar áudio";
+ gravadorAudio=null;
+}
 
 botaoAudio.onclick=async()=>{
- if(gravadorAudio && gravadorAudio.state==="recording"){
-  botaoAudio.disabled=true;
-  botaoAudio.title="Finalizando...";
-  gravadorAudio.stop();
-  return;
- }
+ if(gravadorAudio)return;
 
  try{
   if(!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder==="undefined"){
@@ -645,6 +656,7 @@ botaoAudio.onclick=async()=>{
   }
 
   partesAudio=[];
+  cancelarGravacaoAudio=false;
 
   gravadorAudio=new MediaRecorder(fluxoAudio,{mimeType:tipoAudio});
 
@@ -652,11 +664,23 @@ botaoAudio.onclick=async()=>{
    if(evento.data.size>0)partesAudio.push(evento.data);
   };
 
+  campoTexto.classList.add("oculto");
+  botaoAudio.classList.add("oculto");
+  botaoAnexos.classList.add("oculto");
+  indicadorAudio.classList.remove("oculto");
+  botaoCancelarAudio.classList.remove("oculto");
+
   gravadorAudio.onstop=async()=>{
    const tipo=gravadorAudio.mimeType;
    const arquivo=new Blob(partesAudio,{type:tipo});
 
    fluxoAudio.getTracks().forEach(trilha=>trilha.stop());
+
+   if(cancelarGravacaoAudio){
+    partesAudio=[];
+    restaurarCompositorAudio();
+    return;
+   }
 
    try{
     if(arquivo.size>10*1024*1024){
@@ -687,23 +711,27 @@ botaoAudio.onclick=async()=>{
    }catch(error){
     alert(error.message||"Não foi possível enviar o áudio.");
    }finally{
-    botaoAudio.disabled=false;
-    botaoAudio.title="Gravar áudio";
-    gravadorAudio=null;
+    partesAudio=[];
+    restaurarCompositorAudio();
    }
   };
 
   gravadorAudio.start();
-  botaoAudio.title="Parar gravação";
 
  }catch(error){
   if(fluxoAudio){
    fluxoAudio.getTracks().forEach(trilha=>trilha.stop());
   }
 
-  botaoAudio.disabled=false;
-  botaoAudio.title="Gravar áudio";
+  restaurarCompositorAudio();
   alert(error.message||"Não foi possível iniciar a gravação.");
+ }
+};
+
+botaoCancelarAudio.onclick=()=>{
+ if(gravadorAudio && gravadorAudio.state==="recording"){
+  cancelarGravacaoAudio=true;
+  gravadorAudio.stop();
  }
 };
  abrirConversa.canal=cliente
