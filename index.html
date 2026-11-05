@@ -529,6 +529,16 @@ lista.innerHTML=mensagensHTML.join("");
   lista.scrollTop=lista.scrollHeight;
  }
 
+ const botaoAnexos=document.getElementById("abrirAnexos");
+const menuAnexos=document.getElementById("menuAnexos");
+
+botaoAnexos.onclick=()=>{
+ menuAnexos.classList.toggle("oculto");
+};
+
+document.getElementById("fotoMensagem").addEventListener("change",()=>{
+ menuAnexos.classList.add("oculto");
+}); 
  document.getElementById("formMensagem").onsubmit=async evento=>{
   evento.preventDefault();
 
