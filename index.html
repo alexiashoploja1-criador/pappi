@@ -557,12 +557,7 @@ document.querySelector(".layout").classList.add("somente-conversa");
 
 lista.innerHTML=mensagensHTML.join("");
 
-  requestAnimationFrame(()=>{
- lista.scrollTop=lista.scrollHeight;
- setTimeout(()=>{
   lista.scrollTop=lista.scrollHeight;
- },300);
-});
 
  const botaoAnexos=document.getElementById("abrirAnexos");
 const menuAnexos=document.getElementById("menuAnexos");
