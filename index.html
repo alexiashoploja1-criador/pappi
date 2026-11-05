@@ -390,8 +390,9 @@ async function iniciarConversa(outroUserId){
 }
  async function abrirConversa(conversaId,perfil){
  const area=document.querySelector(".conversa");
+document.querySelector(".layout").classList.add("somente-conversa");
 
- if(!area)return;
+  if(!area)return;
 
  if(abrirConversa.canal){
   await cliente.removeChannel(abrirConversa.canal);
