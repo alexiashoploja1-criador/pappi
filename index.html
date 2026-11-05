@@ -653,7 +653,54 @@ const botaoAudio=document.getElementById("gravarAudio");
 const botaoCancelarAudio=document.getElementById("cancelarAudio");
 const indicadorAudio=document.getElementById("indicadorAudio");
 const campoTexto=document.getElementById("textoMensagem");
+let contextoVisualAudio=null;
+let quadroOndaAudio=null;
 
+async function iniciarOndaAudio(){
+ try{
+  const AudioContexto=window.AudioContext||window.webkitAudioContext;
+  if(!AudioContexto)return;
+
+  contextoVisualAudio=new AudioContexto();
+  await contextoVisualAudio.resume();
+
+  const analisador=contextoVisualAudio.createAnalyser();
+  analisador.fftSize=256;
+  analisador.smoothingTimeConstant=0.8;
+
+  const fonte=contextoVisualAudio.createMediaStreamSource(fluxoAudio);
+  fonte.connect(analisador);
+
+  const dados=new Uint8Array(analisador.frequencyBinCount);
+  const barras=[...indicadorAudio.querySelectorAll(".ondaAudio span")];
+  const faixas=[[1,3],[4,8],[9,16],[17,30],[31,50]];
+
+  function animar(){
+   analisador.getByteFrequencyData(dados);
+
+   barras.forEach((barra,i)=>{
+    const [inicio,fim]=faixas[i];
+    let total=0;
+
+    for(let n=inicio;n<=fim;n++){
+     total+=dados[n];
+    }
+
+    const media=total/(fim-inicio+1);
+    const altura=4+Math.min(1,media/90)*22;
+
+    barra.style.height=altura+"px";
+   });
+
+   quadroOndaAudio=requestAnimationFrame(animar);
+  }
+
+  animar();
+ }catch(error){
+  contextoVisualAudio=null;
+ }
+}
+  
 function restaurarCompositorAudio(){
  campoTexto.classList.remove("oculto");
  botaoAudio.classList.remove("oculto");
