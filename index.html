@@ -535,23 +535,42 @@ botaoAnexos.onclick=()=>{
 document.getElementById("fotoMensagem").addEventListener("change",()=>{
  menuAnexos.classList.add("oculto");
 }); 
- document.getElementById("formMensagem").onsubmit=async evento=>{
-  evento.preventDefault();
+document.getElementById("formMensagem").onsubmit=async evento=>{
+ evento.preventDefault();
 
-  const campo=document.getElementById("textoMensagem");
-  const texto=campo.value.trim();
+ if(gravadorAudio && gravadorAudio.state==="recording"){
+  cancelarGravacaoAudio=false;
+  botaoAudio.disabled=true;
+  botaoCancelarAudio.disabled=true;
+  gravadorAudio.stop();
+  return;
+ }
 
-  if(!texto)return;
+ const campo=document.getElementById("textoMensagem");
+ const texto=campo.value.trim();
 
-  campo.disabled=true;
+ if(!texto)return;
 
-  const {error}=await cliente
-   .from("messages")
-   .insert({
-    conversation_id:conversaId,
-    sender_id:usuarioAtual.id,
-    content:texto
-   });
+ campo.disabled=true;
+
+ const {error}=await cliente
+  .from("messages")
+  .insert({
+   conversation_id:conversaId,
+   sender_id:usuarioAtual.id,
+   content:texto
+  });
+
+ campo.disabled=false;
+
+ if(error){
+  alert("Não foi possível enviar a mensagem.");
+  return;
+ }
+
+ campo.value="";
+ await carregarMensagens();
+};
 
   campo.disabled=false;
 
