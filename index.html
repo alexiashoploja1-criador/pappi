@@ -546,6 +546,8 @@ async function iniciarConversa(outroUserId){
   if(!p)return "";
 
   const ultima=(ultimas||[]).find(x=>x.conversation_id===m.conversation_id);
+   const quantidadeNaoLidas=(naolidas||[])
+   .filter(x=>x.conversation_id===m.conversation_id).length;
   const foto=p.avatar_url
    ? `<img src="${escapar(p.avatar_url)}" style="width:44px;height:44px;border-radius:50%;object-fit:cover">`
    : `<div style="width:44px;height:44px;border-radius:50%;background:#e5efff;color:#0875ed;display:flex;align-items:center;justify-content:center;font-weight:bold">${escapar(p.full_name.charAt(0).toUpperCase())}</div>`;
@@ -554,7 +556,10 @@ async function iniciarConversa(outroUserId){
    <button class="nova" data-conversa="${escapar(m.conversation_id)}" data-usuario="${escapar(p.user_id)}" style="display:flex;align-items:center;gap:10px;text-align:left;height:auto;padding:12px;margin:5px 0">
     ${foto}
     <span style="min-width:0;flex:1">
-     <strong>${escapar(p.full_name)}</strong>
+     <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+ <strong>${escapar(p.full_name)}</strong>
+ ${quantidadeNaoLidas>0?`<span style="background:#0875ed;color:white;border-radius:20px;padding:2px 8px;font-size:11px">${quantidadeNaoLidas}</span>`:""}
+</div>
      <div style="font-size:12px;font-weight:normal;opacity:.85">@${escapar(p.username)}</div>
      <div style="font-size:12px;font-weight:normal;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${ultima?escapar(ultima.content):"Nenhuma mensagem ainda"}</div>
     </span>
