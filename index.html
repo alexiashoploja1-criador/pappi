@@ -573,6 +573,99 @@ document.getElementById("fotoMensagem").onchange=async(evento)=>{
   campoFoto.disabled=false;
  }
 };
+  let gravadorAudio=null;
+let partesAudio=[];
+let fluxoAudio=null;
+
+const botaoAudio=document.getElementById("gravarAudio");
+
+botaoAudio.onclick=async()=>{
+ if(gravadorAudio && gravadorAudio.state==="recording"){
+  botaoAudio.disabled=true;
+  botaoAudio.textContent="Finalizando...";
+  gravadorAudio.stop();
+  return;
+ }
+
+ try{
+  if(!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder==="undefined"){
+   throw new Error("Seu navegador não permite gravar áudio.");
+  }
+
+  fluxoAudio=await navigator.mediaDevices.getUserMedia({audio:true});
+
+  let tipoAudio="";
+
+  if(MediaRecorder.isTypeSupported("audio/mp4")){
+   tipoAudio="audio/mp4";
+  }else if(MediaRecorder.isTypeSupported("audio/webm")){
+   tipoAudio="audio/webm";
+  }else{
+   throw new Error("Formato de gravação não suportado.");
+  }
+
+  partesAudio=[];
+
+  gravadorAudio=new MediaRecorder(fluxoAudio,{mimeType:tipoAudio});
+
+  gravadorAudio.ondataavailable=evento=>{
+   if(evento.data.size>0)partesAudio.push(evento.data);
+  };
+
+  gravadorAudio.onstop=async()=>{
+   const tipo=gravadorAudio.mimeType;
+   const arquivo=new Blob(partesAudio,{type:tipo});
+
+   fluxoAudio.getTracks().forEach(trilha=>trilha.stop());
+
+   try{
+    if(arquivo.size>10*1024*1024){
+     throw new Error("O áudio ultrapassou 10 MB.");
+    }
+
+    const extensao=tipo.includes("webm")?"webm":"m4a";
+    const caminho=conversaId+"/"+usuarioAtual.id+"/"+Date.now()+"."+extensao;
+
+    const {error:erroUpload}=await cliente.storage
+     .from("mensagens")
+     .upload(caminho,arquivo,{contentType:tipo});
+
+    if(erroUpload)throw erroUpload;
+
+    const {error:erroMensagem}=await cliente
+     .from("messages")
+     .insert({
+      conversation_id:conversaId,
+      sender_id:usuarioAtual.id,
+      content:"PAPPI_AUDIO:"+caminho
+     });
+
+    if(erroMensagem)throw erroMensagem;
+
+    await carregarMensagens();
+
+   }catch(error){
+    alert(error.message||"Não foi possível enviar o áudio.");
+   }finally{
+    botaoAudio.disabled=false;
+    botaoAudio.textContent="Gravar áudio";
+    gravadorAudio=null;
+   }
+  };
+
+  gravadorAudio.start();
+  botaoAudio.textContent="Parar gravação";
+
+ }catch(error){
+  if(fluxoAudio){
+   fluxoAudio.getTracks().forEach(trilha=>trilha.stop());
+  }
+
+  botaoAudio.disabled=false;
+  botaoAudio.textContent="Gravar áudio";
+  alert(error.message||"Não foi possível iniciar a gravação.");
+ }
+};
  abrirConversa.canal=cliente
   .channel("mensagens-"+conversaId)
   .on("postgres_changes",{
