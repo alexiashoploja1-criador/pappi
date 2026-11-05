@@ -445,7 +445,37 @@ document.querySelector(".layout").classList.add("somente-conversa");
 </button>
  <input id="textoMensagem" class="busca" placeholder="Digite sua mensagem..." style="flex:1;min-width:0">
 <div id="indicadorAudio" class="oculto" style="flex:1;text-align:center;color:#0875ed;font-size:14px">
- <span>●</span> Gravando áudio...
+ <style>
+@keyframes ondaPappi {
+  0%,100% {height:6px}
+  50% {height:22px}
+}
+.ondaAudio {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+}
+.ondaAudio span {
+  display:block;
+  width:4px;
+  height:6px;
+  background:#0875ed;
+  border-radius:4px;
+  animation:ondaPappi .7s infinite ease-in-out;
+}
+.ondaAudio span:nth-child(2) {animation-delay:.1s}
+.ondaAudio span:nth-child(3) {animation-delay:.2s}
+.ondaAudio span:nth-child(4) {animation-delay:.3s}
+.ondaAudio span:nth-child(5) {animation-delay:.4s}
+</style>
+
+<div id="indicadorAudio" class="oculto" style="flex:1;text-align:center;color:#0875ed;font-size:14px">
+ <div class="ondaAudio">
+  <span></span><span></span><span></span><span></span><span></span>
+ </div>
+ Gravando áudio...
+</div>
 </div>
 
 <button type="button" id="cancelarAudio" class="oculto" title="Cancelar gravação" style="width:36px;height:36px;border:0;border-radius:50%;background:#ffecec;color:#d33;font-size:23px;flex-shrink:0">×</button>
