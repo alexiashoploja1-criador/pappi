@@ -814,7 +814,7 @@ botaoAudio.onclick=async()=>{
   if(fluxoAudio){
    fluxoAudio.getTracks().forEach(trilha=>trilha.stop());
   }
-
+pararOndaAudio();
   restaurarCompositorAudio();
   alert(error.message||"Não foi possível iniciar a gravação.");
  }
