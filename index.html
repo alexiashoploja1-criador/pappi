@@ -534,7 +534,13 @@ async function iniciarConversa(outroUserId){
   .select("conversation_id,content,created_at")
   .in("conversation_id",ids)
   .order("created_at",{ascending:false});
-
+ const {data:naolidas}=await cliente
+  .from("messages")
+  .select("conversation_id")
+  .in("conversation_id",ids)
+  .neq("sender_id",usuarioAtual.id)
+  .is("read_at",null);
+  
  lista.innerHTML=membros.map(m=>{
   const p=perfis.find(x=>x.user_id===m.user_id);
   if(!p)return "";
