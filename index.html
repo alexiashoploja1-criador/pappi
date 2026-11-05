@@ -700,7 +700,21 @@ async function iniciarOndaAudio(){
   contextoVisualAudio=null;
  }
 }
-  
+function pararOndaAudio(){
+ if(quadroOndaAudio!==null){
+  cancelAnimationFrame(quadroOndaAudio);
+  quadroOndaAudio=null;
+ }
+
+ if(contextoVisualAudio){
+  contextoVisualAudio.close().catch(()=>{});
+  contextoVisualAudio=null;
+ }
+
+ indicadorAudio.querySelectorAll(".ondaAudio span").forEach(barra=>{
+  barra.style.height="4px";
+ });
+}
 function restaurarCompositorAudio(){
  campoTexto.classList.remove("oculto");
  botaoAudio.classList.remove("oculto");
