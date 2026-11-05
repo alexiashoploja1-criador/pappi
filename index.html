@@ -1159,60 +1159,75 @@ function abrirTelaPrincipal(usuario,perfil){
  if(!usuario||!perfil)return;
  telaAtual="principal";
  usuarioAtual=usuario;
- const foto=perfil.avatar_url?`<img class="avatar-principal" src="${escapar(perfil.avatar_url)}" alt="Foto do perfil">`:`<div class="avatar-principal" style="display:inline-flex;align-items:center;justify-content:center;font-size:32px;color:#0875ed">P</div>`;
+
  app.innerHTML=`
  <main class="app">
- <header class="cabecalho">
- <div class="marca-pequena">${logo}<span><span class="azul">PAP</span><span class="marinho">PI</span></span></div>
- <div style="display:flex;gap:8px">
- <button class="sair" id="editarPerfil">Meu perfil</button>
- <button class="sair" id="sair">Sair</button>
-</div>
- </header>
- <section class="layout">
- <aside class="lateral">
- <h2>Conversas</h2>
- <input class="busca" id="buscaUsuarios" placeholder="Buscar por nome de usuário...">
-<button class="nova" id="buscarUsuarios">Buscar pessoas</button>
-<div id="resultadosBusca"></div>
- <button class="nova" id="nova">+ Nova conversa</button>
- <div id="listaConversas">
- <div class="vazia">Carregando conversas...</div>
-</div>
- </aside>
- <section class="conversa">
- <div class="boas-vindas">
- ${foto}
- <h2>Bem-vindo(a), ${escapar(perfil.full_name)}!</h2>
- <p>Sua conta PAPPI está pronta. Em breve você poderá encontrar pessoas e começar suas conversas.</p>
- <div class="dados-perfil">@${escapar(perfil.username)}<br>${escapar(usuario.email||"")}</div>
- </div>
- </section>
- </section></main>`;
+  <header class="cabecalho">
+   <div class="marca-pequena">
+    ${logo}
+    <span><span class="azul">PAP</span><span class="marinho">PI</span></span>
+   </div>
+   <div style="display:flex;gap:8px">
+    <button class="sair" id="editarPerfil">Meu perfil</button>
+    <button class="sair" id="sair">Sair</button>
+   </div>
+  </header>
+
+  <section class="inicioConversas">
+   <h1>Conversas</h1>
+
+   <div class="pesquisaInicio">
+    <input class="busca" id="buscaUsuarios"
+     placeholder="Buscar pessoas ou conversas...">
+    <button id="buscarUsuarios" title="Buscar">⌕</button>
+   </div>
+
+   <div class="filtrosConversas">
+    <button class="filtro ativo" id="filtroTodas">Todas</button>
+    <button class="filtro" id="filtroNaoLidas">Não lidas</button>
+    <button class="filtro" id="filtroFavoritos">Favoritos</button>
+    <button class="filtro" id="filtroGrupos">Grupos</button>
+   </div>
+
+   <div id="resultadosBusca"></div>
+
+   <div id="listaConversas">
+    <div class="vazia">Carregando conversas...</div>
+   </div>
+  </section>
+ </main>`;
+
  document.getElementById("sair").onclick=async()=>{
   await cliente.auth.signOut();
   mostrarEntrada();
  };
- document.getElementById("editarPerfil").onclick=()=>abrirEditarPerfil(usuario,perfil);
- document.getElementById("buscarUsuarios").onclick=buscarUsuarios;
- carregarConversas();
-   if(abrirTelaPrincipal.canalLista){
-   cliente.removeChannel(abrirTelaPrincipal.canalLista);
-  }
 
-  abrirTelaPrincipal.canalLista=cliente
-   .channel("lista-conversas-"+usuario.id)
-   .on("postgres_changes",{
-    event:"INSERT",
-    schema:"public",
-    table:"messages"
-   },()=>{
-    carregarConversas();
-   })
-   .subscribe();
- document.getElementById("nova").onclick=()=>{
-  alert("A busca de usuários e as conversas serão implementadas na próxima etapa.");
+ document.getElementById("editarPerfil").onclick=()=>{
+  abrirEditarPerfil(usuario,perfil);
  };
+
+ document.getElementById("buscarUsuarios").onclick=buscarUsuarios;
+
+ document.getElementById("buscaUsuarios").onkeydown=evento=>{
+  if(evento.key==="Enter")buscarUsuarios();
+ };
+
+ carregarConversas();
+
+ if(abrirTelaPrincipal.canalLista){
+  cliente.removeChannel(abrirTelaPrincipal.canalLista);
+ }
+
+ abrirTelaPrincipal.canalLista=cliente
+  .channel("lista-conversas-"+usuario.id)
+  .on("postgres_changes",{
+   event:"INSERT",
+   schema:"public",
+   table:"messages"
+  },()=>{
+   carregarConversas();
+  })
+  .subscribe();
 }
 
  function abrirEditarPerfil(usuario,perfil){
