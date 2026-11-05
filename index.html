@@ -765,7 +765,13 @@ botaoAudio.onclick=async()=>{
    throw new Error("Seu navegador não permite gravar áudio.");
   }
 
-  fluxoAudio=await navigator.mediaDevices.getUserMedia({audio:true});
+  fluxoAudio=await navigator.mediaDevices.getUserMedia({
+ audio:{
+  noiseSuppression:true,
+  echoCancellation:true,
+  autoGainControl:true
+ }
+});
   await iniciarOndaAudio();
   let tipoAudio="";
 
