@@ -694,8 +694,7 @@ for(let n=1;n<dados.length;n++){
  volume+=dados[n];
 }
 volume=volume/dados.length;
-indicadorAudio.classList.toggle("falando",volume>12);
-   barras.forEach((barra,i)=>{
+indicadorAudio.querySelector(".ondaAudio").classList.toggle("falando",volume>12);   barras.forEach((barra,i)=>{
     const [inicio,fim]=faixas[i];
     let total=0;
 
