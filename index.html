@@ -623,7 +623,7 @@ function abrirTelaPrincipal(usuario,perfil){
  document.getElementById("buscarUsuarios").onclick=buscarUsuarios;
  carregarConversas();
    if(abrirTelaPrincipal.canalLista){
-   await cliente.removeChannel(abrirTelaPrincipal.canalLista);
+   cliente.removeChannel(abrirTelaPrincipal.canalLista);
   }
 
   abrirTelaPrincipal.canalLista=cliente
