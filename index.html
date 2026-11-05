@@ -767,7 +767,7 @@ botaoAudio.onclick=async()=>{
    const arquivo=new Blob(partesAudio,{type:tipo});
 
    fluxoAudio.getTracks().forEach(trilha=>trilha.stop());
-
+   pararOndaAudio();
    if(cancelarGravacaoAudio){
     partesAudio=[];
     restaurarCompositorAudio();
