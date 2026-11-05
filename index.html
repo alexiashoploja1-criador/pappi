@@ -413,10 +413,19 @@ document.querySelector(".layout").classList.add("somente-conversa");
     <div class="vazia">Carregando mensagens...</div>
    </div>
 
-   <form id="formMensagem" style="display:flex;gap:8px;padding-top:12px;border-top:1px solid #e1e8f2">
-    <input id="textoMensagem" class="busca" placeholder="Digite sua mensagem..." style="flex:1">
-    <button class="nova" type="submit" style="width:auto;margin:0;padding:0 18px">Enviar</button>
-   </form>
+ <form id="formMensagem" style="display:flex;gap:8px;padding-top:12px;border-top:1px solid #e1e8f2;align-items:center">
+
+ <label for="fotoMensagem" style="background:#eaf2ff;color:#0875ed;padding:12px;border-radius:9px;cursor:pointer;font-weight:bold">
+  Foto
+ </label>
+
+ <input id="fotoMensagem" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+
+ <input id="textoMensagem" class="busca" placeholder="Digite sua mensagem..." style="flex:1;min-width:0">
+
+ <button class="nova" type="submit" style="width:auto;margin:0;padding:0 18px">Enviar</button>
+
+</form>
   </div>
  `;
 
@@ -498,7 +507,54 @@ document.querySelector(".layout").classList.add("somente-conversa");
  };
 
  await carregarMensagens();
+document.getElementById("fotoMensagem").onchange=async(evento)=>{
+ const arquivo=evento.target.files[0];
+ if(!arquivo)return;
 
+ if(!["image/jpeg","image/png","image/webp"].includes(arquivo.type)){
+  alert("Escolha uma imagem JPG, PNG ou WEBP.");
+  evento.target.value="";
+  return;
+ }
+
+ if(arquivo.size>10*1024*1024){
+  alert("A imagem deve ter no máximo 10 MB.");
+  evento.target.value="";
+  return;
+ }
+
+ const campoFoto=document.getElementById("fotoMensagem");
+ campoFoto.disabled=true;
+
+ try{
+  const extensao=arquivo.type==="image/png"?"png":arquivo.type==="image/webp"?"webp":"jpg";
+  const caminho=conversaId+"/"+usuarioAtual.id+"/"+Date.now()+"."+extensao;
+
+  const {error:erroUpload}=await cliente.storage
+   .from("mensagens")
+   .upload(caminho,arquivo,{contentType:arquivo.type});
+
+  if(erroUpload)throw erroUpload;
+
+  const {error:erroMensagem}=await cliente
+   .from("messages")
+   .insert({
+    conversation_id:conversaId,
+    sender_id:usuarioAtual.id,
+    content:"PAPPI_IMG:"+caminho
+   });
+
+  if(erroMensagem)throw erroMensagem;
+
+  campoFoto.value="";
+  await carregarMensagens();
+
+ }catch(error){
+  alert(error.message||"Não foi possível enviar a imagem.");
+ }finally{
+  campoFoto.disabled=false;
+ }
+};
  abrirConversa.canal=cliente
   .channel("mensagens-"+conversaId)
   .on("postgres_changes",{
