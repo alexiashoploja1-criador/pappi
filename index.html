@@ -491,7 +491,7 @@ document.querySelector(".layout").classList.add("somente-conversa");
   .createSignedUrl(caminho,3600);
 
  conteudo=erroArquivo
-  ? "Não foi possível carregar o áudio."
+  ? "Erro ao carregar áudio: "+escapar(erroArquivo.message)
   : `<audio controls preload="none" style="display:block;max-width:100%;width:260px">
       <source src="${escapar(arquivo.signedUrl)}">
      Seu navegador não suporta áudio.
