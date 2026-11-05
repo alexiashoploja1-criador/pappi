@@ -487,6 +487,71 @@ async function iniciarConversa(outroUserId){
   },()=>carregarMensagens())
   .subscribe();
 }
+ async function carregarConversas(){
+ const lista=document.getElementById("listaConversas");
+ if(!lista)return;
+
+ const {data:minhas,error}=await cliente
+  .from("conversation_members")
+  .select("conversation_id")
+  .eq("user_id",usuarioAtual.id);
+
+ if(error){
+  lista.innerHTML='<div class="vazia">Não foi possível carregar as conversas.</div>';
+  return;
+ }
+
+ if(!minhas||minhas.length===0){
+  lista.innerHTML='<div class="vazia">Suas conversas aparecerão aqui.</div>';
+  return;
+ }
+
+ const ids=minhas.map(item=>item.conversation_id);
+ const {data:membros}=await cliente
+  .from("conversation_members")
+  .select("conversation_id,user_id")
+  .in("conversation_id",ids)
+  .neq("user_id",usuarioAtual.id);
+
+ if(!membros||membros.length===0){
+  lista.innerHTML='<div class="vazia">Nenhuma conversa encontrada.</div>';
+  return;
+ }
+
+ const usuarios=[...new Set(membros.map(item=>item.user_id))];
+ const {data:perfis}=await cliente
+  .from("profiles")
+  .select("user_id,full_name,username,avatar_url")
+  .in("user_id",usuarios);
+
+ if(!perfis||perfis.length===0){
+  lista.innerHTML='<div class="vazia">Nenhum contato encontrado.</div>';
+  return;
+ }
+
+ lista.innerHTML=membros.map(m=>{
+  const p=perfis.find(x=>x.user_id===m.user_id);
+  if(!p)return "";
+  return `
+   <button class="nova" data-conversa="${escapar(m.conversation_id)}" data-usuario="${escapar(p.user_id)}" style="text-align:left;height:auto;padding:12px;margin:5px 0">
+    ${escapar(p.full_name)}
+    <div style="font-size:12px;font-weight:normal">@${escapar(p.username)}</div>
+   </button>
+  `;
+ }).join("");
+
+ lista.querySelectorAll("button[data-conversa]").forEach(botao=>{
+  botao.onclick=async()=>{
+   const {data:perfil}=await cliente
+    .from("profiles")
+    .select("user_id,full_name,username,avatar_url")
+    .eq("user_id",botao.dataset.usuario)
+    .single();
+
+   if(perfil)abrirConversa(botao.dataset.conversa,perfil);
+  };
+ });
+}
 function abrirTelaPrincipal(usuario,perfil){
  if(!usuario||!perfil)return;
  telaAtual="principal";
@@ -505,7 +570,9 @@ function abrirTelaPrincipal(usuario,perfil){
 <button class="nova" id="buscarUsuarios">Buscar pessoas</button>
 <div id="resultadosBusca"></div>
  <button class="nova" id="nova">+ Nova conversa</button>
- <div class="vazia">Suas conversas aparecerão aqui.</div>
+ <div id="listaConversas">
+ <div class="vazia">Carregando conversas...</div>
+</div>
  </aside>
  <section class="conversa">
  <div class="boas-vindas">
@@ -521,6 +588,7 @@ function abrirTelaPrincipal(usuario,perfil){
   mostrarEntrada();
  };
  document.getElementById("buscarUsuarios").onclick=buscarUsuarios;
+ carregarConversas();
  document.getElementById("nova").onclick=()=>{
   alert("A busca de usuários e as conversas serão implementadas na próxima etapa.");
  };
