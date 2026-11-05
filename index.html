@@ -681,7 +681,6 @@ const indicadorAudio=document.getElementById("indicadorAudio");
 const campoTexto=document.getElementById("textoMensagem");
 let contextoVisualAudio=null;
 let quadroOndaAudio=null;
-
 async function iniciarOndaAudio(){
  try{
   const AudioContexto=window.AudioContext||window.webkitAudioContext;
@@ -692,15 +691,33 @@ async function iniciarOndaAudio(){
 
   const analisador=contextoVisualAudio.createAnalyser();
   analisador.fftSize=512;
-  analisador.smoothingTimeConstant=0.65;
+  analisador.smoothingTimeConstant=0.7;
 
   const fonte=contextoVisualAudio.createMediaStreamSource(fluxoAudio);
   fonte.connect(analisador);
 
   const dados=new Uint8Array(analisador.fftSize);
-  const barras=[...indicadorAudio.querySelectorAll(".ondaAudio span")];
+  const onda=indicadorAudio.querySelector(".ondaAudio");
 
-  function animar(){
+  onda.innerHTML="";
+  onda.style.width="100%";
+  onda.style.overflow="hidden";
+  onda.style.justifyContent="flex-start";
+  onda.style.gap="2px";
+
+  const barras=[];
+  const alturas=Array(48).fill(3);
+
+  for(let i=0;i<48;i++){
+   const barra=document.createElement("span");
+   barra.style.cssText="flex:1;min-width:2px;max-width:5px;height:3px;transition:height .08s linear";
+   onda.appendChild(barra);
+   barras.push(barra);
+  }
+
+  let ultimoTempo=0;
+
+  function animar(tempo){
    analisador.getByteTimeDomainData(dados);
 
    let energia=0;
@@ -711,20 +728,28 @@ async function iniciarOndaAudio(){
    }
 
    const volume=Math.sqrt(energia/dados.length);
-   const falando=volume>0.025;
 
-   barras.forEach((barra,i)=>{
-    const variacao=falando
-     ? Math.min(1,volume*12)*(8+Math.abs(Math.sin(Date.now()/90+i))*18)
-     : 4;
+   if(tempo-ultimoTempo>45){
+    ultimoTempo=tempo;
 
-    barra.style.height=variacao+"px";
-   });
+    let altura=3;
+
+    if(volume>0.018){
+     altura=4+Math.min(1,(volume-0.018)*12)*24;
+    }
+
+    alturas.shift();
+    alturas.push(altura);
+
+    barras.forEach((barra,i)=>{
+     barra.style.height=alturas[i]+"px";
+    });
+   }
 
    quadroOndaAudio=requestAnimationFrame(animar);
   }
 
-  animar();
+  animar(0);
  }catch(error){
   contextoVisualAudio=null;
  }
