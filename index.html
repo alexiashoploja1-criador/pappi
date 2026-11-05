@@ -585,6 +585,127 @@ async function iniciarConversa(outroUserId){
   };
  });
 }
+ function editarMeuPerfil(usuario,perfil){
+ let novaFoto=null;
+ let removerFoto=false;
+
+ app.insertAdjacentHTML("beforeend",`
+ <div id="perfilModal" style="position:fixed;inset:0;background:#0008;z-index:999;display:flex;align-items:center;justify-content:center;padding:18px">
+  <section style="background:white;width:100%;max-width:420px;padding:25px;border-radius:16px;max-height:90vh;overflow:auto">
+   <h2 style="margin-bottom:18px">Meu perfil</h2>
+
+   <div style="text-align:center;margin-bottom:18px">
+    <img id="fotoPerfilEdicao" src="${perfil.avatar_url||""}" style="width:100px;height:100px;border-radius:50%;object-fit:cover;background:#eaf1fb;${perfil.avatar_url?"":"display:none"}">
+    <div id="semFotoPerfil" style="width:100px;height:100px;border-radius:50%;background:#eaf1fb;color:#0875ed;display:${perfil.avatar_url?"none":"inline-flex"};align-items:center;justify-content:center;font-size:38px;margin:auto">P</div>
+   </div>
+
+   <label class="foto-label" for="novaFotoPerfil">Alterar foto</label>
+   <input id="novaFotoPerfil" type="file" accept="image/jpeg,image/png,image/webp" style="display:block;margin:10px 0">
+   <button id="removerFotoPerfil" type="button" style="border:0;background:transparent;color:#d33;margin-bottom:15px">Remover foto atual</button>
+
+   <input id="editarNome" class="campo" value="${escapar(perfil.full_name)}" placeholder="Nome completo">
+   <input id="editarUsername" class="campo" value="${escapar(perfil.username)}" placeholder="Nome de usuário">
+
+   <div id="mensagemEdicaoPerfil" style="font-size:14px;margin:10px 0;color:#d33"></div>
+   <button id="salvarEdicaoPerfil" class="botao">Salvar alterações</button>
+   <button id="cancelarEdicaoPerfil" class="link" style="width:100%">Cancelar</button>
+  </section>
+ </div>`);
+
+ const modal=document.getElementById("perfilModal");
+ const campoFoto=document.getElementById("novaFotoPerfil");
+ const preview=document.getElementById("fotoPerfilEdicao");
+ const semFoto=document.getElementById("semFotoPerfil");
+ const mensagem=document.getElementById("mensagemEdicaoPerfil");
+
+ campoFoto.onchange=()=>{
+  const arquivo=campoFoto.files[0];
+  if(!arquivo)return;
+
+  if(!["image/jpeg","image/png","image/webp"].includes(arquivo.type)){
+   mensagem.textContent="Use uma imagem JPG, PNG ou WEBP.";
+   campoFoto.value="";
+   return;
+  }
+  if(arquivo.size>2*1024*1024){
+   mensagem.textContent="A foto deve ter no máximo 2 MB.";
+   campoFoto.value="";
+   return;
+  }
+
+  novaFoto=arquivo;
+  removerFoto=false;
+  preview.src=URL.createObjectURL(arquivo);
+  preview.style.display="inline-block";
+  semFoto.style.display="none";
+  mensagem.textContent="";
+ };
+
+ document.getElementById("removerFotoPerfil").onclick=()=>{
+  novaFoto=null;
+  removerFoto=true;
+  campoFoto.value="";
+  preview.style.display="none";
+  semFoto.style.display="inline-flex";
+ };
+
+ document.getElementById("cancelarEdicaoPerfil").onclick=()=>{
+  modal.remove();
+ };
+
+ document.getElementById("salvarEdicaoPerfil").onclick=async()=>{
+  const nome=document.getElementById("editarNome").value.trim();
+  const username=document.getElementById("editarUsername").value.trim().toLowerCase();
+  const botao=document.getElementById("salvarEdicaoPerfil");
+
+  if(nome.length<2){
+   mensagem.textContent="Informe seu nome completo.";
+   return;
+  }
+  if(!/^[a-z0-9_]{3,20}$/.test(username)){
+   mensagem.textContent="O usuário deve ter de 3 a 20 caracteres: letras sem acento, números ou _.";
+   return;
+  }
+
+  botao.disabled=true;
+  botao.textContent="Salvando...";
+
+  try{
+   let avatarUrl=removerFoto?null:perfil.avatar_url;
+
+   if(novaFoto){
+    const extensao=novaFoto.type==="image/png"?"png":novaFoto.type==="image/webp"?"webp":"jpg";
+    const caminho=usuario.id+"/"+Date.now()+"."+extensao;
+    const {error:uploadError}=await cliente.storage.from("fotos-perfil").upload(caminho,novaFoto,{contentType:novaFoto.type});
+    if(uploadError)throw uploadError;
+
+    const {data:urlData}=cliente.storage.from("fotos-perfil").getPublicUrl(caminho);
+    avatarUrl=urlData.publicUrl;
+   }
+
+   const {error}=await cliente.from("profiles").update({
+    full_name:nome,
+    username:username,
+    avatar_url:avatarUrl
+   }).eq("user_id",usuario.id);
+
+   if(error){
+    if(error.code==="23505")throw new Error("Esse nome de usuário já está em uso.");
+    throw error;
+   }
+
+   const {data:perfilAtualizado,error:erroBusca}=await cliente.from("profiles").select("*").eq("user_id",usuario.id).single();
+   if(erroBusca)throw erroBusca;
+
+   abrirTelaPrincipal(usuario,perfilAtualizado);
+
+  }catch(error){
+   mensagem.textContent=error.message||"Não foi possível salvar as alterações.";
+   botao.disabled=false;
+   botao.textContent="Salvar alterações";
+  }
+ };
+}
 function abrirTelaPrincipal(usuario,perfil){
  if(!usuario||!perfil)return;
  telaAtual="principal";
@@ -623,6 +744,7 @@ function abrirTelaPrincipal(usuario,perfil){
   await cliente.auth.signOut();
   mostrarEntrada();
  };
+ document.getElementById("editarPerfil").onclick=()=>abrirEditarPerfil(usuario,perfil);
  document.getElementById("buscarUsuarios").onclick=buscarUsuarios;
  carregarConversas();
    if(abrirTelaPrincipal.canalLista){
