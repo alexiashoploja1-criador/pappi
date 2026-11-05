@@ -622,6 +622,20 @@ function abrirTelaPrincipal(usuario,perfil){
  };
  document.getElementById("buscarUsuarios").onclick=buscarUsuarios;
  carregarConversas();
+   if(abrirTelaPrincipal.canalLista){
+   await cliente.removeChannel(abrirTelaPrincipal.canalLista);
+  }
+
+  abrirTelaPrincipal.canalLista=cliente
+   .channel("lista-conversas-"+usuario.id)
+   .on("postgres_changes",{
+    event:"INSERT",
+    schema:"public",
+    table:"messages"
+   },()=>{
+    carregarConversas();
+   })
+   .subscribe();
  document.getElementById("nova").onclick=()=>{
   alert("A busca de usuários e as conversas serão implementadas na próxima etapa.");
  };
