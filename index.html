@@ -421,9 +421,26 @@ document.querySelector(".layout").classList.add("somente-conversa");
   <label for="fotoMensagem" style="color:#0875ed;cursor:pointer">Adicionar foto</label>
  </div>
 
+ <form id="formMensagem" style="display:flex;gap:8px;padding-top:12px;border-top:1px solid #e1e8f2;align-items:center;position:relative">
+
+ <button type="button" id="abrirAnexos" title="Adicionar foto" style="width:44px;height:44px;border:0;border-radius:50%;background:#eaf2ff;color:#0875ed;font-size:28px;flex-shrink:0">+</button>
+
+ <div id="menuAnexos" class="oculto" style="position:absolute;bottom:65px;left:0;background:white;padding:14px;border-radius:12px;box-shadow:0 3px 15px #0002;z-index:10">
+  <label for="fotoMensagem" style="color:#0875ed;cursor:pointer">Adicionar foto</label>
+ </div>
+
  <input id="fotoMensagem" type="file" accept="image/jpeg,image/png,image/webp" hidden>
 
  <input id="textoMensagem" class="busca" placeholder="Digite sua mensagem..." style="flex:1;min-width:0">
+
+ <div id="indicadorAudio" class="oculto" style="flex:1;text-align:center;color:#0875ed;font-size:14px">
+  <div class="ondaAudio">
+   <span></span><span></span><span></span><span></span><span></span>
+  </div>
+  Gravando áudio...
+ </div>
+
+ <button type="button" id="cancelarAudio" class="oculto" title="Cancelar gravação" style="width:36px;height:36px;border:0;border-radius:50%;background:#ffecec;color:#d33;font-size:23px;flex-shrink:0">×</button>
 
  <button type="button" id="gravarAudio" title="Gravar áudio" aria-label="Gravar áudio" style="background:#eaf2ff;color:#0875ed;width:44px;height:44px;padding:10px;border:0;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">
   <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -432,54 +449,7 @@ document.querySelector(".layout").classList.add("somente-conversa");
   </svg>
  </button>
 
- <button class="nova" type="submit" title="Enviar" style="width:44px;height:44px;margin:0;padding:0;border-radius:50%;font-size:23px">↑</button>
-
-</form>
-
- <input id="fotoMensagem" type="file" accept="image/jpeg,image/png,image/webp" hidden>
-<button type="button" id="gravarAudio" title="Gravar áudio" aria-label="Gravar áudio" style="background:#eaf2ff;color:#0875ed;width:44px;height:44px;padding:10px;border:0;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">
- <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <rect x="9" y="2" width="6" height="12" rx="3"></rect>
-  <path d="M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8"></path>
- </svg>
-</button>
- <input id="textoMensagem" class="busca" placeholder="Digite sua mensagem..." style="flex:1;min-width:0">
-<div id="indicadorAudio" class="oculto" style="flex:1;text-align:center;color:#0875ed;font-size:14px">
- <style>
-@keyframes ondaPappi {
-  0%,100% {height:6px}
-  50% {height:22px}
-}
-.ondaAudio {
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
-}
-.ondaAudio span {
-  display:block;
-  width:4px;
-  height:6px;
-  background:#0875ed;
-  border-radius:4px;
-  animation:ondaPappi .7s infinite ease-in-out;
-}
-.ondaAudio span:nth-child(2) {animation-delay:.1s}
-.ondaAudio span:nth-child(3) {animation-delay:.2s}
-.ondaAudio span:nth-child(4) {animation-delay:.3s}
-.ondaAudio span:nth-child(5) {animation-delay:.4s}
-</style>
-
-<div id="indicadorAudio" class="oculto" style="flex:1;text-align:center;color:#0875ed;font-size:14px">
- <div class="ondaAudio">
-  <span></span><span></span><span></span><span></span><span></span>
- </div>
- Gravando áudio...
-</div>
-</div>
-
-<button type="button" id="cancelarAudio" class="oculto" title="Cancelar gravação" style="width:36px;height:36px;border:0;border-radius:50%;background:#ffecec;color:#d33;font-size:23px;flex-shrink:0">×</button>
- <button class="nova" type="submit" style="width:auto;margin:0;padding:0 18px">Enviar</button>
+ <button class="nova" type="submit" title="Enviar" style="width:44px;height:44px;margin:0;padding:0;border-radius:50%;font-size:23px;flex-shrink:0">↑</button>
 
 </form>
   </div>
