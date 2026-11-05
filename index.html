@@ -465,14 +465,30 @@ document.querySelector(".layout").classList.add("somente-conversa");
    return;
   }
 
-  lista.innerHTML=data.map(m=>{
-   const minha=m.sender_id===usuarioAtual.id;
-   return `<div style="display:flex;justify-content:${minha?"flex-end":"flex-start"};margin:8px 0">
-    <div style="max-width:80%;padding:10px 14px;border-radius:12px;background:${minha?"#0875ed":"#edf2f8"};color:${minha?"white":"#243247"};overflow-wrap:anywhere">
-     ${escapar(m.content)}
-    </div>
-   </div>`;
-  }).join("");
+  const mensagensHTML=await Promise.all(data.map(async m=>{
+ const minha=m.sender_id===usuarioAtual.id;
+ let conteudo=escapar(m.content);
+
+ if(m.content.startsWith("PAPPI_IMG:")){
+  const caminho=m.content.substring(10);
+
+  const {data:arquivo,error:erroArquivo}=await cliente.storage
+   .from("mensagens")
+   .createSignedUrl(caminho,3600);
+
+  conteudo=erroArquivo
+   ? "Não foi possível carregar a imagem."
+   : `<img src="${escapar(arquivo.signedUrl)}" alt="Imagem enviada" style="display:block;max-width:100%;max-height:300px;border-radius:9px">`;
+ }
+
+ return `<div style="display:flex;justify-content:${minha?"flex-end":"flex-start"};margin:8px 0">
+  <div style="max-width:80%;padding:10px 14px;border-radius:12px;background:${minha?"#0875ed":"#edf2f8"};color:${minha?"white":"#243247"};overflow-wrap:anywhere">
+   ${conteudo}
+  </div>
+ </div>`;
+}));
+
+lista.innerHTML=mensagensHTML.join("");
 
   lista.scrollTop=lista.scrollHeight;
  }
