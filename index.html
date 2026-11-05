@@ -722,7 +722,7 @@ botaoAudio.onclick=async()=>{
   }
 
   fluxoAudio=await navigator.mediaDevices.getUserMedia({audio:true});
-
+  await iniciarOndaAudio();
   let tipoAudio="";
 
   if(MediaRecorder.isTypeSupported("audio/mp4")){
