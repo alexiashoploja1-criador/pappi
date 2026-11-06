@@ -35,10 +35,74 @@ h1{font-size:29px;margin:25px 0 10px;color:#102653}
 .foto-preview{width:94px;height:94px;border-radius:50%;object-fit:cover;background:#eaf1fb;border:3px solid #dce8f8;display:block;margin:0 auto 10px}
 .foto-label{display:inline-block;color:#0875ed;font-size:14px;cursor:pointer}
 .app{min-height:100vh;background:#f4f7fc}
-.cabecalho{height:70px;background:#fff;border-bottom:1px solid #e8edf5;display:flex;align-items:center;justify-content:space-between;padding:0 5%}
-.marca-pequena{display:flex;align-items:center;gap:9px;font-size:25px;font-weight:900;font-style:italic}
-.marca-pequena svg{width:40px;height:40px}
-.sair{border:1px solid #0875ed;background:white;color:#0875ed;border-radius:9px;padding:9px 15px;font-weight:bold}
+.cabecalho{
+ background:#fff;
+ border-bottom:1px solid #e8edf5;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ gap:14px;
+ padding:14px 16px;
+ min-height:120px;
+}
+
+.marca-pequena{
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:7px;
+ font-size:21px;
+ font-weight:900;
+ font-style:italic;
+}
+
+.marca-pequena svg{
+ width:30px;
+ height:30px;
+}
+
+.acoesCabecalho{
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:26px;
+ width:100%;
+}
+
+.iconeCabecalho{
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ border:0;
+ background:#fff;
+ color:#0875ed;
+ padding:5px;
+}
+
+.iconeCabecalho svg{
+ width:25px;
+ height:25px;
+ stroke:currentColor;
+}
+
+.perfilCabecalho{
+ display:flex;
+ align-items:center;
+ gap:6px;
+ border:0;
+ background:#fff;
+ padding:0;
+ color:#334155;
+ font-size:12px;
+}
+
+.fotoPerfilCabecalho{
+ width:34px;
+ height:34px;
+ border-radius:50%;
+ object-fit:cover;
+}
 .layout{max-width:1150px;min-height:calc(100vh - 110px);margin:20px auto;padding:0 15px;display:grid;grid-template-columns:330px 1fr;gap:16px}
 .layout.somente-conversa{
  display:block;
