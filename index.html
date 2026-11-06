@@ -663,10 +663,16 @@ async function buscarUsuarios(){
 }
  async function abrirConversa(conversaId,perfil){
  const area=document.querySelector(".conversa");
-document.querySelector(".layout").classList.add("somente-conversa");
+ const layout=document.querySelector(".layout");
 
-  if(!area)return;
+ if(!area){
+  alert("Área da conversa não encontrada.");
+  return;
+ }
 
+ if(layout){
+  layout.classList.add("somente-conversa");
+ }
  if(abrirConversa.canal){
   await cliente.removeChannel(abrirConversa.canal);
   abrirConversa.canal=null;
