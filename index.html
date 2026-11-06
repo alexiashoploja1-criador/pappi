@@ -1280,15 +1280,47 @@ function abrirTelaPrincipal(usuario,perfil){
  app.innerHTML=`
  <main class="app">
   <header class="cabecalho">
-   <div class="marca-pequena">
-    ${logo}
-    <span><span class="azul">PAP</span><span class="marinho">PI</span></span>
-   </div>
-   <div style="display:flex;gap:8px">
-    <button class="sair" id="editarPerfil">Meu perfil</button>
-    <button class="sair" id="sair">Sair</button>
-   </div>
-  </header>
+ <div class="marca-pequena">
+  ${logo}
+  <span><span class="azul">PAP</span><span class="marinho">PI</span></span>
+ </div>
+
+ <div style="display:flex;align-items:center;gap:12px">
+
+  <button type="button" id="abrirMenuInicio" title="Menu">
+   ☰
+  </button>
+
+  <button type="button" id="abrirCameraInicio" title="Câmera">
+   📷
+  </button>
+
+  <button type="button" id="novaConversaInicio" title="Nova conversa">
+   +
+  </button>
+
+  <button type="button" id="editarPerfil"
+   style="display:flex;align-items:center;gap:6px;border:0;background:none;padding:0">
+
+   <img id="fotoPerfilInicio"
+    src="${perfil.avatar_url||''}"
+    onerror="this.style.display='none'"
+    style="width:36px;height:36px;border-radius:50%;object-fit:cover">
+
+   <span style="font-size:12px;color:#334155">
+    Meu perfil
+   </span>
+  </button>
+
+ </div>
+
+ <input id="fotoCameraInicio" type="file"
+  accept="image/*" capture="environment" hidden>
+</header>
+
+<div id="menuInicioPappi" class="oculto">
+ <button type="button" id="menuSair">Sair</button>
+</div>
 
   <section class="inicioConversas">
    <h1>Conversas</h1>
