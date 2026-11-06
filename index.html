@@ -811,6 +811,36 @@ return `<div style="display:flex;justify-content:${minha?"flex-end":"flex-start"
 }));
 
 lista.innerHTML=mensagensHTML.join("");
+let visualizador=document.getElementById("pappiImagemAmpliada");
+
+if(!visualizador){
+ visualizador=document.createElement("div");
+ visualizador.id="pappiImagemAmpliada";
+ visualizador.style.cssText="display:none;position:fixed;inset:0;background:rgba(0,0,0,.94);z-index:99999;align-items:center;justify-content:center;padding:15px;box-sizing:border-box";
+
+ visualizador.innerHTML=`
+  <button type="button" style="position:absolute;top:20px;right:20px;width:44px;height:44px;border:0;border-radius:50%;background:#ffffff20;color:white;font-size:30px">×</button>
+  <img style="max-width:100%;max-height:85vh;object-fit:contain;border-radius:5px">
+ `;
+
+ document.body.appendChild(visualizador);
+
+ visualizador.onclick=()=>{
+  visualizador.style.display="none";
+ };
+
+ visualizador.querySelector("img").onclick=e=>e.stopPropagation();
+}
+
+const imagemGrande=visualizador.querySelector("img");
+
+lista.querySelectorAll("img").forEach(imagem=>{
+ imagem.style.cursor="zoom-in";
+ imagem.onclick=()=>{
+  imagemGrande.src=imagem.src;
+  visualizador.style.display="flex";
+ };
+});
 lista.querySelectorAll(".pappiPlayer").forEach(player=>{
  const audio=player.querySelector(".pappiAudio");
  const botao=player.querySelector(".pappiPlay");
