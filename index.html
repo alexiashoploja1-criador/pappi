@@ -808,7 +808,54 @@ area.style.minHeight="calc(100vh - 100px)";
 }));
 
 lista.innerHTML=mensagensHTML.join("");
+lista.querySelectorAll(".pappiPlayer").forEach(player=>{
+ const audio=player.querySelector(".pappiAudio");
+ const botao=player.querySelector(".pappiPlay");
+ const tempo=player.querySelector(".pappiTempo");
+ const barras=player.querySelectorAll(".pappiWave span");
 
+ function atualizar(){
+  const progresso=audio.duration
+   ? audio.currentTime/audio.duration
+   : 0;
+
+  barras.forEach((barra,i)=>{
+   barra.style.opacity=i/barras.length<=progresso?"1":".35";
+  });
+
+  const atual=Math.floor(audio.currentTime||0);
+  const total=Math.floor(audio.duration||0);
+
+  tempo.textContent=
+   Math.floor(atual/60)+":"+String(atual%60).padStart(2,"0")+
+   (total?" / "+Math.floor(total/60)+":"+String(total%60).padStart(2,"0"):"");
+ }
+
+ botao.onclick=async()=>{
+  if(audio.paused){
+   document.querySelectorAll(".pappiAudio").forEach(outro=>{
+    if(outro!==audio)outro.pause();
+   });
+   try{
+    await audio.play();
+    botao.textContent="Ⅱ";
+   }catch(error){
+    alert("Não foi possível reproduzir este áudio.");
+   }
+  }else{
+   audio.pause();
+   botao.textContent="▶";
+  }
+ };
+
+ audio.addEventListener("timeupdate",atualizar);
+ audio.addEventListener("loadedmetadata",atualizar);
+ audio.addEventListener("ended",()=>{
+  botao.textContent="▶";
+  audio.currentTime=0;
+  atualizar();
+ });
+});
 lista.querySelectorAll("img").forEach(imagem=>{
  if(imagem.complete){
   lista.scrollTop=lista.scrollHeight;
