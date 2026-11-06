@@ -1434,6 +1434,21 @@ function abrirTelaPrincipal(usuario,perfil){
   abrirEditarPerfil(usuario,perfil);
  };
 
+ document.getElementById("abrirMenuInicio").onclick=()=>{
+ const menu=document.getElementById("menuInicioPappi");
+ menu.classList.toggle("oculto");
+};
+
+document.getElementById("abrirCameraInicio").onclick=()=>{
+ document.getElementById("fotoCameraInicio").click();
+};
+
+document.getElementById("novaConversaInicio").onclick=()=>{
+ const busca=document.getElementById("buscaUsuarios");
+ busca.focus();
+ busca.scrollIntoView({behavior:"smooth",block:"center"});
+};
+
  document.getElementById("buscarUsuarios").onclick=buscarUsuarios;
 
  document.getElementById("buscaUsuarios").onkeydown=evento=>{
