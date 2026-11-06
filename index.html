@@ -855,7 +855,7 @@ lista.querySelectorAll(".pappiPlayer").forEach(player=>{
  audio.addEventListener("timeupdate",atualizar);
  audio.addEventListener("loadedmetadata",atualizar);
  audio.addEventListener("ended",()=>{
-  botao.textContent="▶";
+  botao.innerHTML='<svg viewBox="0 0 24 24" width="25" height="25" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
   audio.currentTime=0;
   atualizar();
  });
