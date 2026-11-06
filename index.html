@@ -842,7 +842,7 @@ lista.querySelectorAll(".pappiPlayer").forEach(player=>{
    });
    try{
     await audio.play();
-    botao.textContent="Ⅱ";
+    botao.innerHTML='<svg viewBox="0 0 24 24" width="25" height="25" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>';
    }catch(error){
     alert("Não foi possível reproduzir este áudio.");
    }
