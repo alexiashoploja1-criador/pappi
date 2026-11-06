@@ -679,7 +679,7 @@ area.style.minHeight="calc(100vh - 100px)";
  }
 
  area.innerHTML=`
-  <div style="height:100%;display:flex;flex-direction:column;padding:18px">
+ <div style="height:calc(100dvh - 110px);min-height:0;display:flex;flex-direction:column;padding:18px;box-sizing:border-box">
    <div style="display:flex;align-items:center;gap:12px;padding-bottom:15px;border-bottom:1px solid #e1e8f2">
     <button id="voltarConversas" class="nova" style="width:auto;margin:0;padding:0 15px">Voltar</button>
     <div>
@@ -688,7 +688,7 @@ area.style.minHeight="calc(100vh - 100px)";
     </div>
    </div>
 
-   <div id="listaMensagens" style="flex:1;overflow-y:auto;padding:15px 0">
+   <div id="listaMensagens" style="flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:15px 0">
     <div class="vazia">Carregando mensagens...</div>
    </div>
 
@@ -754,7 +754,6 @@ area.style.minHeight="calc(100vh - 100px)";
    .neq("sender_id",usuarioAtual.id)
    .is("read_at",null);
 
-  await carregarConversas();
   if(!data||data.length===0){
    lista.innerHTML='<div class="vazia">Esta conversa ainda não tem mensagens. Envie a primeira!</div>';
    return;
