@@ -584,12 +584,16 @@ async function buscarUsuarios(){
   <div class="vazia">
    <strong>${escapar(p.full_name)}</strong>
    <div>@${escapar(p.username)}</div>
-   <button class="nova" data-user-id="${escapar(p.user_id)}">Conversar</button>
+   <button type="button" class="nova" data-user-id="${escapar(p.user_id)}">Conversar</button>
   </div>
  `).join("");
 
- resultados.querySelectorAll("button[data-user-id]").forEach(botao=>{
-  botao.onclick=()=>iniciarConversa(botao.dataset.userId);
+  resultados.querySelectorAll("button[data-user-id]").forEach(botao=>{
+  botao.addEventListener("click",evento=>{
+   evento.preventDefault();
+   evento.stopPropagation();
+   iniciarConversa(botao.dataset.userId);
+  });
  });
 }async function iniciarConversa(outroUserId){
  try{
