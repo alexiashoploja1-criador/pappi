@@ -591,71 +591,78 @@ async function buscarUsuarios(){
  resultados.querySelectorAll("button[data-user-id]").forEach(botao=>{
   botao.onclick=()=>iniciarConversa(botao.dataset.userId);
  });
-}
-async function iniciarConversa(outroUserId){
- const {data:minhas}=await cliente
-  .from("conversation_members")
-  .select("conversation_id")
-  .eq("user_id",usuarioAtual.id);
+}async function iniciarConversa(outroUserId){
+ try{
+  if(!usuarioAtual||!outroUserId){
+   alert("Não foi possível identificar os participantes.");
+   return;
+  }
 
- const ids=(minhas||[]).map(item=>item.conversation_id);
- let conversa=null;
-
- if(ids.length){
-  const {data:existente}=await cliente
+  const {data:minhas,error:erroMinhas}=await cliente
    .from("conversation_members")
    .select("conversation_id")
+   .eq("user_id",usuarioAtual.id);
+
+  if(erroMinhas)throw erroMinhas;
+
+  const ids=(minhas||[]).map(item=>item.conversation_id);
+  let conversa=null;
+
+  if(ids.length){
+   const {data:existente,error:erroBusca}=await cliente
+    .from("conversation_members")
+    .select("conversation_id")
+    .eq("user_id",outroUserId)
+    .in("conversation_id",ids)
+    .limit(1)
+    .maybeSingle();
+
+   if(erroBusca)throw erroBusca;
+
+   if(existente){
+    conversa=existente.conversation_id;
+   }
+  }
+
+  if(!conversa){
+   const novoId=crypto.randomUUID();
+
+   const {error:erroCriacao}=await cliente
+    .from("conversations")
+    .insert({
+     id:novoId,
+     created_by:usuarioAtual.id
+    });
+
+   if(erroCriacao)throw erroCriacao;
+
+   const {error:erroMembros}=await cliente
+    .from("conversation_members")
+    .insert([
+     {conversation_id:novoId,user_id:usuarioAtual.id},
+     {conversation_id:novoId,user_id:outroUserId}
+    ]);
+
+   if(erroMembros)throw erroMembros;
+
+   conversa=novoId;
+  }
+
+  const {data:perfil,error:erroPerfil}=await cliente
+   .from("profiles")
+   .select("user_id,full_name,username,avatar_url")
    .eq("user_id",outroUserId)
-   .in("conversation_id",ids)
-   .limit(1)
-   .maybeSingle();
+   .single();
 
-  if(existente) conversa=existente.conversation_id;
+  if(erroPerfil)throw erroPerfil;
+
+  if(!perfil)throw new Error("Perfil não encontrado.");
+
+  await abrirConversa(conversa,perfil);
+
+ }catch(error){
+  alert("Erro ao abrir conversa: "+(error.message||"Tente novamente."));
  }
-
- if(!conversa){
-    const novoId=crypto.randomUUID();
-
-  const {error}=await cliente
-   .from("conversations")
-   .insert({
-    id:novoId,
-    created_by:usuarioAtual.id
-   });
-
-  if(error){
-   alert("Não foi possível criar a conversa: "+error.message);
-   return;
-  }
-
-  conversa=novoId;
-
-  const {error:erroMembros}=await cliente
-   .from("conversation_members")
-   .insert([
-    {conversation_id:conversa,user_id:usuarioAtual.id},
-    {conversation_id:conversa,user_id:outroUserId}
-   ]);
-
-  if(erroMembros){
-   alert("Não foi possível adicionar os participantes.");
-   return;
-  }
- }
-
- const {data:perfil,error}=await cliente
-  .from("profiles")
-  .select("user_id,full_name,username,avatar_url")
-  .eq("user_id",outroUserId)
-  .single();
-
- if(error||!perfil){
-  alert("Não foi possível carregar o perfil.");
-  return;
- }
-
- abrirConversa(conversa,perfil);
-return conversa;
 }
  async function abrirConversa(conversaId,perfil){
  const area=document.querySelector(".conversa");
