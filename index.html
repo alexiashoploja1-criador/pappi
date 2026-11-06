@@ -679,14 +679,19 @@ area.style.minHeight="calc(100vh - 100px)";
  }
 
  area.innerHTML=`
- <div style="height:calc(100dvh - 110px);min-height:0;display:flex;flex-direction:column;padding:18px;box-sizing:border-box">
-   <div style="display:flex;align-items:center;gap:12px;padding-bottom:15px;border-bottom:1px solid #e1e8f2">
-    <button id="voltarConversas" class="nova" style="width:auto;margin:0;padding:0 15px">Voltar</button>
-    <div>
-     <strong>${escapar(perfil.full_name)}</strong>
-    <div style="color:#8190a8;font-size:13px">@${escapar(perfil.username)}</div>
-    </div>
-   </div>
+ <div style="display:flex;align-items:center;gap:12px;padding:10px 0 15px;border-bottom:1px solid #e1e8f2">
+ <button id="voltarConversas" type="button" style="border:0;background:transparent;color:#0875ed;font-size:25px;padding:5px">‹</button>
+
+ ${perfil.avatar_url
+  ? `<img src="${escapar(perfil.avatar_url)}" style="width:44px;height:44px;border-radius:50%;object-fit:cover">`
+  : `<div style="width:44px;height:44px;border-radius:50%;background:#eaf2ff;color:#0875ed;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:600">${escapar(perfil.full_name.charAt(0).toUpperCase())}</div>`
+ }
+
+ <div style="min-width:0">
+  <strong>${escapar(perfil.full_name)}</strong>
+  <div style="color:#8190a8;font-size:13px">@${escapar(perfil.username)}</div>
+ </div>
+</div>
 
    <div id="listaMensagens" style="flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:15px 0">
     <div class="vazia">Carregando mensagens...</div>
