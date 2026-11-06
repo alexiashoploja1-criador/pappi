@@ -1198,7 +1198,7 @@ botaoCancelarAudio.onclick=()=>{
  ${quantidadeNaoLidas>0?`<span style="background:#0875ed;color:white;border-radius:20px;padding:2px 8px;font-size:11px">${quantidadeNaoLidas}</span>`:""}
 </div>
      <div style="font-size:12px;font-weight:normal;opacity:.85">@${escapar(p.username)}</div>
-     <div style="font-size:12px;font-weight:normal;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${ultima?escapar(ultima.content):"Nenhuma mensagem ainda"}</div>
+     <div style="font-size:12px;font-weight:normal;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${ultima?(ultima.content.startsWith("PAPPI_AUDIO:")?"Áudio":ultima.content.startsWith("PAPPI_IMG:")?"Foto":escapar(ultima.content)):"Nenhuma mensagem ainda"}</div>
     </span>
    </button>
   `;
