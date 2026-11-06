@@ -699,10 +699,10 @@ area.style.minHeight="calc(100vh - 100px)";
 
  <form id="formMensagem" style="display:flex;gap:8px;padding-top:12px;border-top:1px solid #e1e8f2;align-items:center;position:relative">
 
- <button type="button" id="abrirAnexos" title="Adicionar foto" style="width:44px;height:44px;border:0;border-radius:50%;background:#eaf2ff;color:#0875ed;font-size:28px;flex-shrink:0">+</button>
-
- <div id="menuAnexos" class="oculto" style="position:absolute;bottom:65px;left:0;background:white;padding:14px;border-radius:12px;box-shadow:0 3px 15px #0002;z-index:10">
-  <label for="fotoMensagem" style="color:#0875ed;cursor:pointer">Adicionar foto</label>
+<label id="abrirAnexos" for="fotoMensagem" style="position:relative;display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:0;border-radius:50%;background:#eaf2ff;color:#0875ed;font-size:28px;flex-shrink:0;cursor:pointer">
+ +
+ <input id="fotoMensagem" type="file" accept="image/jpeg,image/png,image/webp" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer">
+</label>
  </div>
 
  <input id="fotoMensagem" type="file" accept="image/jpeg,image/png,image/webp" hidden>
@@ -872,13 +872,6 @@ lista.querySelectorAll("img").forEach(imagem=>{
 
 lista.scrollTop=lista.scrollHeight;
 }
-
-const botaoAnexos=document.getElementById("abrirAnexos");
-const menuAnexos=document.getElementById("menuAnexos");
-
-botaoAnexos.onclick=()=>{
- document.getElementById("fotoMensagem").click();
-};
 
 document.getElementById("fotoMensagem").addEventListener("change",()=>{
  menuAnexos.classList.add("oculto");
