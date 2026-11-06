@@ -587,14 +587,7 @@ async function buscarUsuarios(){
    <button type="button" class="nova" data-user-id="${escapar(p.user_id)}">Conversar</button>
   </div>
  `).join("");
-
-  resultados.querySelectorAll("button[data-user-id]").forEach(botao=>{
-  botao.addEventListener("click",evento=>{
-   evento.preventDefault();
-   evento.stopPropagation();
-   iniciarConversa(botao.dataset.userId);
-  });
- });
+ 
 }async function iniciarConversa(outroUserId){
  try{
   if(!usuarioAtual||!outroUserId){
@@ -1462,7 +1455,12 @@ document.getElementById("novaConversaInicio").onclick=()=>{
 };
 
  document.getElementById("buscarUsuarios").onclick=buscarUsuarios;
-
+document.getElementById("resultadosBusca").onclick=evento=>{
+ const botao=evento.target.closest("button[data-user-id]");
+ if(!botao)return;
+ evento.preventDefault();
+ iniciarConversa(botao.dataset.userId);
+};
  document.getElementById("buscaUsuarios").onkeydown=evento=>{
   if(evento.key==="Enter")buscarUsuarios();
  };
