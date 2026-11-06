@@ -787,18 +787,9 @@ area.style.minHeight="calc(100vh - 100px)";
   .from("mensagens")
   .createSignedUrl(caminho,3600);
 
- conteudo=  ? "Erro ao carregar áudio: "+escapar(erroArquivo.message)
-  : `<div style="display:flex;flex-direction:column;gap:8px;min-width:220px">
-      <div style="display:flex;align-items:center;gap:10px">
-       <span style="font-size:13px;font-weight:600">Áudio</span>
-       <span style="font-size:12px;opacity:.7">Mensagem de voz</span>
-      </div>
-      <div style="height:30px;border-radius:8px;background:repeating-linear-gradient(90deg,currentColor 0px,currentColor 2px,transparent 2px,transparent 6px);opacity:.45"></div>
-      <audio controls preload="none" style="display:block;width:100%;height:38px">
-       <source src="${escapar(arquivo.signedUrl)}">
-       Seu navegador não suporta áudio.
-      </audio>
-     </div>`;
+ conteudo=erroArquivo
+ ? "Erro ao carregar áudio: "+escapar(erroArquivo.message)
+ : `DIL0`;
 } 
   return `<div style="display:flex;justify-content:${minha?"flex-end":"flex-start"};margin:10px 0;padding:0 3px">
   <div style="max-width:78%;padding:11px 15px;border-radius:${minha?"18px 18px 5px 18px":"18px 18px 18px 5px"};background:${minha?"#0875ed":"#f1f4f8"};color:${minha?"#ffffff":"#243247"};overflow-wrap:anywhere;line-height:1.45;box-shadow:0 1px 2px #00000010">
