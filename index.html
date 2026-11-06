@@ -789,13 +789,15 @@ area.style.minHeight="calc(100vh - 100px)";
 
  conteudo=erroArquivo
  ? "Erro ao carregar áudio: "+escapar(erroArquivo.message)
- : `<div style="display:flex;flex-direction:column;gap:8px;min-width:220px">
-    <div style="font-size:13px;font-weight:600">Áudio</div>
-    <div style="height:30px;border-radius:8px;background:repeating-linear-gradient(90deg,currentColor 0px,currentColor 2px,transparent 2px,transparent 6px);opacity:.45"></div>
-    <audio controls preload="none" style="display:block;width:100%;height:38px">
-     <source src="${escapar(arquivo.signedUrl)}">
-     Seu navegador não suporta áudio.
-    </audio>
+ : `<div class="pappiPlayer" style="display:flex;align-items:center;gap:11px;min-width:210px">
+    <button type="button" class="pappiPlay" style="width:38px;height:38px;border:0;border-radius:50%;background:${minha?"#ffffff":"#0875ed"};color:${minha?"#0875ed":"white"};font-size:17px;flex-shrink:0">▶</button>
+    <div style="flex:1;min-width:0">
+     <div class="pappiWave" style="height:32px;display:flex;align-items:center;gap:3px;overflow:hidden">
+      ${Array.from({length:28},(_,i)=>`<span style="display:block;width:3px;flex-shrink:0;height:${7+(i*13%19)}px;border-radius:5px;background:currentColor"></span>`).join("")}
+     </div>
+     <div class="pappiTempo" style="font-size:11px;opacity:.8">0:00</div>
+    </div>
+    <audio class="pappiAudio" preload="none" src="${escapar(arquivo.signedUrl)}"></audio>
    </div>`;
 } 
   return `<div style="display:flex;justify-content:${minha?"flex-end":"flex-start"};margin:10px 0;padding:0 3px">
