@@ -801,7 +801,7 @@ area.style.minHeight="calc(100vh - 100px)";
      </div>
      <div class="pappiTempo" style="font-size:11px;opacity:.8">0:00</div>
     </div>
-    <audio class="pappiAudio" preload="none" src="${escapar(arquivo.signedUrl)}"></audio>
+    <audio class="pappiAudio" preload="metadata" src="${escapar(arquivo.signedUrl)}"></audio>
    </div>`;
 } 
   return `<div style="display:flex;justify-content:${minha?"flex-end":"flex-start"};margin:10px 0;padding:0 3px">
