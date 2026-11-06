@@ -1344,48 +1344,63 @@ function abrirTelaPrincipal(usuario,perfil){
  app.innerHTML=`
  <main class="app">
   <header class="cabecalho">
+
  <div class="marca-pequena">
   ${logo}
   <span><span class="azul">PAP</span><span class="marinho">PI</span></span>
  </div>
 
- <div style="display:flex;align-items:center;gap:12px">
+ <div class="acoesCabecalho">
 
-  <button type="button" id="abrirMenuInicio" title="Menu">
-   ☰
+  <button type="button" id="abrirMenuInicio"
+   class="iconeCabecalho" title="Menu">
+   <svg viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" stroke-width="2"
+    stroke-linecap="round">
+    <path d="M4 6h16M4 12h16M4 18h16"/>
+   </svg>
   </button>
 
-  <button type="button" id="abrirCameraInicio" title="Câmera">
-   📷
+  <button type="button" id="abrirCameraInicio"
+   class="iconeCabecalho" title="Câmera">
+   <svg viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 7h3l2-3h6l2 3h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"/>
+    <circle cx="12" cy="13" r="4"/>
+   </svg>
   </button>
 
-  <button type="button" id="novaConversaInicio" title="Nova conversa">
-   +
+  <button type="button" id="novaConversaInicio"
+   class="iconeCabecalho" title="Nova conversa">
+   <svg viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" stroke-width="2"
+    stroke-linecap="round">
+    <path d="M12 5v14M5 12h14"/>
+   </svg>
   </button>
 
   <button type="button" id="editarPerfil"
-   style="display:flex;align-items:center;gap:6px;border:0;background:none;padding:0">
+   class="perfilCabecalho">
 
    <img id="fotoPerfilInicio"
+    class="fotoPerfilCabecalho"
     src="${perfil.avatar_url||''}"
-    onerror="this.style.display='none'"
-    style="width:36px;height:36px;border-radius:50%;object-fit:cover">
+    onerror="this.style.display='none'">
 
-   <span style="font-size:12px;color:#334155">
-    Meu perfil
-   </span>
+   <span>Meu perfil</span>
   </button>
 
  </div>
 
  <input id="fotoCameraInicio" type="file"
   accept="image/*" capture="environment" hidden>
+
 </header>
 
 <div id="menuInicioPappi" class="oculto">
- <button type="button" id="menuSair">Sair</button>
+ <button type="button" id="sair">Sair</button>
 </div>
-
   <section class="inicioConversas">
    <h1>Conversas</h1>
 
