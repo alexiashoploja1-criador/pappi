@@ -1478,7 +1478,10 @@ botaoCancelarAudio.onclick=()=>{
    schema:"public",
    table:"messages",
    filter:"conversation_id=eq."+conversaId
-  },()=>carregarMensagens())
+ },(payload)=>{
+ if(payload.new.sender_id===usuarioAtual.id)return;
+ carregarMensagens();
+})
   .subscribe((status,erro)=>{
  console.log("PAPPI REALTIME:",status,erro||"");
 });
