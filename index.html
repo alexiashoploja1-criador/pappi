@@ -811,6 +811,103 @@ return `<div class="pappiMensagem" data-mensagem-id="${m.id}" data-criada-em="${
 }));
 
 lista.innerHTML=mensagensHTML.join("");
+let menuAcoes=document.getElementById("pappiMenuAcoes");
+
+if(!menuAcoes){
+ menuAcoes=document.createElement("div");
+ menuAcoes.id="pappiMenuAcoes";
+ menuAcoes.style.cssText="display:none;position:fixed;inset:0;background:#00000045;z-index:99998;align-items:flex-end;justify-content:center;padding:12px;box-sizing:border-box";
+
+ menuAcoes.innerHTML=`
+  <div style="width:100%;max-width:430px;background:#ffffff;border-radius:20px;padding:10px 16px 18px;box-shadow:0 8px 35px #00000025">
+   <div style="width:38px;height:4px;border-radius:5px;background:#dce5f1;margin:2px auto 12px"></div>
+
+   <div class="pappiOpcao" data-acao="responder">
+    <svg viewBox="0 0 24 24"><path d="M10 8 5 12l5 4v-3c5 0 7 2 9 5-1-6-4-10-9-10V8Z"/></svg>
+    Responder
+   </div>
+
+   <div class="pappiOpcao" data-acao="copiar">
+    <svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h3"/></svg>
+    Copiar
+   </div>
+
+   <div class="pappiOpcao" data-acao="encaminhar">
+    <svg viewBox="0 0 24 24"><path d="M14 5 21 12l-7 7v-4c-6 0-9 2-11 5 1-7 4-11 11-11V5Z"/></svg>
+    Encaminhar
+   </div>
+
+   <div class="pappiOpcao" data-acao="apagar-mim">
+    <svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6m4 4v6m6-6v6"/></svg>
+    Apagar para mim
+   </div>
+
+   <div class="pappiOpcao" data-acao="apagar-todos">
+    <svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6m4 4v6m6-6v6"/></svg>
+    Apagar para todos
+   </div>
+  </div>
+ `;
+
+ document.body.appendChild(menuAcoes);
+
+ const estilo=document.createElement("style");
+ estilo.textContent=`
+  .pappiOpcao{
+   display:flex;align-items:center;gap:15px;
+   min-height:51px;color:#172b55;font-size:16px;
+   border-bottom:1px solid #edf1f7;
+  }
+  .pappiOpcao:last-child{border-bottom:0}
+  .pappiOpcao svg{
+   width:23px;height:23px;fill:none;stroke:#0875ed;
+   stroke-width:1.8;stroke-linecap:round;
+   stroke-linejoin:round;flex-shrink:0
+  }
+ `;
+ document.head.appendChild(estilo);
+
+ menuAcoes.onclick=e=>{
+  if(e.target===menuAcoes)menuAcoes.style.display="none";
+ };
+}
+
+function mostrarMenuMensagem(mensagem){
+ menuAcoes.querySelector('[data-acao="apagar-todos"]').style.display=
+  mensagem.dataset.minha==="true"?"flex":"none";
+
+ menuAcoes.style.display="flex";
+}
+
+lista.querySelectorAll(".pappiMensagem").forEach(mensagem=>{
+ let temporizador=null;
+ let menuAberto=false;
+
+ mensagem.addEventListener("contextmenu",evento=>{
+  evento.preventDefault();
+  mostrarMenuMensagem(mensagem);
+ });
+
+ mensagem.addEventListener("pointerdown",()=>{
+  menuAberto=false;
+  temporizador=setTimeout(()=>{
+   menuAberto=true;
+   mostrarMenuMensagem(mensagem);
+  },500);
+ });
+
+ mensagem.addEventListener("pointerup",()=>{
+  clearTimeout(temporizador);
+ });
+
+ mensagem.addEventListener("pointerleave",()=>{
+  clearTimeout(temporizador);
+ });
+
+ mensagem.addEventListener("pointercancel",()=>{
+  clearTimeout(temporizador);
+ });
+});
 let visualizador=document.getElementById("pappiImagemAmpliada");
 
 if(!visualizador){
