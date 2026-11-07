@@ -1097,13 +1097,16 @@ lista.querySelectorAll("img").forEach(imagem=>{
  }
 });
 
-if(estavaNoFinal){
- lista.scrollTop=lista.scrollHeight;
-}else{
- lista.scrollTop=Math.max(
-  0,
-  posicaoAnterior+(lista.scrollHeight-alturaAnterior)
+const posicoes=abrirConversa.posicoes||{};
+const posicaoSalva=posicoes[conversaId];
+
+if(posicaoSalva!==undefined){
+ lista.scrollTop=Math.min(
+  posicaoSalva,
+  lista.scrollHeight-lista.clientHeight
  );
+}else{
+ lista.scrollTop=lista.scrollHeight;
 }
 
 }
