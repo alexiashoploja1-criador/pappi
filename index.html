@@ -774,8 +774,10 @@ area.style.minHeight="0";
   if(meuPerfil)abrirTelaPrincipal(usuarioAtual,meuPerfil);
  };
 let versaoCarregamentoMensagens=0;
+ let rolarAposCarregarMensagens=false;
  async function carregarMensagens(forcarFinal=false){
   const minhaVersao=++versaoCarregamentoMensagens;
+  if(forcarFinal)rolarAposCarregarMensagens=true;
   const listaAnterior=document.getElementById("listaMensagens");
 
 const estavaNoFinal=listaAnterior
@@ -1144,8 +1146,9 @@ lista.querySelectorAll("img").forEach(imagem=>{
 const posicoes=abrirConversa.posicoes||{};
 lista.style.scrollBehavior="auto";
 
-if(primeiraCarga || forcarFinal || estavaNoFinal){
+if(primeiraCarga || forcarFinal || rolarAposCarregarMensagens || estavaNoFinal){
  lista.scrollTop=lista.scrollHeight;
+ rolarAposCarregarMensagens=false;
 }else{
  lista.scrollTop=posicaoAnterior;
 }
