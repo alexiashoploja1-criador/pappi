@@ -663,6 +663,7 @@ async function buscarUsuarios(){
 }
  async function abrirConversa(conversaId,perfil){
  const area=document.querySelector(".conversa");
+ let mensagemParaResponder=null;
 const inicio=document.querySelector(".inicioConversas");
 
  if(!area){
@@ -928,6 +929,44 @@ menuAcoes.querySelector('[data-acao="copiar"]').onclick=async()=>{
  }catch(erro){
   alert("Não foi possível copiar esta mensagem.");
  }
+};
+menuAcoes.querySelector('[data-acao="responder"]').onclick=()=>{
+ if(!mensagemSelecionada)return;
+
+ mensagemParaResponder={
+  id:mensagemSelecionada.dataset.mensagemId,
+  conteudo:mensagemSelecionada.dataset.conteudo
+ };
+
+ const form=document.getElementById("formMensagem");
+ let previa=document.getElementById("pappiPreviaResposta");
+
+ if(!previa){
+  previa=document.createElement("div");
+  previa.id="pappiPreviaResposta";
+  previa.style.cssText="display:flex;align-items:center;gap:10px;padding:10px;background:#eaf2ff;border-left:4px solid #0875ed;border-radius:8px;margin-top:10px";
+  form.parentNode.insertBefore(previa,form);
+ }
+
+ const original=mensagemParaResponder.conteudo;
+ const resumo=original.startsWith("PAPPI_IMG:")?"Foto":original.startsWith("PAPPI_AUDIO:")?"Áudio":original;
+
+ previa.innerHTML=`
+  <div style="flex:1;min-width:0">
+   <div style="font-size:12px;color:#0875ed;font-weight:600">Respondendo à mensagem</div>
+   <div id="pappiTextoResposta" style="font-size:13px;color:#243247;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></div>
+  </div>
+  <button id="cancelarResposta" type="button" style="border:0;background:transparent;color:#0875ed;font-size:23px">×</button>
+ `;
+
+ document.getElementById("pappiTextoResposta").textContent=resumo;
+ document.getElementById("cancelarResposta").onclick=()=>{
+  mensagemParaResponder=null;
+  previa.remove();
+ };
+
+ menuAcoes.style.display="none";
+ document.getElementById("textoMensagem").focus();
 };
 let visualizador=document.getElementById("pappiImagemAmpliada");
 
