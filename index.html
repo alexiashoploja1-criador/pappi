@@ -773,8 +773,9 @@ area.style.minHeight="0";
 
   if(meuPerfil)abrirTelaPrincipal(usuarioAtual,meuPerfil);
  };
-
+let versaoCarregamentoMensagens=0;
  async function carregarMensagens(forcarFinal=false){
+  const minhaVersao=++versaoCarregamentoMensagens;
   const listaAnterior=document.getElementById("listaMensagens");
 
 const estavaNoFinal=listaAnterior
@@ -788,6 +789,7 @@ const posicaoAnterior=listaAnterior?listaAnterior.scrollTop:0;
    .select("id,sender_id,content,created_at")
    .eq("conversation_id",conversaId)
    .order("created_at",{ascending:true});
+  if(minhaVersao!==versaoCarregamentoMensagens)return;
 
   const lista=document.getElementById("listaMensagens");
   if(!lista)return;
@@ -809,6 +811,7 @@ const posicaoAnterior=listaAnterior?listaAnterior.scrollTop:0;
   }
 
   const mensagensHTML=await Promise.all(data.map(async m=>{
+   if(minhaVersao!==versaoCarregamentoMensagens)return;
  const minha=m.sender_id===usuarioAtual.id;
 let conteudo=escapar(m.content);
 let textoMensagem=m.content;
