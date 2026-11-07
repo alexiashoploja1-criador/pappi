@@ -1119,7 +1119,7 @@ lista.querySelectorAll(".pappiPlayer").forEach(player=>{
 lista.querySelectorAll("img").forEach(imagem=>{
  if(!imagem.complete){
   imagem.addEventListener("load",()=>{
-   if(lista.scrollHeight-lista.scrollTop-lista.clientHeight<100){
+   if(primeiraCarga || lista.scrollHeight-lista.scrollTop-lista.clientHeight<100){
     lista.scrollTop=lista.scrollHeight;
    }
   },{once:true});
