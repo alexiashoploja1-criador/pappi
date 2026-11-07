@@ -764,6 +764,7 @@ const posicaoAnterior=listaAnterior?listaAnterior.scrollTop:0;
 
   const lista=document.getElementById("listaMensagens");
   if(!lista)return;
+  const primeiraCarga=lista.dataset.carregada!=="sim";
 
   if(error){
    lista.innerHTML='<div class="vazia">Não foi possível carregar as mensagens.</div>';
