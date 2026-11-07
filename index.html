@@ -35,6 +35,30 @@ h1{font-size:29px;margin:25px 0 10px;color:#102653}
 .foto-preview{width:94px;height:94px;border-radius:50%;object-fit:cover;background:#eaf1fb;border:3px solid #dce8f8;display:block;margin:0 auto 10px}
 .foto-label{display:inline-block;color:#0875ed;font-size:14px;cursor:pointer}
 .app{min-height:100vh;background:#f4f7fc}
+ .app.conversa-aberta{
+ height:100vh;
+ height:100dvh;
+ min-height:0;
+ display:flex;
+ flex-direction:column;
+ overflow:hidden;
+}
+
+.app.conversa-aberta>.cabecalho{
+ flex-shrink:0;
+}
+
+.app.conversa-aberta>.conversa{
+ flex:1;
+ min-height:0;
+ height:auto;
+ max-width:900px;
+ width:calc(100% - 24px);
+ margin:12px auto;
+ padding:0 12px;
+ align-self:stretch;
+ overflow:hidden;
+}
 .cabecalho{
  background:#fff;
  border-bottom:1px solid #e8edf5;
