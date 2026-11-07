@@ -1471,20 +1471,37 @@ botaoCancelarAudio.onclick=()=>{
   gravadorAudio.stop();
  }
 };
- abrirConversa.canal=cliente
-  .channel("mensagens-"+conversaId)
-  .on("postgres_changes",{
-   event:"INSERT",
-   schema:"public",
-   table:"messages",
-   filter:"conversation_id=eq."+conversaId
+ 
+abrirConversa.canal=cliente
+ .channel("mensagens-"+conversaId)
+ .on("postgres_changes",{
+  event:"INSERT",
+  schema:"public",
+  table:"messages",
+  filter:"conversation_id=eq."+conversaId
  },(payload)=>{
- if(payload.new.sender_id===usuarioAtual.id)return;
- carregarMensagens();
-})
-  .subscribe((status,erro)=>{
- console.log("PAPPI REALTIME:",status,erro||"");
-});
+  if(payload.new.sender_id===usuarioAtual.id)return;
+  carregarMensagens();
+ })
+ .subscribe((status,erro)=>{
+  let indicador=document.getElementById("statusRealtimePappi");
+
+  if(!indicador){
+   indicador=document.createElement("div");
+   indicador.id="statusRealtimePappi";
+   indicador.style.cssText="font-size:11px;color:#64748b;margin-top:3px";
+   area.querySelector("div").appendChild(indicador);
+  }
+
+  indicador.textContent=
+   status==="SUBSCRIBED"?"Conectado em tempo real":
+   status==="CHANNEL_ERROR"?"Erro na conexão em tempo real":
+   status==="TIMED_OUT"?"Tempo de conexão esgotado":
+   status==="CLOSED"?"Conexão encerrada":
+   "Conectando...";
+  console.log("PAPPI REALTIME:",status,erro||"");
+ });
+
 }
  async function carregarConversas(){
  const listaAnterior=document.getElementById("listaMensagens");
