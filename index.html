@@ -733,6 +733,11 @@ area.style.minHeight="calc(100vh - 100px)";
  `;
 
  document.getElementById("voltarConversas").onclick=async()=>{
+  const listaAtual=document.getElementById("listaMensagens");
+ if(listaAtual){
+  abrirConversa.posicoes=abrirConversa.posicoes||{};
+  abrirConversa.posicoes[conversaId]=listaAtual.scrollTop;
+ }
   const {data:meuPerfil}=await cliente
    .from("profiles")
    .select("*")
