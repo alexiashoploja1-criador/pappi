@@ -1091,7 +1091,7 @@ lista.querySelectorAll(".pappiPlayer").forEach(player=>{
 lista.querySelectorAll("img").forEach(imagem=>{
  if(!imagem.complete){
   imagem.addEventListener("load",()=>{
-   if(estavaNoFinal){
+   if(lista.scrollHeight-lista.scrollTop-lista.clientHeight<100){
     lista.scrollTop=lista.scrollHeight;
    }
   },{once:true});
@@ -1101,17 +1101,24 @@ lista.querySelectorAll("img").forEach(imagem=>{
 const posicoes=abrirConversa.posicoes||{};
 const posicaoSalva=posicoes[conversaId];
 
-if(forcarFinal){
+lista.style.scrollBehavior="auto";
+
+if(forcarFinal || (!lista.dataset.carregada && posicaoSalva===undefined)){
  lista.scrollTop=lista.scrollHeight;
- posicoes[conversaId]=lista.scrollTop;
-}else if(posicaoSalva!==undefined){
- lista.scrollTop=Math.min(
-  posicaoSalva,
-  lista.scrollHeight-lista.clientHeight
- );
+}else if(!lista.dataset.carregada && posicaoSalva!==undefined){
+ lista.scrollTop=Math.min(posicaoSalva,lista.scrollHeight-lista.clientHeight);
+}else if(estavaNoFinal){
+ lista.scrollTop=lista.scrollHeight;
 }else{
- lista.scrollTop=lista.scrollHeight;
+ lista.scrollTop=posicaoAnterior;
 }
+
+lista.dataset.carregada="sim";
+posicoes[conversaId]=lista.scrollTop;
+
+lista.onscroll=()=>{
+ posicoes[conversaId]=lista.scrollTop;
+};
 
 }
 
