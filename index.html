@@ -878,8 +878,9 @@ return `<div class="pappiMensagem" data-mensagem-id="${m.id}" data-criada-em="${
    ${conteudo}
   </div>
  </div>`;
-}));
-
+}));  
+  
+if(primeiraCarga)lista.style.visibility="hidden";
 lista.innerHTML=mensagensHTML.join("");
 let menuAcoes=document.getElementById("pappiMenuAcoes");
 
@@ -1139,7 +1140,8 @@ if(forcarFinal || (!lista.dataset.carregada && posicaoSalva===undefined)){
 }else{
  lista.scrollTop=posicaoAnterior;
 }
-
+  
+lista.style.visibility="visible";
 lista.dataset.carregada="sim";
 posicoes[conversaId]=lista.scrollTop;
 
