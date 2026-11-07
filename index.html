@@ -1396,6 +1396,18 @@ botaoAudio.onclick=async()=>{
   autoGainControl:true
  }
 });
+  alert(
+ "Microfone liberado.\n"+
+ "MediaRecorder: "+typeof MediaRecorder+"\n"+
+ "MP4: "+(
+  typeof MediaRecorder!=="undefined" &&
+  MediaRecorder.isTypeSupported("audio/mp4")
+ )+"\n"+
+ "WebM: "+(
+  typeof MediaRecorder!=="undefined" &&
+  MediaRecorder.isTypeSupported("audio/webm")
+ )
+);
   iniciarOndaAudio();
   let tipoAudio="";
 
