@@ -872,7 +872,11 @@ if(!menuAcoes){
  };
 }
 
+let mensagemSelecionada=null;
+
 function mostrarMenuMensagem(mensagem){
+ mensagemSelecionada=mensagem;
+
  menuAcoes.querySelector('[data-acao="apagar-todos"]').style.display=
   mensagem.dataset.minha==="true"?"flex":"none";
 
@@ -908,6 +912,23 @@ lista.querySelectorAll(".pappiMensagem").forEach(mensagem=>{
   clearTimeout(temporizador);
  });
 });
+menuAcoes.querySelector('[data-acao="copiar"]').onclick=async()=>{
+ const texto=mensagemSelecionada?.dataset.conteudo||"";
+
+ if(!texto || texto.startsWith("PAPPI_IMG:") || texto.startsWith("PAPPI_AUDIO:")){
+  alert("Esta mensagem não contém texto para copiar.");
+  menuAcoes.style.display="none";
+  return;
+ }
+
+ try{
+  await navigator.clipboard.writeText(texto);
+  menuAcoes.style.display="none";
+  alert("Mensagem copiada.");
+ }catch(erro){
+  alert("Não foi possível copiar esta mensagem.");
+ }
+};
 let visualizador=document.getElementById("pappiImagemAmpliada");
 
 if(!visualizador){
