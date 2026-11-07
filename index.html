@@ -1421,7 +1421,9 @@ botaoCancelarAudio.onclick=()=>{
    table:"messages",
    filter:"conversation_id=eq."+conversaId
   },()=>carregarMensagens())
-  .subscribe();
+  .subscribe((status,erro)=>{
+ console.log("PAPPI REALTIME:",status,erro||"");
+});
 }
  async function carregarConversas(){
  const listaAnterior=document.getElementById("listaMensagens");
