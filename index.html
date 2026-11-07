@@ -1088,6 +1088,8 @@ lista.querySelectorAll("img").forEach(imagem=>{
  };
 });
 lista.querySelectorAll(".pappiPlayer").forEach(player=>{
+ if(player.dataset.configurado==="sim")return;
+player.dataset.configurado="sim";
  const audio=player.querySelector(".pappiAudio");
  const botao=player.querySelector(".pappiPlay");
  const tempo=player.querySelector(".pappiTempo");
