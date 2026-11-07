@@ -672,7 +672,12 @@ const inicio=document.querySelector(".inicioConversas");
  }
 
 if(inicio)inicio.style.display="none";
-area.style.display="block";
+area.style.display="flex";
+area.style.flexDirection="column";
+area.style.justifyContent="flex-start";
+area.style.alignItems="stretch";
+area.style.height="calc(100vh - 110px)";
+area.style.overflow="hidden";
 area.style.minHeight="calc(100vh - 100px)";
  if(abrirConversa.canal){
   await cliente.removeChannel(abrirConversa.canal);
