@@ -1127,15 +1127,9 @@ lista.querySelectorAll("img").forEach(imagem=>{
 });
 
 const posicoes=abrirConversa.posicoes||{};
-const posicaoSalva=posicoes[conversaId];
-
 lista.style.scrollBehavior="auto";
 
-if(forcarFinal || (!lista.dataset.carregada && posicaoSalva===undefined)){
- lista.scrollTop=lista.scrollHeight;
-}else if(!lista.dataset.carregada && posicaoSalva!==undefined){
- lista.scrollTop=Math.min(posicaoSalva,lista.scrollHeight-lista.clientHeight);
-}else if(estavaNoFinal){
+if(primeiraCarga || forcarFinal || estavaNoFinal){
  lista.scrollTop=lista.scrollHeight;
 }else{
  lista.scrollTop=posicaoAnterior;
