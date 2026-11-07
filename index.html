@@ -1125,7 +1125,7 @@ lista.querySelectorAll("img").forEach(imagem=>{
   },{once:true});
  }
 });
-if(primeiraCarga){
+{
  await Promise.all(
   Array.from(lista.querySelectorAll("img")).map(imagem=>{
    if(imagem.complete)return Promise.resolve();
