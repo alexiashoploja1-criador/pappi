@@ -1070,14 +1070,23 @@ lista.querySelectorAll(".pappiPlayer").forEach(player=>{
  });
 });
 lista.querySelectorAll("img").forEach(imagem=>{
- if(imagem.complete){
-  lista.scrollTop=lista.scrollHeight;
- }else{
+ if(!imagem.complete){
   imagem.addEventListener("load",()=>{
-   lista.scrollTop=lista.scrollHeight;
+   if(estavaNoFinal){
+    lista.scrollTop=lista.scrollHeight;
+   }
   },{once:true});
  }
 });
+
+if(estavaNoFinal){
+ lista.scrollTop=lista.scrollHeight;
+}else{
+ lista.scrollTop=Math.max(
+  0,
+  posicaoAnterior+(lista.scrollHeight-alturaAnterior)
+ );
+}
 
 lista.scrollTop=lista.scrollHeight;
 }
@@ -1408,6 +1417,14 @@ botaoCancelarAudio.onclick=()=>{
   .subscribe();
 }
  async function carregarConversas(){
+ const listaAnterior=document.getElementById("listaMensagens");
+
+const estavaNoFinal=listaAnterior
+ ? listaAnterior.scrollHeight-listaAnterior.scrollTop-listaAnterior.clientHeight<100
+ : true;
+
+const alturaAnterior=listaAnterior?listaAnterior.scrollHeight:0;
+const posicaoAnterior=listaAnterior?listaAnterior.scrollTop:0;
  const lista=document.getElementById("listaConversas");
  if(!lista)return;
 
