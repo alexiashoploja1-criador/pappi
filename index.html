@@ -1098,6 +1098,14 @@ document.getElementById("formMensagem").onsubmit=async evento=>{
 
  if(!texto)return;
 
+ const conteudoEnviar=mensagemParaResponder
+  ?"PAPPI_REPLY:"+JSON.stringify({
+    id:mensagemParaResponder.id,
+    conteudo:mensagemParaResponder.conteudo,
+    texto:texto
+   })
+  :texto;
+
  campo.disabled=true;
 
  const {error}=await cliente
@@ -1105,7 +1113,7 @@ document.getElementById("formMensagem").onsubmit=async evento=>{
   .insert({
    conversation_id:conversaId,
    sender_id:usuarioAtual.id,
-   content:texto
+   content:conteudoEnviar
   });
 
  campo.disabled=false;
@@ -1116,6 +1124,11 @@ document.getElementById("formMensagem").onsubmit=async evento=>{
  }
 
  campo.value="";
+ mensagemParaResponder=null;
+
+ const previa=document.getElementById("pappiPreviaResposta");
+ if(previa)previa.remove();
+
  await carregarMensagens();
 };
 
