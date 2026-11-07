@@ -804,14 +804,14 @@ const posicaoAnterior=listaAnterior?listaAnterior.scrollTop:0;
    .eq("conversation_id",conversaId)
    .neq("sender_id",usuarioAtual.id)
    .is("read_at",null);
-
+if(minhaVersao!==versaoCarregamentoMensagens)return;
   if(!data||data.length===0){
    lista.innerHTML='<div class="vazia">Esta conversa ainda não tem mensagens. Envie a primeira!</div>';
    return;
   }
 
   const mensagensHTML=await Promise.all(data.map(async m=>{
-   if(minhaVersao!==versaoCarregamentoMensagens)return;
+   
  const minha=m.sender_id===usuarioAtual.id;
 let conteudo=escapar(m.content);
 let textoMensagem=m.content;
@@ -882,7 +882,7 @@ return `<div class="pappiMensagem" data-mensagem-id="${m.id}" data-criada-em="${
   </div>
  </div>`;
 }));  
-  
+ if(minhaVersao!==versaoCarregamentoMensagens)return; 
 if(primeiraCarga)lista.style.visibility="hidden";
 lista.innerHTML=mensagensHTML.join("");
 let menuAcoes=document.getElementById("pappiMenuAcoes");
@@ -1140,6 +1140,7 @@ lista.querySelectorAll("img").forEach(imagem=>{
   })
  );
 }
+  if(minhaVersao!==versaoCarregamentoMensagens)return;
 const posicoes=abrirConversa.posicoes||{};
 lista.style.scrollBehavior="auto";
 
