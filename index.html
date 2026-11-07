@@ -819,7 +819,7 @@ const idsJaNaTela=new Set(
 const mensagensParaRenderizar=primeiraCarga
  ? data
  : data.filter(m=>!idsJaNaTela.has(String(m.id)));
-  const mensagensHTML=await Promise.all(data.map(async m=>{
+  const mensagensHTML=await Promise.all(mensagensParaRenderizar.map(async m=>{
    
  const minha=m.sender_id===usuarioAtual.id;
 let conteudo=escapar(m.content);
