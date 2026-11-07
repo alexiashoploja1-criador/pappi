@@ -737,11 +737,11 @@ area.style.minHeight="calc(100vh - 100px)";
   if(meuPerfil)abrirTelaPrincipal(usuarioAtual,meuPerfil);
  };
 
- async function carregarMensagens(){
+ async function carregarMensagens(forcarFinal=false){
   const listaAnterior=document.getElementById("listaMensagens");
 
 const estavaNoFinal=listaAnterior
- ? listaAnterior.scrollHeight-listaAnterior.scrollTop-listaAnterior.clientHeight<100
+ ? forcarFinal || listaAnterior.scrollHeight-listaAnterior.scrollTop-listaAnterior.clientHeight<100
  : true;
 
 const alturaAnterior=listaAnterior?listaAnterior.scrollHeight:0;
