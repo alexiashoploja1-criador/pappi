@@ -1100,7 +1100,10 @@ lista.querySelectorAll("img").forEach(imagem=>{
 const posicoes=abrirConversa.posicoes||{};
 const posicaoSalva=posicoes[conversaId];
 
-if(posicaoSalva!==undefined){
+if(forcarFinal){
+ lista.scrollTop=lista.scrollHeight;
+ posicoes[conversaId]=lista.scrollTop;
+}else if(posicaoSalva!==undefined){
  lista.scrollTop=Math.min(
   posicaoSalva,
   lista.scrollHeight-lista.clientHeight
