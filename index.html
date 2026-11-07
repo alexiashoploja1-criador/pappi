@@ -972,6 +972,8 @@ function mostrarMenuMensagem(mensagem){
 }
 
 lista.querySelectorAll(".pappiMensagem").forEach(mensagem=>{
+if(mensagem.dataset.eventosConfigurados==="sim")return;
+mensagem.dataset.eventosConfigurados="sim";
  let temporizador=null;
  let menuAberto=false;
 
