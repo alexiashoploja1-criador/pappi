@@ -811,7 +811,14 @@ if(minhaVersao!==versaoCarregamentoMensagens)return;
    lista.innerHTML='<div class="vazia">Esta conversa ainda não tem mensagens. Envie a primeira!</div>';
    return;
   }
+const idsJaNaTela=new Set(
+ Array.from(lista.querySelectorAll(".pappiMensagem"))
+ .map(m=>m.dataset.mensagemId)
+);
 
+const mensagensParaRenderizar=primeiraCarga
+ ? data
+ : data.filter(m=>!idsJaNaTela.has(String(m.id)));
   const mensagensHTML=await Promise.all(data.map(async m=>{
    
  const minha=m.sender_id===usuarioAtual.id;
