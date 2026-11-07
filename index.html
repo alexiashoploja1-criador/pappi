@@ -803,7 +803,7 @@ area.style.minHeight="calc(100vh - 100px)";
 } 
   const ehImagem=m.content.startsWith("PAPPI_IMG:");
 
-return `<div class="pappiMensagem" data-mensagem-id="${m.id}" data-criada-em="${m.created_at}" data-minha="${minha}" data-conteudo="${escapar(m.content)}" style=
+return `<div class="pappiMensagem" data-mensagem-id="${m.id}" data-criada-em="${m.created_at}" data-minha="${minha}" data-conteudo="${escapar(m.content)}" style="display:flex;justify-content:${minha?"flex-end":"flex-start"};margin:10px 0;padding:0 3px">
   <div style="max-width:78%;padding:${ehImagem?"0":"11px 15px"};border-radius:${minha?"18px 18px 5px 18px":"18px 18px 18px 5px"};background:${ehImagem?"transparent":minha?"#0875ed":"#f1f4f8"};color:${minha?"#ffffff":"#243247"};overflow-wrap:anywhere;line-height:1.45;box-shadow:${ehImagem?"none":"0 1px 2px #00000010"}">
    ${conteudo}
   </div>
