@@ -738,6 +738,14 @@ area.style.minHeight="calc(100vh - 100px)";
  };
 
  async function carregarMensagens(){
+  const listaAnterior=document.getElementById("listaMensagens");
+
+const estavaNoFinal=listaAnterior
+ ? listaAnterior.scrollHeight-listaAnterior.scrollTop-listaAnterior.clientHeight<100
+ : true;
+
+const alturaAnterior=listaAnterior?listaAnterior.scrollHeight:0;
+const posicaoAnterior=listaAnterior?listaAnterior.scrollTop:0;
   const {data,error}=await cliente
    .from("messages")
    .select("id,sender_id,content,created_at")
