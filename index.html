@@ -1121,15 +1121,7 @@ lista.querySelectorAll(".pappiPlayer").forEach(player=>{
   atualizar();
  });
 });
-lista.querySelectorAll("img").forEach(imagem=>{
- if(!imagem.complete){
-  imagem.addEventListener("load",()=>{
-   if(primeiraCarga || lista.scrollHeight-lista.scrollTop-lista.clientHeight<100){
-    lista.scrollTop=lista.scrollHeight;
-   }
-  },{once:true});
- }
-});
+
 {
  await Promise.all(
   Array.from(lista.querySelectorAll("img")).map(imagem=>{
