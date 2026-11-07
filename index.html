@@ -1189,7 +1189,7 @@ document.getElementById("fotoMensagem").onchange=async(evento)=>{
   if(erroMensagem)throw erroMensagem;
 
   campoFoto.value="";
-  await carregarMensagens();
+  await carregarMensagens(true);
 
  }catch(error){
   alert(error.message||"Não foi possível enviar a imagem.");
@@ -1385,7 +1385,7 @@ botaoAudio.onclick=async()=>{
 
     if(erroMensagem)throw erroMensagem;
 
-    await carregarMensagens();
+    await carregarMensagens(true);
 
    }catch(error){
     alert(error.message||"Não foi possível enviar o áudio.");
