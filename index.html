@@ -764,7 +764,30 @@ area.style.minHeight="calc(100vh - 100px)";
 
   const mensagensHTML=await Promise.all(data.map(async m=>{
  const minha=m.sender_id===usuarioAtual.id;
- let conteudo=escapar(m.content);
+let conteudo=escapar(m.content);
+let textoMensagem=m.content;
+let resposta=null;
+
+if(m.content.startsWith("PAPPI_REPLY:")){
+ try{
+  resposta=JSON.parse(m.content.substring(12));
+  textoMensagem=resposta.texto||"";
+
+  const citado=resposta.conteudo.startsWith("PAPPI_IMG:")
+   ?"Foto"
+   :resposta.conteudo.startsWith("PAPPI_AUDIO:")
+   ?"Áudio"
+   :resposta.conteudo;
+
+  conteudo=`
+   <div style="padding:7px 10px;margin-bottom:7px;border-left:3px solid #0875ed;background:#00000012;border-radius:5px">
+    <div style="font-size:11px;font-weight:700;color:${minha?"#ffffff":"#0875ed"}">Resposta</div>
+    <div style="font-size:12px;opacity:.85;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapar(citado)}</div>
+   </div>
+   <div>${escapar(textoMensagem)}</div>
+  `;
+ }catch(erro){}
+}
 
  if(m.content.startsWith("PAPPI_IMG:")){
   const caminho=m.content.substring(10);
