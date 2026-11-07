@@ -1382,7 +1382,7 @@ function restaurarCompositorAudio(){
 }
 
 botaoAudio.onclick=async()=>{
- if(gravadorAudio)return;
+ if(gravadorAudio && gravadorAudio.state!=="inactive")return;
 
  try{
   if(!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder==="undefined"){
