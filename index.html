@@ -2030,6 +2030,7 @@ abrirConversa.canal=cliente
 
  mensagem.dataset.conteudo="PAPPI_DELETED";
  mensagem.dataset.apagada="true";
+ carregarMensagens();
 })
   .on("postgres_changes",{
   event:"DELETE",
