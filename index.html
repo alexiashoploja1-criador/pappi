@@ -815,10 +815,42 @@ if(erroOcultadas){
 const idsOcultados=new Set((ocultadas||[]).map(item=>item.message_id));
 data=data.filter(m=>!idsOcultados.has(m.id));
   await cliente.from("messages")
-   .update({read_at:new Date().toISOString()})
-   .eq("conversation_id",conversaId)
-   .neq("sender_id",usuarioAtual.id)
-   .is("read_at",null);
+ .update({read_at:new Date().toISOString()})
+ .eq("conversation_id",conversaId)
+ .neq("sender_id",usuarioAtual.id)
+ .is("read_at",null);
+
+const {data:avisosApagados,error:erroAvisos}=await cliente
+ .from("messages")
+ .select("id")
+ .eq("conversation_id",conversaId)
+ .eq("content","PAPPI_DELETED")
+ .neq("sender_id",usuarioAtual.id)
+ .not("read_at","is",null);
+
+if(!erroAvisos){
+ (avisosApagados||[]).forEach(aviso=>{
+  if(avisosApagadosAgendados.has(aviso.id))return;
+
+  avisosApagadosAgendados.add(aviso.id);
+
+  setTimeout(async()=>{
+   const {data:removida,error:erroRemocao}=await cliente.rpc(
+    "remover_aviso_mensagem_apagada",
+    {p_mensagem_id:aviso.id}
+   );
+
+   if(!erroRemocao && removida===true){
+    const elemento=lista.querySelector(
+     `[data-mensagem-id="${aviso.id}"]`
+    );
+    if(elemento)elemento.remove();
+   }
+
+   avisosApagadosAgendados.delete(aviso.id);
+  },3000);
+ });
+}
 if(minhaVersao!==versaoCarregamentoMensagens)return;
   if(!data||data.length===0){
    lista.innerHTML='<div class="vazia">Esta conversa ainda não tem mensagens. Envie a primeira!</div>';
