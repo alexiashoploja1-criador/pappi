@@ -985,8 +985,7 @@ let barraSelecaoMensagens=null;
 function atualizarBarraSelecao(){
  if(!barraSelecaoMensagens){
   barraSelecaoMensagens=document.createElement("div");
-  barraSelecaoMensagens.id="pappiBarraSelecao";
-  barraSelecaoMensagens.querySelector("#pappiCancelarSelecao").onclick=encerrarSelecaoMensagens;
+  barraSelecaoMensagens.id="pappiBarraSelecao"; 
   barraSelecaoMensagens.style.cssText="position:fixed;bottom:0;left:0;right:0;z-index:100001;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px calc(14px + env(safe-area-inset-bottom));background:#ffffff;box-shadow:0 -2px 12px #00000020;color:#172b55;font-size:15px";
   document.body.appendChild(barraSelecaoMensagens);
  }
@@ -998,6 +997,7 @@ function atualizarBarraSelecao(){
  <button id="pappiCancelarSelecao" type="button" style="border:0;border-radius:18px;padding:10px 15px;background:#eaf2ff;color:#0875ed;font-weight:600">Cancelar</button>
 `;
  barraSelecaoMensagens.querySelector("#pappiCancelarSelecao").onclick=encerrarSelecaoMensagens;
+ barraSelecaoMensagens.querySelector("#pappiBotaoEncaminharSelecao").onclick=encaminharMensagensSelecionadas;
 }
 
 function atualizarVisualSelecao(mensagem,selecionada){
