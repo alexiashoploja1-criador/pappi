@@ -1667,6 +1667,9 @@ if(primeiraCarga || forcarFinal || rolarAposCarregarMensagens || estavaNoFinal){
 }
   
 lista.style.visibility="visible";
+lista.querySelectorAll('.pappiMensagem[data-conteudo="PAPPI_DELETED"][data-minha="false"]').forEach(aviso=>{
+ agendarRemocaoAviso(aviso.dataset.mensagemId);
+});
 lista.dataset.carregada="sim";
 posicoes[conversaId]=lista.scrollTop;
 
