@@ -1397,20 +1397,8 @@ botaoAudio.onclick=async()=>{
   autoGainControl:true
  }
 });
-  alert(
- "Microfone liberado.\n"+
- "MediaRecorder: "+typeof MediaRecorder+"\n"+
- "MP4: "+(
-  typeof MediaRecorder!=="undefined" &&
-  MediaRecorder.isTypeSupported("audio/mp4")
- )+"\n"+
- "WebM: "+(
-  typeof MediaRecorder!=="undefined" &&
-  MediaRecorder.isTypeSupported("audio/webm")
- )
-);
   iniciarOndaAudio();
-  alert("Passou da inicialização da onda.");
+  
   let tipoAudio="";
 
   if(MediaRecorder.isTypeSupported("audio/mp4")){
@@ -1487,10 +1475,9 @@ botaoCancelarAudio.classList.remove("oculto");
     restaurarCompositorAudio();
    }
   };
-  alert("Chegou ao ponto de iniciar a gravação.");
+  
   gravadorAudio.start();
-  alert("Estado da gravação: "+gravadorAudio.state); 
-
+  
  }catch(error){
   if(fluxoAudio){
    fluxoAudio.getTracks().forEach(trilha=>trilha.stop());
