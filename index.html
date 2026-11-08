@@ -1078,6 +1078,7 @@ mensagem.addEventListener("click",()=>{
 });
 
  mensagem.addEventListener("pointerdown",()=>{
+  if(modoSelecaoMensagens)return;
   menuAberto=false;
   temporizador=setTimeout(()=>{
    menuAberto=true;
