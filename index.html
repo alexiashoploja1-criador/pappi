@@ -1107,7 +1107,7 @@ menuAcoes.querySelector('[data-acao="apagar-todos"]').onclick=async()=>{
   .eq("sender_id",usuarioAtual.id);
 
  if(error){
-  alert("Não foi possível apagar esta mensagem para todos.");
+  alert("Erro ao apagar: "+error.message);
   menuAcoes.style.display="none";
   return;
  }
