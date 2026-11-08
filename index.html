@@ -1091,9 +1091,21 @@ menuAcoes.querySelector('[data-acao="apagar-mim"]').onclick=async()=>{
   return;
  }
 
- mensagemSelecionada.remove();
- mensagemSelecionada=null;
- menuAcoes.style.display="none";
+ const aviso=mensagemSelecionada;
+const balao=aviso.querySelector("div");
+
+balao.innerHTML='<span style="color:#8993a3;font-size:13px;font-style:italic">Esta mensagem foi apagada.</span>';
+balao.style.background="transparent";
+balao.style.color="#8993a3";
+balao.style.boxShadow="none";
+balao.style.padding="3px 8px";
+
+mensagemSelecionada=null;
+menuAcoes.style.display="none";
+
+setTimeout(()=>{
+ aviso.remove();
+},2000);
 };
 menuAcoes.querySelector('[data-acao="apagar-todos"]').onclick=async()=>{
  if(!mensagemSelecionada)return;
