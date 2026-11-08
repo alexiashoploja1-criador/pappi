@@ -832,7 +832,10 @@ const mensagensParaRenderizar=primeiraCarga
  ? data
  : data.filter(m=>!idsJaNaTela.has(String(m.id)));
   const mensagensHTML=await Promise.all(mensagensParaRenderizar.map(async m=>{
-   
+ const mensagemEncaminhada=m.content.startsWith("PAPPI_FWD:");
+if(mensagemEncaminhada){
+ m.content=m.content.substring(10);
+}
  const minha=m.sender_id===usuarioAtual.id;
 let conteudo=m.content==="PAPPI_DELETED"
  ? '<span style="color:#8993a3;font-size:13px;font-style:italic">Esta mensagem foi apagada.</span>'
