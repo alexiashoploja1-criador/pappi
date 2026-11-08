@@ -818,6 +818,7 @@ data=data.filter(m=>!idsOcultados.has(m.id));
  .update({read_at:new Date().toISOString()})
  .eq("conversation_id",conversaId)
  .neq("sender_id",usuarioAtual.id)
+ .neq("content","PAPPI_DELETED")
  .is("read_at",null);
 
 const {data:avisosApagados,error:erroAvisos}=await cliente
