@@ -1067,8 +1067,15 @@ mensagem.dataset.eventosConfigurados="sim";
 
  mensagem.addEventListener("contextmenu",evento=>{
   evento.preventDefault();
+  if(modoSelecaoMensagens)return;
   mostrarMenuMensagem(mensagem);
- });
+});
+
+mensagem.addEventListener("click",()=>{
+  if(modoSelecaoMensagens){
+   alternarSelecaoMensagem(mensagem);
+  }
+});
 
  mensagem.addEventListener("pointerdown",()=>{
   menuAberto=false;
