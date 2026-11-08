@@ -1044,7 +1044,10 @@ function iniciarSelecaoMensagens(mensagem){
  menuAcoes.style.display="none";
  alternarSelecaoMensagem(mensagem);
 }
-
+menuAcoes.querySelector('[data-acao="selecionar"]').onclick=()=>{
+ if(!mensagemSelecionada)return;
+ iniciarSelecaoMensagens(mensagemSelecionada);
+};
 function mostrarMenuMensagem(mensagem){
  if(mensagem.dataset.apagada==="true")return;
 
