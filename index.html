@@ -1514,12 +1514,11 @@ menuAcoes.querySelector('[data-acao="apagar-todos"]').onclick=async()=>{
   return;
  }
 
- const balao=mensagemSelecionada.querySelector("div");
- balao.innerHTML='<span style="color:#8993a3;font-size:13px;font-style:italic">Esta mensagem foi apagada.</span>';
- balao.style.background="transparent";
- balao.style.color="#8993a3";
- balao.style.boxShadow="none";
- balao.style.padding="3px 8px";
+mensagemSelecionada.innerHTML='<span style="color:#8993a3;font-size:12px;font-style:italic">Esta mensagem foi apagada.</span>';
+mensagemSelecionada.style.justifyContent="center";
+mensagemSelecionada.style.background="transparent";
+mensagemSelecionada.style.boxShadow="none";
+mensagemSelecionada.style.padding="0 3px";
 
  mensagemSelecionada.dataset.conteudo="PAPPI_DELETED";
  mensagemSelecionada.dataset.apagada="true";
