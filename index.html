@@ -2031,6 +2031,20 @@ abrirConversa.canal=cliente
  mensagem.dataset.conteudo="PAPPI_DELETED";
  mensagem.dataset.apagada="true";
 })
+  .on("postgres_changes",{
+  event:"DELETE",
+  schema:"public",
+  table:"messages"
+ },(payload)=>{
+  const idApagado=payload.old?.id;
+  if(!idApagado)return;
+
+  const mensagem=lista.querySelector(
+   '.pappiMensagem[data-mensagem-id="'+idApagado+'"]'
+  );
+
+  if(mensagem)mensagem.remove();
+ })
  .subscribe((status,erro)=>{
   let indicador=document.getElementById("statusRealtimePappi");
 
