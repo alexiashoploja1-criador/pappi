@@ -2022,12 +2022,11 @@ abrirConversa.canal=cliente
 
  if(!mensagem)return;
 
- const balao=mensagem.querySelector("div");
- balao.innerHTML='<span style="color:#8993a3;font-size:13px;font-style:italic">Esta mensagem foi apagada.</span>';
- balao.style.background="transparent";
- balao.style.color="#8993a3";
- balao.style.boxShadow="none";
- balao.style.padding="3px 8px";
+ mensagem.innerHTML='<span style="color:#8993a3;font-size:12px;font-style:italic">Esta mensagem foi apagada.</span>';
+ mensagem.style.justifyContent="center";
+ mensagem.style.background="transparent";
+ mensagem.style.boxShadow="none";
+ mensagem.style.padding="0 3px";
 
  mensagem.dataset.conteudo="PAPPI_DELETED";
  mensagem.dataset.apagada="true";
