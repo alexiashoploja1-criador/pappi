@@ -801,6 +801,18 @@ const posicaoAnterior=listaAnterior?listaAnterior.scrollTop:0;
    lista.innerHTML='<div class="vazia">Não foi possível carregar as mensagens.</div>';
    return;
   }
+  const {data:ocultadas,error:erroOcultadas}=await cliente
+ .from("message_hidden_for")
+ .select("message_id")
+ .eq("user_id",usuarioAtual.id);
+
+if(erroOcultadas){
+ lista.innerHTML='<div class="vazia">Não foi possível carregar as mensagens.</div>';
+ return;
+}
+
+const idsOcultados=new Set((ocultadas||[]).map(item=>item.message_id));
+data=data.filter(m=>!idsOcultados.has(m.id));
   await cliente.from("messages")
    .update({read_at:new Date().toISOString()})
    .eq("conversation_id",conversaId)
