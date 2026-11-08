@@ -1572,6 +1572,30 @@ abrirConversa.canal=cliente
   if(payload.new.sender_id===usuarioAtual.id)return;
   carregarMensagens();
  })
+ .on("postgres_changes",{
+ event:"UPDATE",
+ schema:"public",
+ table:"messages",
+ filter:"conversation_id=eq."+conversaId
+},(payload)=>{
+ if(payload.new.content!=="PAPPI_DELETED")return;
+
+ const mensagem=document.querySelector(
+  '.pappiMensagem[data-mensagem-id="'+payload.new.id+'"]'
+ );
+
+ if(!mensagem)return;
+
+ const balao=mensagem.querySelector("div");
+ balao.innerHTML='<span style="color:#8993a3;font-size:13px;font-style:italic">Esta mensagem foi apagada.</span>';
+ balao.style.background="transparent";
+ balao.style.color="#8993a3";
+ balao.style.boxShadow="none";
+ balao.style.padding="3px 8px";
+
+ mensagem.dataset.conteudo="PAPPI_DELETED";
+ mensagem.dataset.apagada="true";
+})
  .subscribe((status,erro)=>{
   let indicador=document.getElementById("statusRealtimePappi");
 
