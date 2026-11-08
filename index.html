@@ -834,7 +834,9 @@ const mensagensParaRenderizar=primeiraCarga
   const mensagensHTML=await Promise.all(mensagensParaRenderizar.map(async m=>{
    
  const minha=m.sender_id===usuarioAtual.id;
-let conteudo=escapar(m.content);
+let conteudo=m.content==="PAPPI_DELETED"
+ ? '<span style="color:#8993a3;font-size:13px;font-style:italic">Esta mensagem foi apagada.</span>'
+ : escapar(m.content);
 let textoMensagem=m.content;
 let resposta=null;
 
