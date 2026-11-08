@@ -775,6 +775,7 @@ area.style.minHeight="0";
  };
 let versaoCarregamentoMensagens=0;
  let rolarAposCarregarMensagens=false;
+  const avisosApagadosAgendados=new Set();
  async function carregarMensagens(forcarFinal=false){
   const minhaVersao=++versaoCarregamentoMensagens;
   if(forcarFinal)rolarAposCarregarMensagens=true;
