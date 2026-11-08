@@ -1155,7 +1155,8 @@ menuAcoes.querySelector('[data-acao="responder"]').onclick=()=>{
 };
  menuAcoes.querySelector('[data-acao="encaminhar"]').onclick=async()=>{
  if(!mensagemSelecionada)return;
-
+ iniciarSelecaoMensagens(mensagemSelecionada);
+ return;
  const conteudoOriginal=mensagemSelecionada.dataset.conteudo||"";
 
  if(!conteudoOriginal || conteudoOriginal==="PAPPI_DELETED"){
