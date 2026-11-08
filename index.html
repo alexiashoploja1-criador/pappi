@@ -1413,7 +1413,7 @@ botaoAudio.onclick=async()=>{
   cancelarGravacaoAudio=false;
 
   gravadorAudio=new MediaRecorder(fluxoAudio,{mimeType:tipoAudio});
-  alert("Gravador criado. Estado: "+gravadorAudio.state);
+  
   gravadorAudio.ondataavailable=evento=>{
    if(evento.data.size>0)partesAudio.push(evento.data);
   };
