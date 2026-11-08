@@ -977,6 +977,8 @@ if(!menuAcoes){
 let mensagemSelecionada=null;
 
 function mostrarMenuMensagem(mensagem){
+ if(mensagem.dataset.apagada==="true")return;
+
  mensagemSelecionada=mensagem;
 
  menuAcoes.querySelector('[data-acao="apagar-todos"]').style.display=
