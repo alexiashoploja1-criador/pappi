@@ -1069,6 +1069,28 @@ menuAcoes.querySelector('[data-acao="responder"]').onclick=()=>{
  menuAcoes.style.display="none";
  document.getElementById("textoMensagem").focus();
 };
+menuAcoes.querySelector('[data-acao="apagar-mim"]').onclick=async()=>{
+ if(!mensagemSelecionada)return;
+
+ const idMensagem=mensagemSelecionada.dataset.mensagemId;
+
+ const {error}=await cliente
+  .from("message_hidden_for")
+  .insert({
+   message_id:idMensagem,
+   user_id:usuarioAtual.id
+  });
+
+ if(error){
+  alert("Não foi possível apagar esta mensagem para você.");
+  menuAcoes.style.display="none";
+  return;
+ }
+
+ mensagemSelecionada.remove();
+ mensagemSelecionada=null;
+ menuAcoes.style.display="none";
+};
 let visualizador=document.getElementById("pappiImagemAmpliada");
 
 if(!visualizador){
