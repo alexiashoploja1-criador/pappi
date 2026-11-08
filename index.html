@@ -776,6 +776,38 @@ area.style.minHeight="0";
 let versaoCarregamentoMensagens=0;
  let rolarAposCarregarMensagens=false;
   const avisosApagadosAgendados=new Set();
+  async function agendarRemocaoAviso(id){
+ if(avisosApagadosAgendados.has(id))return;
+ avisosApagadosAgendados.add(id);
+
+ const {error}=await cliente
+  .from("messages")
+  .update({read_at:new Date().toISOString()})
+  .eq("id",id)
+  .eq("content","PAPPI_DELETED")
+  .neq("sender_id",usuarioAtual.id);
+
+ if(error){
+  avisosApagadosAgendados.delete(id);
+  return;
+ }
+
+ setTimeout(async()=>{
+  const {data:removida,error:erroRemocao}=await cliente.rpc(
+   "remover_aviso_mensagem_apagada",
+   {p_mensagem_id:id}
+  );
+
+  if(!erroRemocao && removida===true){
+   const elemento=document.querySelector(
+    `[data-mensagem-id="${id}"]`
+   );
+   if(elemento)elemento.remove();
+  }
+
+  avisosApagadosAgendados.delete(id);
+ },3000);
+}
  async function carregarMensagens(forcarFinal=false){
   const minhaVersao=++versaoCarregamentoMensagens;
   if(forcarFinal)rolarAposCarregarMensagens=true;
