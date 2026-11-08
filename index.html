@@ -998,19 +998,23 @@ function atualizarBarraSelecao(){
 
 function atualizarVisualSelecao(mensagem,selecionada){
  mensagem.style.position="relative";
- mensagem.style.outline=selecionada?"2px solid #0875ed":"none";
- mensagem.style.outlineOffset="3px";
+ mensagem.style.outline="none";
  let marca=mensagem.querySelector(".pappiMarcaSelecao");
- if(selecionada){
+
+ if(modoSelecaoMensagens){
+  mensagem.style.paddingLeft="34px";
+
   if(!marca){
    marca=document.createElement("span");
    marca.className="pappiMarcaSelecao";
-   marca.textContent="✓";
-   marca.style.cssText="position:absolute;top:-7px;right:-7px;width:24px;height:24px;border-radius:50%;background:#0875ed;color:#ffffff;border:2px solid #ffffff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;z-index:2;box-shadow:0 1px 4px #00000030";
    mensagem.appendChild(marca);
   }
- }else if(marca){
-  marca.remove();
+
+  marca.textContent=selecionada?"✓":"";
+  marca.style.cssText="position:absolute;left:3px;top:50%;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;background:"+(selecionada?"#0875ed":"transparent")+";border:2px solid "+(selecionada?"#0875ed":"#9aa6b5")+";color:#ffffff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;z-index:2";
+ }else{
+  mensagem.style.paddingLeft="3px";
+  if(marca)marca.remove();
  }
 }
 
