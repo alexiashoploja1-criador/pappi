@@ -1104,10 +1104,9 @@ mensagem.addEventListener("click",()=>{
  });
 });
 async function encaminharMensagensSelecionadas(){
- const mensagensParaEnviar=Array.from(mensagensSelecionadas)
-  .map(id=>Array.from(lista.querySelectorAll(".pappiMensagem"))
-   .find(item=>item.dataset.mensagemId===id))
-  .filter(item=>item && item.dataset.conteudo && item.dataset.conteudo!=="PAPPI_DELETED");
+ const mensagensParaEnviar=Array.from(lista.querySelectorAll(".pappiMensagem"))
+  .filter(item=>mensagensSelecionadas.has(item.dataset.mensagemId))
+  .filter(item=>item.dataset.conteudo && item.dataset.conteudo!=="PAPPI_DELETED");
 
  if(mensagensParaEnviar.length===0){
   alert("Selecione pelo menos uma mensagem válida.");
