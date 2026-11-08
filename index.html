@@ -1430,11 +1430,17 @@ botaoAudio.onclick=async()=>{
    if(evento.data.size>0)partesAudio.push(evento.data);
   };
 
-  campoTexto.classList.add("oculto");
-  botaoAudio.classList.add("oculto");
-  botaoAnexos.classList.add("oculto");
-  indicadorAudio.classList.remove("oculto");
-  botaoCancelarAudio.classList.remove("oculto");
+  if(!campoTexto)throw new Error("Erro: campoTexto não encontrado.");
+if(!botaoAudio)throw new Error("Erro: botão do microfone não encontrado.");
+if(!botaoAnexos)throw new Error("Erro: botão de anexos não encontrado.");
+if(!indicadorAudio)throw new Error("Erro: indicador de áudio não encontrado.");
+if(!botaoCancelarAudio)throw new Error("Erro: botão cancelar não encontrado.");
+
+campoTexto.classList.add("oculto");
+botaoAudio.classList.add("oculto");
+botaoAnexos.classList.add("oculto");
+indicadorAudio.classList.remove("oculto");
+botaoCancelarAudio.classList.remove("oculto");
 
   gravadorAudio.onstop=async()=>{
    const tipo=gravadorAudio.mimeType;
