@@ -1093,6 +1093,36 @@ menuAcoes.querySelector('[data-acao="apagar-mim"]').onclick=async()=>{
  mensagemSelecionada=null;
  menuAcoes.style.display="none";
 };
+menuAcoes.querySelector('[data-acao="apagar-todos"]').onclick=async()=>{
+ if(!mensagemSelecionada)return;
+
+ const idMensagem=mensagemSelecionada.dataset.mensagemId;
+
+ const {error}=await cliente
+  .from("messages")
+  .update({content:"PAPPI_DELETED"})
+  .eq("id",idMensagem)
+  .eq("sender_id",usuarioAtual.id);
+
+ if(error){
+  alert("Não foi possível apagar esta mensagem para todos.");
+  menuAcoes.style.display="none";
+  return;
+ }
+
+ const balao=mensagemSelecionada.querySelector("div");
+ balao.innerHTML='<span style="color:#8993a3;font-size:13px;font-style:italic">Esta mensagem foi apagada.</span>';
+ balao.style.background="transparent";
+ balao.style.color="#8993a3";
+ balao.style.boxShadow="none";
+ balao.style.padding="3px 8px";
+
+ mensagemSelecionada.dataset.conteudo="PAPPI_DELETED";
+ mensagemSelecionada.dataset.apagada="true";
+
+ mensagemSelecionada=null;
+ menuAcoes.style.display="none";
+};
 let visualizador=document.getElementById("pappiImagemAmpliada");
 
 if(!visualizador){
