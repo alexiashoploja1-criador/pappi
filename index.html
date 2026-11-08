@@ -2036,7 +2036,7 @@ abrirConversa.canal=cliente
 
  mensagem.dataset.conteudo="PAPPI_DELETED";
  mensagem.dataset.apagada="true";
- carregarMensagens();
+ agendarRemocaoAviso(payload.new.id);
 })
   .on("postgres_changes",{
   event:"DELETE",
