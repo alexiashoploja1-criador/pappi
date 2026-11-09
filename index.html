@@ -1878,6 +1878,66 @@ document.getElementById("formMensagem").onsubmit=async evento=>{
 
  if(!texto)return;
 
+ if(mensagemEmEdicao){
+  const mensagem=mensagemEmEdicao;
+  const idade=Date.now()-new Date(mensagem.dataset.criadaEm).getTime();
+
+  if(idade<0 || idade>10*60*1000){
+   mensagemEmEdicao=null;
+   campo.value="";
+   campo.placeholder="Digite sua mensagem...";
+   alert("O prazo de edição de 10 minutos terminou.");
+   return;
+  }
+
+  if(texto===mensagem.dataset.conteudo){
+   mensagemEmEdicao=null;
+   campo.value="";
+   campo.placeholder="Digite sua mensagem...";
+   return;
+  }
+
+  campo.disabled=true;
+
+  const {error}=await cliente
+   .from("messages")
+   .update({content:texto})
+   .eq("id",mensagem.dataset.mensagemId)
+   .eq("sender_id",usuarioAtual.id);
+
+  campo.disabled=false;
+
+  if(error){
+   alert("Não foi possível editar: "+error.message);
+   return;
+  }
+
+  mensagem.dataset.conteudo=texto;
+
+  const corpo=mensagem.firstElementChild;
+  const rodape=corpo.lastElementChild;
+
+  while(corpo.firstChild!==rodape){
+   corpo.removeChild(corpo.firstChild);
+  }
+
+  corpo.insertBefore(
+   document.createTextNode(texto+" "),
+   rodape
+  );
+
+  const etiqueta=document.createElement("span");
+  etiqueta.textContent="Editada";
+  etiqueta.style.cssText="font-size:10px;opacity:.7;font-style:italic;margin-right:5px";
+
+  corpo.insertBefore(etiqueta,rodape);
+
+  mensagemEmEdicao=null;
+  campo.value="";
+  campo.placeholder="Digite sua mensagem...";
+  return;
+ }
+
  const conteudoEnviar=mensagemParaResponder
   ?"PAPPI_REPLY:"+JSON.stringify({
     id:mensagemParaResponder.id,
