@@ -1880,7 +1880,7 @@ document.getElementById("formMensagem").onsubmit=async evento=>{
  if(!texto)return;
 
  if(campo.dataset.editandoMensagemId){
-  const mensagem=lista.querySelector(
+  const mensagem=document.getElementById("listaMensagens").querySelector(
    '.pappiMensagem[data-mensagem-id="'+campo.dataset.editandoMensagemId+'"]'
   );
 
