@@ -1945,6 +1945,7 @@ document.getElementById("formMensagem").onsubmit=async evento=>{
   corpo.insertBefore(etiqueta,rodape);
 
   mensagemEmEdicao=null;
+  campo.dataset.editandoMensagemId="";
   campo.value="";
   campo.placeholder="Digite sua mensagem...";
   return;
