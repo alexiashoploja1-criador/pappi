@@ -1462,6 +1462,7 @@ menuAcoes.querySelector('[data-acao="editar"]').onclick=()=>{
  }
 
  mensagemEmEdicao=mensagem;
+ document.getElementById("textoMensagem").dataset.editandoMensagemId=mensagem.dataset.mensagemId;
  const campo=document.getElementById("textoMensagem");
  campo.value=original;
  campo.placeholder="Corrigindo mensagem...";
