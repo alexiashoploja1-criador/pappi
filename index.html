@@ -1441,7 +1441,7 @@ async function encaminharMensagensSelecionadas(){
   };
  });
 }
-menuAcoes.querySelector('[data-acao="editar"]').onclick=async()=>{
+menuAcoes.querySelector('[data-acao="editar"]').onclick=()=>{
  if(!mensagemSelecionada)return;
 
  const mensagem=mensagemSelecionada;
@@ -1461,46 +1461,11 @@ menuAcoes.querySelector('[data-acao="editar"]').onclick=async()=>{
   return;
  }
 
- const novoTexto=prompt("Corrija sua mensagem:",original);
- if(novoTexto===null)return;
-
- const textoCorrigido=novoTexto.trim();
- if(!textoCorrigido){
-  alert("A mensagem não pode ficar vazia.");
-  return;
- }
-
- if(textoCorrigido===original){
-  menuAcoes.style.display="none";
-  return;
- }
-
- const {error}=await cliente
-  .from("messages")
-  .update({content:textoCorrigido})
-  .eq("id",mensagem.dataset.mensagemId)
-  .eq("sender_id",usuarioAtual.id);
-
- if(error){
-  alert("Não foi possível editar: "+error.message);
-  return;
- }
-
- mensagem.dataset.conteudo=textoCorrigido;
-
- const corpo=mensagem.firstElementChild;
- const rodape=corpo.lastElementChild;
-
- while(corpo.firstChild!==rodape){
-  corpo.removeChild(corpo.firstChild);
- }
-
- corpo.insertBefore(document.createTextNode(textoCorrigido+" "),rodape);
-
- const etiqueta=document.createElement("span");
- etiqueta.textContent="Editada";
- etiqueta.style.cssText="font-size:10px;opacity:.7;font-style:italic;margin-right:5px";
- corpo.insertBefore(etiqueta,rodape);
+ mensagemEmEdicao=mensagem;
+ const campo=document.getElementById("textoMensagem");
+ campo.value=original;
+ campo.placeholder="Corrigindo mensagem...";
+ campo.focus();
 
  menuAcoes.style.display="none";
 };
