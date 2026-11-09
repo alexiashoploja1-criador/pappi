@@ -1894,6 +1894,7 @@ document.getElementById("formMensagem").onsubmit=async evento=>{
 
   if(idade<0 || idade>10*60*1000){
    mensagemEmEdicao=null;
+   campo.dataset.editandoMensagemId="";
    campo.value="";
    campo.placeholder="Digite sua mensagem...";
    alert("O prazo de edição de 10 minutos terminou.");
