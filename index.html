@@ -2144,21 +2144,34 @@ abrirConversa.canal=cliente
 },(payload)=>{
  if(payload.new.content!=="PAPPI_DELETED")return;
 
- const mensagem=document.querySelector(
+  const mensagem=lista.querySelector(
   '.pappiMensagem[data-mensagem-id="'+payload.new.id+'"]'
  );
 
  if(!mensagem)return;
 
- mensagem.innerHTML='<span style="color:#8993a3;font-size:12px;font-style:italic">Esta mensagem foi apagada.</span>';
- mensagem.style.justifyContent="center";
- mensagem.style.background="transparent";
- mensagem.style.boxShadow="none";
- mensagem.style.padding="0 3px";
+ if(payload.new.content==="PAPPI_DELETED"){
+  mensagem.innerHTML='<span style="color:#8993a3;font-size:12px;font-style:italic">Esta mensagem foi apagada.</span>';
+  mensagem.style.justifyContent="center";
+  mensagem.style.background="transparent";
+  mensagem.style.boxShadow="none";
+  mensagem.style.padding="0 3px";
+  mensagem.dataset.conteudo="PAPPI_DELETED";
+  mensagem.dataset.apagada="true";
+  agendarRemocaoAviso(payload.new.id);
+  return;
+ }
 
- mensagem.dataset.conteudo="PAPPI_DELETED";
- mensagem.dataset.apagada="true";
- agendarRemocaoAviso(payload.new.id);
+ if(payload.new.sender_id!==usuarioAtual.id)return;
+
+ const tiques=mensagem.querySelector(".pappiStatusTicks");
+ if(!tiques)return;
+
+ tiques.innerHTML=payload.new.read_at
+  ?'<svg viewBox="0 0 24 16" width="19" height="13" fill="none" stroke="#60b7ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m1 8 4 4L13 3M9 8l4 4 9-9"/></svg>'
+  :payload.new.delivered_at
+  ?'<svg viewBox="0 0 24 16" width="19" height="13" fill="none" stroke="#aebdce" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m1 8 4 4L13 3M9 8l4 4 9-9"/></svg>'
+  :'<svg viewBox="0 0 24 16" width="15" height="13" fill="none" stroke="#aebdce" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 8 5 5L19 3"/></svg>';
 })
   .on("postgres_changes",{
   event:"DELETE",
