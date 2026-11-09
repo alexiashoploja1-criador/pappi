@@ -505,6 +505,52 @@ function iniciarPresencaPappi(){
  document.addEventListener("visibilitychange",()=>{
   if(document.visibilityState==="visible")atualizarPresencaPappi();
  });
+ let canalPresencaPappi=null;
+
+async function marcarMensagensEntregues(usuarioDestinatario){
+ if(!usuarioAtual||usuarioDestinatario===usuarioAtual.id)return;
+
+ const {data:participacoes,error}=await cliente
+  .from("conversation_members")
+  .select("conversation_id")
+  .eq("user_id",usuarioDestinatario);
+
+ if(error||!participacoes?.length)return;
+
+ const conversas=participacoes.map(item=>item.conversation_id);
+
+ const {error:erroEntrega}=await cliente
+  .from("messages")
+  .update({delivered_at:new Date().toISOString()})
+  .eq("sender_id",usuarioAtual.id)
+  .in("conversation_id",conversas)
+  .is("delivered_at",null)
+  .neq("content","PAPPI_DELETED");
+
+ if(erroEntrega)console.error("PAPPI entrega:",erroEntrega);
+}
+
+function observarPresencaPappi(){
+ if(canalPresencaPappi){
+  cliente.removeChannel(canalPresencaPappi);
+ }
+
+ canalPresencaPappi=cliente
+  .channel("presenca-global-"+usuarioAtual.id)
+  .on("postgres_changes",{
+   event:"*",
+   schema:"public",
+   table:"user_presence"
+  },payload=>{
+   const pessoa=payload.new;
+   if(!pessoa?.user_id||!pessoa.last_seen)return;
+
+   const online=Date.now()-new Date(pessoa.last_seen).getTime()<45000;
+
+   if(online)marcarMensagensEntregues(pessoa.user_id);
+  })
+  .subscribe();
+}
 }
 
 async function direcionarUsuario(usuario){
