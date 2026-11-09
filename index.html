@@ -494,18 +494,7 @@ async function atualizarPresencaPappi(){
 
  if(error)console.error("PAPPI presença:",error);
 }
-
-function iniciarPresencaPappi(){
- if(intervaloPresencaPappi)clearInterval(intervaloPresencaPappi);
-
- atualizarPresencaPappi();
- intervaloPresencaPappi=setInterval(atualizarPresencaPappi,20000);
-
- document.removeEventListener("visibilitychange",atualizarPresencaPappi);
- document.addEventListener("visibilitychange",()=>{
-  if(document.visibilityState==="visible")atualizarPresencaPappi();
- });
- let canalPresencaPappi=null;
+let canalPresencaPappi=null;
 
 async function marcarMensagensEntregues(usuarioDestinatario){
  if(!usuarioAtual||usuarioDestinatario===usuarioAtual.id)return;
@@ -551,6 +540,17 @@ function observarPresencaPappi(){
   })
   .subscribe();
 }
+function iniciarPresencaPappi(){
+ if(intervaloPresencaPappi)clearInterval(intervaloPresencaPappi);
+
+ atualizarPresencaPappi();
+ intervaloPresencaPappi=setInterval(atualizarPresencaPappi,20000);
+
+ document.removeEventListener("visibilitychange",atualizarPresencaPappi);
+ document.addEventListener("visibilitychange",()=>{
+  if(document.visibilityState==="visible")atualizarPresencaPappi();
+ });
+ 
 }
 
 async function direcionarUsuario(usuario){
