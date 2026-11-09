@@ -1468,7 +1468,8 @@ menuAcoes.querySelector('[data-acao="editar"]').onclick=()=>{
  const campo=document.getElementById("textoMensagem");
  campo.value=original;
  campo.placeholder="Corrigindo mensagem...";
- campo.focus();
+document.getElementById("avisoEdicaoMensagem").style.display="block";
+campo.focus();
 
  menuAcoes.style.display="none";
 };
@@ -1889,6 +1890,7 @@ document.getElementById("formMensagem").onsubmit=async evento=>{
   if(!mensagem){
    campo.dataset.editandoMensagemId="";
    mensagemEmEdicao=null;
+   document.getElementById("avisoEdicaoMensagem").style.display="none";
    alert("Não foi possível localizar a mensagem para editar.");
    return;
   }
@@ -1899,6 +1901,7 @@ document.getElementById("formMensagem").onsubmit=async evento=>{
    campo.dataset.editandoMensagemId="";
    campo.value="";
    campo.placeholder="Digite sua mensagem...";
+   document.getElementById("avisoEdicaoMensagem").style.display="none";
    alert("O prazo de edição de 10 minutos terminou.");
    return;
   }
@@ -1909,6 +1912,7 @@ document.getElementById("formMensagem").onsubmit=async evento=>{
    campo.value="";
    campo.placeholder="Digite sua mensagem...";
    return;
+   document.getElementById("avisoEdicaoMensagem").style.display="none";
   }
 
   campo.disabled=true;
@@ -1947,6 +1951,7 @@ document.getElementById("formMensagem").onsubmit=async evento=>{
   corpo.insertBefore(etiqueta,rodape);
 
   mensagemEmEdicao=null;
+  document.getElementById("avisoEdicaoMensagem").style.display="none";
   campo.dataset.editandoMensagemId="";
   campo.value="";
   campo.placeholder="Digite sua mensagem...";
