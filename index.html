@@ -1246,8 +1246,14 @@ function mostrarMenuMensagem(mensagem){
   idadeMensagem<=10*60*1000
   ?"flex":"none";
 
- menuAcoes.querySelector('[data-acao="apagar-todos"]').style.display=
-  mensagem.dataset.minha==="true"?"flex":"none";
+ const idadeApagar=Date.now()-new Date(mensagem.dataset.criadaEm).getTime();
+
+menuAcoes.querySelector('[data-acao="apagar-todos"]').style.display=
+ mensagem.dataset.minha==="true" &&
+ mensagem.dataset.apagada!=="true" &&
+ idadeApagar>=0 &&
+ idadeApagar<=30*60*1000
+ ?"flex":"none";
 
  menuAcoes.style.display="flex";
 }
