@@ -496,8 +496,32 @@ async function atualizarPresencaPappi(){
 }
 let canalPresencaPappi=null;
 
-async function marcarMensagensEntregues(){
+async function marcarMensagensEntregues(destinatarioId){
  if(!usuarioAtual)return;
+
+ const consulta=cliente
+  .from("messages")
+  .update({delivered_at:new Date().toISOString()});
+
+ if(destinatarioId){
+  const {data:participacoes,error}=await cliente
+   .from("conversation_members")
+   .select("conversation_id")
+   .eq("user_id",destinatarioId);
+
+  if(error||!participacoes?.length)return;
+
+  const conversas=participacoes.map(item=>item.conversation_id);
+
+  const {error:erroEntrega}=await consulta
+   .in("conversation_id",conversas)
+   .eq("sender_id",usuarioAtual.id)
+   .is("delivered_at",null)
+   .neq("content","PAPPI_DELETED");
+
+  if(erroEntrega)console.error("PAPPI entrega:",erroEntrega);
+  return;
+ }
 
  const {data:participacoes,error}=await cliente
   .from("conversation_members")
