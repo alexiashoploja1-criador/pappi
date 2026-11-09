@@ -1879,8 +1879,17 @@ document.getElementById("formMensagem").onsubmit=async evento=>{
 
  if(!texto)return;
 
- if(mensagemEmEdicao){
-  const mensagem=mensagemEmEdicao;
+ if(campo.dataset.editandoMensagemId){
+  const mensagem=lista.querySelector(
+   '.pappiMensagem[data-mensagem-id="'+campo.dataset.editandoMensagemId+'"]'
+  );
+
+  if(!mensagem){
+   campo.dataset.editandoMensagemId="";
+   mensagemEmEdicao=null;
+   alert("Não foi possível localizar a mensagem para editar.");
+   return;
+  }
   const idade=Date.now()-new Date(mensagem.dataset.criadaEm).getTime();
 
   if(idade<0 || idade>10*60*1000){
