@@ -1440,6 +1440,69 @@ async function encaminharMensagensSelecionadas(){
   };
  });
 }
+menuAcoes.querySelector('[data-acao="editar"]').onclick=async()=>{
+ if(!mensagemSelecionada)return;
+
+ const mensagem=mensagemSelecionada;
+ const idade=Date.now()-new Date(mensagem.dataset.criadaEm).getTime();
+ const original=mensagem.dataset.conteudo||"";
+
+ if(
+  mensagem.dataset.minha!=="true" ||
+  mensagem.dataset.apagada==="true" ||
+  idade<0 ||
+  idade>10*60*1000 ||
+  !original ||
+  ["PAPPI_IMG:","PAPPI_AUDIO:","PAPPI_REPLY:","PAPPI_DELETED"].some(tipo=>original.startsWith(tipo))
+ ){
+  menuAcoes.style.display="none";
+  alert("Esta mensagem não pode mais ser editada.");
+  return;
+ }
+
+ const novoTexto=prompt("Corrija sua mensagem:",original);
+ if(novoTexto===null)return;
+
+ const textoCorrigido=novoTexto.trim();
+ if(!textoCorrigido){
+  alert("A mensagem não pode ficar vazia.");
+  return;
+ }
+
+ if(textoCorrigido===original){
+  menuAcoes.style.display="none";
+  return;
+ }
+
+ const {error}=await cliente
+  .from("messages")
+  .update({content:textoCorrigido})
+  .eq("id",mensagem.dataset.mensagemId)
+  .eq("sender_id",usuarioAtual.id);
+
+ if(error){
+  alert("Não foi possível editar: "+error.message);
+  return;
+ }
+
+ mensagem.dataset.conteudo=textoCorrigido;
+
+ const corpo=mensagem.firstElementChild;
+ const rodape=corpo.lastElementChild;
+
+ while(corpo.firstChild!==rodape){
+  corpo.removeChild(corpo.firstChild);
+ }
+
+ corpo.insertBefore(document.createTextNode(textoCorrigido+" "),rodape);
+
+ const etiqueta=document.createElement("span");
+ etiqueta.textContent="Editada";
+ etiqueta.style.cssText="font-size:10px;opacity:.7;font-style:italic;margin-right:5px";
+ corpo.insertBefore(etiqueta,rodape);
+
+ menuAcoes.style.display="none";
+};
 menuAcoes.querySelector('[data-acao="copiar"]').onclick=async()=>{
  const texto=mensagemSelecionada?.dataset.conteudo||"";
 
