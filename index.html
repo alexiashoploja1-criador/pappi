@@ -518,7 +518,25 @@ async function marcarMensagensEntregues(usuarioDestinatario){
 
  if(erroEntrega)console.error("PAPPI entrega:",erroEntrega);
 }
+async function verificarPresencasAtivasPappi(){
+ const {data:pessoas,error}=await cliente
+  .from("user_presence")
+  .select("user_id,last_seen");
 
+ if(error||!pessoas?.length)return;
+
+ const agora=Date.now();
+
+ for(const pessoa of pessoas){
+  if(pessoa.user_id===usuarioAtual.id)continue;
+
+  const online=agora-new Date(pessoa.last_seen).getTime()<45000;
+
+  if(online){
+   await marcarMensagensEntregues(pessoa.user_id);
+  }
+ }
+}
 function observarPresencaPappi(){
  if(canalPresencaPappi){
   cliente.removeChannel(canalPresencaPappi);
