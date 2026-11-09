@@ -1032,13 +1032,21 @@ function atualizarBarraSelecao(){
  }
  barraSelecaoMensagens.innerHTML=`
  <button id="pappiBotaoEncaminharSelecao" type="button" style="width:44px;height:44px;border:0;border-radius:50%;background:#0875ed;color:white;display:flex;align-items:center;justify-content:center">
-  <svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 5 21 12l-7 7v-4c-6 0-9 2-11 5 1-7 4-11 11-11V5Z"/></svg>
+  ${acaoSelecaoMensagens==="apagar"
+   ?'<svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6m4 4v6m6-6v6"/></svg>'
+   :'<svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 5 21 12l-7 7v-4c-6 0-9 2-11 5 1-7 4-11 11-11V5Z"/></svg>'}
  </button>
  <strong>${mensagensSelecionadas.size} selecionada(s)</strong>
  <button id="pappiCancelarSelecao" type="button" style="border:0;border-radius:18px;padding:10px 15px;background:#eaf2ff;color:#0875ed;font-weight:600">Cancelar</button>
 `;
  barraSelecaoMensagens.querySelector("#pappiCancelarSelecao").onclick=encerrarSelecaoMensagens;
- barraSelecaoMensagens.querySelector("#pappiBotaoEncaminharSelecao").onclick=encaminharMensagensSelecionadas;
+ barraSelecaoMensagens.querySelector("#pappiBotaoEncaminharSelecao").onclick=()=>{
+  if(acaoSelecaoMensagens==="apagar"){
+   apagarMensagensSelecionadas();
+  }else{
+   encaminharMensagensSelecionadas();
+  }
+ };
 }
 
 function atualizarVisualSelecao(mensagem,selecionada){
