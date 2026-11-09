@@ -480,14 +480,45 @@ async function entrar(){
  await direcionarUsuario(data.user);
 }
 
+let intervaloPresencaPappi=null;
+
+async function atualizarPresencaPappi(){
+ if(!usuarioAtual)return;
+
+ const {error}=await cliente
+  .from("user_presence")
+  .upsert({
+   user_id:usuarioAtual.id,
+   last_seen:new Date().toISOString()
+  },{onConflict:"user_id"});
+
+ if(error)console.error("PAPPI presença:",error);
+}
+
+function iniciarPresencaPappi(){
+ if(intervaloPresencaPappi)clearInterval(intervaloPresencaPappi);
+
+ atualizarPresencaPappi();
+ intervaloPresencaPappi=setInterval(atualizarPresencaPappi,20000);
+
+ document.removeEventListener("visibilitychange",atualizarPresencaPappi);
+ document.addEventListener("visibilitychange",()=>{
+  if(document.visibilityState==="visible")atualizarPresencaPappi();
+ });
+}
+
 async function direcionarUsuario(usuario){
  if(!usuario)return;
  usuarioAtual=usuario;
+ iniciarPresencaPappi();
+
  const {data,error}=await cliente.from("profiles").select("*").eq("user_id",usuario.id).maybeSingle();
+
  if(error){
   mostrarEntrada("Não foi possível consultar seu perfil: "+error.message);
   return;
  }
+
  if(data){abrirTelaPrincipal(usuario,data);}
  else{mostrarCompletarPerfil(usuario);}
 }
