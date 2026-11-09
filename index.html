@@ -2277,7 +2277,7 @@ abrirConversa.canal=cliente
  filter:"conversation_id=eq."+conversaId
 },(payload)=>{
 
-  const mensagem=lista.querySelector(
+  const mensagem=document.getElementById("listaMensagens").querySelector(
   '.pappiMensagem[data-mensagem-id="'+payload.new.id+'"]'
  );
 
