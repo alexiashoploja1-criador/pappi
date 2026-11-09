@@ -2142,7 +2142,6 @@ abrirConversa.canal=cliente
  table:"messages",
  filter:"conversation_id=eq."+conversaId
 },(payload)=>{
- if(payload.new.content!=="PAPPI_DELETED")return;
 
   const mensagem=lista.querySelector(
   '.pappiMensagem[data-mensagem-id="'+payload.new.id+'"]'
