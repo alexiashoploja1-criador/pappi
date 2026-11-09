@@ -2204,7 +2204,35 @@ abrirConversa.canal=cliente
    "Conectando...";
   console.log("PAPPI REALTIME:",status,erro||"");
  });
+ async function sincronizarTiquesPappi(){
+  const {data,error}=await cliente
+   .from("messages")
+   .select("id,delivered_at,read_at")
+   .eq("conversation_id",conversaId)
+   .eq("sender_id",usuarioAtual.id);
 
+  if(error||!data)return;
+
+  data.forEach(m=>{
+   const mensagem=document.querySelector(
+    '.pappiMensagem[data-mensagem-id="'+m.id+'"]'
+   );
+
+   if(!mensagem)return;
+
+   const tiques=mensagem.querySelector(".pappiStatusTicks");
+   if(!tiques)return;
+
+   tiques.innerHTML=m.read_at
+    ?'<svg viewBox="0 0 24 16" width="19" height="13" fill="none" stroke="#60b7ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m1 8 4 4L13 3M9 8l4 4 9-9"/></svg>'
+    :m.delivered_at
+    ?'<svg viewBox="0 0 24 16" width="19" height="13" fill="none" stroke="#aebdce" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m1 8 4 4L13 3M9 8l4 4 9-9"/></svg>'
+    :'<svg viewBox="0 0 24 16" width="15" height="13" fill="none" stroke="#aebdce" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 8 5 5L19 3"/></svg>';
+  });
+ }
+
+ sincronizarTiquesPappi();
+ abrirConversa.intervaloStatus=setInterval(sincronizarTiquesPappi,3000);
 }
  async function carregarConversas(){
  const listaAnterior=document.getElementById("listaMensagens");
