@@ -2301,10 +2301,7 @@ abrirConversa.canal=cliente
   agendarRemocaoAviso(payload.new.id);
   return;
  }
-if(
- payload.new.edited_at &&
- mensagem.dataset.conteudo!==payload.new.content
-){
+if(mensagem.dataset.conteudo!==payload.new.content){
  const corpo=mensagem.firstElementChild;
  const rodape=corpo.lastElementChild;
 
