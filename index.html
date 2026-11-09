@@ -564,6 +564,7 @@ function iniciarPresencaPappi(){
  atualizarPresencaPappi();
  observarPresencaPappi();
  verificarPresencasAtivasPappi();
+setInterval(verificarPresencasAtivasPappi,5000);
  intervaloPresencaPappi=setInterval(atualizarPresencaPappi,20000);
 
  document.removeEventListener("visibilitychange",atualizarPresencaPappi);
