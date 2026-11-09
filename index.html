@@ -1229,6 +1229,20 @@ function mostrarMenuMensagem(mensagem){
 
  mensagemSelecionada=mensagem;
 
+ const opcaoEditar=menuAcoes.querySelector('[data-acao="editar"]');
+ const idadeMensagem=Date.now()-new Date(mensagem.dataset.criadaEm).getTime();
+ const conteudo=mensagem.dataset.conteudo||"";
+
+ const ehTexto=conteudo.length>0 &&
+  !["PAPPI_IMG:","PAPPI_AUDIO:","PAPPI_REPLY:","PAPPI_DELETED"].some(tipo=>conteudo.startsWith(tipo));
+
+ opcaoEditar.style.display=
+  mensagem.dataset.minha==="true" &&
+  ehTexto &&
+  idadeMensagem>=0 &&
+  idadeMensagem<=10*60*1000
+  ?"flex":"none";
+
  menuAcoes.querySelector('[data-acao="apagar-todos"]').style.display=
   mensagem.dataset.minha==="true"?"flex":"none";
 
