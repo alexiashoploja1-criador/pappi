@@ -821,7 +821,7 @@ const alturaAnterior=listaAnterior?listaAnterior.scrollHeight:0;
 const posicaoAnterior=listaAnterior?listaAnterior.scrollTop:0;
   let {data,error}=await cliente
    .from("messages")
-   .select("id,sender_id,content,created_at")
+   .select("id,sender_id,content,created_at,delivered_at,read_at")
    .eq("conversation_id",conversaId)
    .order("created_at",{ascending:true});
   if(minhaVersao!==versaoCarregamentoMensagens)return;
