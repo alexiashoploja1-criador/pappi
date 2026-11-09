@@ -1508,6 +1508,40 @@ menuAcoes.querySelector('[data-acao="responder"]').onclick=()=>{
   };
  });
 }; 
+async function apagarMensagensSelecionadas(){
+ const ids=Array.from(lista.querySelectorAll(".pappiMensagem"))
+  .filter(item=>mensagensSelecionadas.has(item.dataset.mensagemId))
+  .filter(item=>item.dataset.apagada!=="true")
+  .map(item=>item.dataset.mensagemId);
+
+ if(ids.length===0){
+  alert("Selecione pelo menos uma mensagem.");
+  return;
+ }
+
+ const registros=ids.map(id=>({
+  message_id:id,
+  user_id:usuarioAtual.id
+ }));
+
+ const {error}=await cliente
+  .from("message_hidden_for")
+  .insert(registros);
+
+ if(error){
+  alert("Não foi possível apagar as mensagens: "+error.message);
+  return;
+ }
+
+ ids.forEach(id=>{
+  const mensagem=lista.querySelector(
+   '.pappiMensagem[data-mensagem-id="'+id+'"]'
+  );
+  if(mensagem)mensagem.remove();
+ });
+
+ encerrarSelecaoMensagens();
+}
 menuAcoes.querySelector('[data-acao="apagar-mim"]').onclick=()=>{
  if(!mensagemSelecionada)return;
 
