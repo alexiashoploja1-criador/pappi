@@ -496,13 +496,13 @@ async function atualizarPresencaPappi(){
 }
 let canalPresencaPappi=null;
 
-async function marcarMensagensEntregues(){
- if(!usuarioAtual)return;
+async function marcarMensagensEntregues(destinatarioId){
+ if(!usuarioAtual||!destinatarioId)return;
 
  const {data:participacoes,error}=await cliente
   .from("conversation_members")
   .select("conversation_id")
-  .eq("user_id",usuarioAtual.id);
+  .eq("user_id",destinatarioId);
 
  if(error||!participacoes?.length)return;
 
@@ -512,7 +512,7 @@ async function marcarMensagensEntregues(){
   .from("messages")
   .update({delivered_at:new Date().toISOString()})
   .in("conversation_id",conversas)
-  .neq("sender_id",usuarioAtual.id)
+  .eq("sender_id",usuarioAtual.id)
   .is("delivered_at",null)
   .neq("content","PAPPI_DELETED");
 
