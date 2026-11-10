@@ -1078,6 +1078,15 @@ ontem.setDate(ontem.getDate()-1);
 
 let ultimaData="";
 
+const mensagensNaTela=lista.querySelectorAll(".pappiMensagem");
+
+if(mensagensNaTela.length){
+ const ultimaMensagemNaTela=mensagensNaTela[mensagensNaTela.length-1];
+ const dataAnterior=new Date(ultimaMensagemNaTela.dataset.criadaEm);
+ dataAnterior.setHours(0,0,0,0);
+ ultimaData=dataAnterior.getTime();
+}
+
 const mensagensComDatas=mensagensParaRenderizar.map((m,i)=>{
  const dataMensagem=new Date(m.created_at);
  const diaMensagem=new Date(dataMensagem);
