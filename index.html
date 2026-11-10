@@ -417,39 +417,36 @@ h1{font-size:29px;margin:25px 0 10px;color:#102653}
  overscroll-behavior:contain;
  -webkit-overflow-scrolling:touch;
 }
-/* PAPPI - bloquear rolagem da página inteira no iPhone */
-html:has(.app),
-body:has(.app){
- height:100%;
- overflow:hidden;
- overscroll-behavior:none;
+/* PAPPI - estrutura definitiva da conversa */
+html,body{
+ width:100%!important;
+ max-width:100%!important;
+ height:100%!important;
+ overflow:hidden!important;
 }
 
-/* PAPPI - estrutura fixa da conversa */
-#app:has(.app){
+#app{
  position:fixed!important;
- top:0!important;
- left:0!important;
- right:0!important;
- bottom:0!important;
+ inset:0!important;
  width:100%!important;
+ max-width:100%!important;
  height:100dvh!important;
  overflow:hidden!important;
 }
 
 .app{
+ width:100%!important;
+ max-width:100%!important;
  height:100%!important;
  min-height:0!important;
- display:flex;
- flex-direction:column;
+ display:flex!important;
+ flex-direction:column!important;
  overflow:hidden!important;
 }
 
 .app.conversa-aberta{
  height:100%!important;
  min-height:0!important;
- display:flex!important;
- flex-direction:column!important;
  overflow:hidden!important;
 }
 
@@ -458,12 +455,16 @@ body:has(.app){
 }
 
 .app.conversa-aberta>.conversa{
+ position:relative!important;
  display:flex!important;
  flex:1 1 0%!important;
  flex-direction:column!important;
- height:0!important;
+ width:calc(100% - 24px)!important;
+ min-width:0!important;
  min-height:0!important;
+ height:auto!important;
  margin:0 auto!important;
+ padding:0 10px 76px!important;
  overflow:hidden!important;
 }
 
@@ -474,6 +475,7 @@ body:has(.app){
 
 #listaMensagens{
  flex:1 1 0%!important;
+ min-width:0!important;
  min-height:0!important;
  width:100%!important;
  overflow-x:hidden!important;
@@ -483,17 +485,21 @@ body:has(.app){
 
 #formMensagem{
  display:flex!important;
- position:relative!important;
- flex:0 0 auto!important;
+ position:absolute!important;
+ left:0!important;
+ right:0!important;
+ bottom:0!important;
  width:100%!important;
+ min-width:0!important;
  min-height:64px!important;
  margin:0!important;
+ padding:8px 10px!important;
  align-items:center!important;
  background:#fff!important;
  border-top:1px solid #e1e8f2!important;
  visibility:visible!important;
  opacity:1!important;
- z-index:20!important;
+ z-index:100!important;
 }
 
 </style>
