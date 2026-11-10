@@ -417,7 +417,21 @@ h1{font-size:29px;margin:25px 0 10px;color:#102653}
  overscroll-behavior:contain;
  -webkit-overflow-scrolling:touch;
 }
+/* PAPPI - bloquear rolagem da página inteira no iPhone */
+html:has(.app),
+body:has(.app){
+ height:100%;
+ overflow:hidden;
+ overscroll-behavior:none;
+}
 
+#app:has(.app){
+ position:fixed;
+ inset:0;
+ width:100%;
+ height:100%;
+ overflow:hidden;
+}
 </style>
 </head>
 <body>
