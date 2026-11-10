@@ -2662,6 +2662,14 @@ const posicaoAnterior=listaAnterior?listaAnterior.scrollTop:0;
   const ultima=(ultimas||[]).find(x=>x.conversation_id===m.conversation_id);
    const quantidadeNaoLidas=(naolidas||[])
    .filter(x=>x.conversation_id===m.conversation_id).length;
+  const conteudoUltima=ultima?.content||"";
+const encaminhada=conteudoUltima.startsWith("PAPPI_FWD:");
+const conteudoPreview=encaminhada?conteudoUltima.substring(10):conteudoUltima;
+const textoPrevia=!ultima?"Nenhuma mensagem ainda":
+ conteudoPreview.startsWith("PAPPI_AUDIO:")?"Áudio":
+ conteudoPreview.startsWith("PAPPI_IMG:")?"Foto":
+ escapar(conteudoPreview);
+const previaUltima=ultima?(encaminhada?"Encaminhada: ":"")+textoPrevia:textoPrevia;
   const foto=p.avatar_url
    ? `<img src="${escapar(p.avatar_url)}" style="width:44px;height:44px;border-radius:50%;object-fit:cover">`
    : `<div style="width:44px;height:44px;border-radius:50%;background:#e5efff;color:#0875ed;display:flex;align-items:center;justify-content:center;font-weight:bold">${escapar(p.full_name.charAt(0).toUpperCase())}</div>`;
@@ -2675,7 +2683,7 @@ const posicaoAnterior=listaAnterior?listaAnterior.scrollTop:0;
  ${quantidadeNaoLidas>0?`<span style="background:#0875ed;color:white;border-radius:20px;padding:2px 8px;font-size:11px">${quantidadeNaoLidas}</span>`:""}
 </div>
      <div style="font-size:12px;font-weight:normal;opacity:.85">@${escapar(p.username)}</div>
-     <div style="font-size:12px;font-weight:normal;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${ultima?(ultima.content.startsWith("PAPPI_AUDIO:")?"Áudio":ultima.content.startsWith("PAPPI_IMG:")?"Foto":escapar(ultima.content)):"Nenhuma mensagem ainda"}</div>
+     <div style="font-size:12px;font-weight:normal;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${previaUltima}</div>
     </span>
    </button>
   `;
