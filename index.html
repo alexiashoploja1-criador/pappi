@@ -429,7 +429,7 @@ html,body{
  position:fixed!important;
  left:0!important;
  right:0!important;
- top:var(--pappi-topo-visivel,0px)!important;
+ top:0px!important;
  bottom:auto!important;
  width:100%!important;
  max-width:100%!important;
@@ -3299,13 +3299,14 @@ function ajustarAlturaPappi(){
  const viewport=window.visualViewport;
  const altura=viewport?viewport.height:window.innerHeight;
  const topo=viewport?viewport.offsetTop:0;
- const teclado=Math.max(0,window.innerHeight-altura-topo);
+ const alturaTela=altura+topo;
+ const teclado=Math.max(0,window.innerHeight-alturaTela);
 
  document.documentElement.style.setProperty(
-  "--pappi-altura-visivel",altura+"px"
+  "--pappi-altura-visivel",alturaTela+"px"
  );
  document.documentElement.style.setProperty(
-  "--pappi-topo-visivel",topo+"px"
+  "--pappi-topo-visivel","0px"
  );
  document.documentElement.style.setProperty(
   "--pappi-teclado-altura",teclado+"px"
