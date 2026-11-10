@@ -490,10 +490,11 @@ html,body{
 
 #formMensagem{
  display:flex!important;
- position:fixed!important;
- left:0!important;
- right:0!important;
- bottom:var(--pappi-teclado-altura,0px)!important;
+ position:relative!important;
+ flex:0 0 auto!important;
+ left:auto!important;
+ right:auto!important;
+ bottom:auto!important;
  width:100%!important;
  max-width:100%!important;
  min-width:0!important;
@@ -506,7 +507,7 @@ html,body{
  border-top:1px solid #e1e8f2!important;
  visibility:visible!important;
  opacity:1!important;
- z-index:9999!important;
+ z-index:10!important;
 }
 
 </style>
