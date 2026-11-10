@@ -440,6 +440,16 @@ body:has(.app){
  background:#fff;
  flex-shrink:0;
 }
+ /* Ajuste da tela ao teclado do iPhone */
+#app:has(.app){
+ top:var(--pappi-topo-visivel,0px);
+ bottom:auto;
+ height:var(--pappi-altura-visivel,100dvh);
+}
+
+.app{
+ height:100%;
+}
 </style>
 </head>
 <body>
@@ -3224,7 +3234,27 @@ cliente.auth.onAuthStateChange((evento,sessao)=>{
   mostrarEntrada();
  }
 });
+function ajustarAlturaPappi(){
+ const viewport=window.visualViewport;
+ const altura=viewport?viewport.height:window.innerHeight;
+ const topo=viewport?viewport.offsetTop:0;
 
+ document.documentElement.style.setProperty(
+  "--pappi-altura-visivel",altura+"px"
+ );
+ document.documentElement.style.setProperty(
+  "--pappi-topo-visivel",topo+"px"
+ );
+}
+
+ajustarAlturaPappi();
+
+if(window.visualViewport){
+ window.visualViewport.addEventListener("resize",ajustarAlturaPappi);
+ window.visualViewport.addEventListener("scroll",ajustarAlturaPappi);
+}
+
+window.addEventListener("orientationchange",ajustarAlturaPappi);
 async function iniciar(){
  mostrarEntrada();
  const {data,error}=await cliente.auth.getSession();
