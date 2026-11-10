@@ -871,6 +871,15 @@ area.style.minHeight="0";
  `;
 
  document.getElementById("voltarConversas").onclick=async()=>{
+  if(abrirConversa.canalPresenca){
+ await cliente.removeChannel(abrirConversa.canalPresenca);
+ abrirConversa.canalPresenca=null;
+}
+
+if(abrirConversa.intervaloPresenca){
+ clearInterval(abrirConversa.intervaloPresenca);
+ abrirConversa.intervaloPresenca=null;
+}
   const listaAtual=document.getElementById("listaMensagens");
  if(listaAtual){
   abrirConversa.posicoes=abrirConversa.posicoes||{};
