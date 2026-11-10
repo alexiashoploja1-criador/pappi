@@ -2562,6 +2562,7 @@ if(mensagem.dataset.conteudo!==payload.new.content){
    status==="CLOSED"?"Conexão encerrada":
    "Conectando...";
   console.log("PAPPI REALTIME:",status,erro||"");
+  indicador.style.display=status==="SUBSCRIBED"?"none":"block";
  });
  async function sincronizarTiquesPappi(){
   const {data,error}=await cliente
