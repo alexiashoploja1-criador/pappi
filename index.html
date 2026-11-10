@@ -482,6 +482,7 @@ html,body{
  min-height:0!important;
  width:100%!important;
  box-sizing:border-box!important;
+ margin-bottom:72px!important;
  padding-bottom:15px!important;
  overflow-x:hidden!important;
  overflow-y:auto!important;
@@ -490,11 +491,10 @@ html,body{
 
 #formMensagem{
  display:flex!important;
- position:relative!important;
- flex:0 0 auto!important;
- left:auto!important;
- right:auto!important;
- bottom:auto!important;
+ position:fixed!important;
+ left:0!important;
+ right:0!important;
+ bottom:var(--pappi-teclado-altura,0px)!important;
  width:100%!important;
  max-width:100%!important;
  min-width:0!important;
@@ -507,7 +507,7 @@ html,body{
  border-top:1px solid #e1e8f2!important;
  visibility:visible!important;
  opacity:1!important;
- z-index:10!important;
+ z-index:9999!important;
 }
 
 </style>
