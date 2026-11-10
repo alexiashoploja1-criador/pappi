@@ -450,6 +450,20 @@ body:has(.app){
 .app{
  height:100%;
 }
+ /* PAPPI - manter digitação acima do teclado */
+.app.conversa-aberta{
+ height:100%!important;
+ min-height:0!important;
+}
+
+.app.conversa-aberta>.conversa{
+ min-height:0;
+ flex:1;
+}
+
+#formMensagem{
+ flex-shrink:0;
+}
 </style>
 </head>
 <body>
