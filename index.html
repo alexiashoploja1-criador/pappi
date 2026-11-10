@@ -1106,10 +1106,11 @@ const mensagensComDatas=mensagensParaRenderizar.map((m,i)=>{
   titulo="Ontem";
  }else{
   titulo=dataMensagem.toLocaleDateString("pt-BR",{
-   day:"2-digit",
-   month:"long",
-   year:"numeric"
-  });
+ weekday:"long",
+ day:"2-digit",
+ month:"long",
+ year:"numeric"
+});
  }
 
  return `<div class="pappiSeparadorData" data-titulo="${titulo}" style="display:flex;justify-content:center;margin:16px 0 10px">
