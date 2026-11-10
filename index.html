@@ -464,6 +464,28 @@ body:has(.app){
 #formMensagem{
  flex-shrink:0;
 }
+ /* PAPPI - fixar barra de digitação no rodapé */
+.app.conversa-aberta>.conversa{
+ position:relative!important;
+}
+
+#formMensagem{
+ display:flex!important;
+ position:absolute!important;
+ bottom:0!important;
+ left:0!important;
+ right:0!important;
+ width:100%!important;
+ min-height:64px!important;
+ z-index:50!important;
+ background:#fff!important;
+ visibility:visible!important;
+ opacity:1!important;
+}
+
+#listaMensagens{
+ padding-bottom:85px!important;
+}
 </style>
 </head>
 <body>
