@@ -1112,7 +1112,7 @@ const mensagensComDatas=mensagensParaRenderizar.map((m,i)=>{
   });
  }
 
- return `<div style="display:flex;justify-content:center;margin:16px 0 10px">
+ return `<div class="pappiSeparadorData" data-titulo="${titulo}" style="display:flex;justify-content:center;margin:16px 0 10px">
   <span style="background:#e8eef6;color:#52647c;padding:5px 13px;border-radius:12px;font-size:12px;font-weight:600">${titulo}</span>
  </div>`+mensagensHTML[i];
 });
