@@ -482,7 +482,7 @@ html,body{
  min-height:0!important;
  width:100%!important;
  box-sizing:border-box!important;
- padding-bottom:15px!important;
+ padding-bottom:90px!important;
  overflow-x:hidden!important;
  overflow-y:auto!important;
  -webkit-overflow-scrolling:touch;
@@ -490,24 +490,23 @@ html,body{
 
 #formMensagem{
  display:flex!important;
- position:relative!important;
- flex:0 0 auto!important;
- left:auto!important;
- right:auto!important;
- bottom:auto!important;
+ position:fixed!important;
+ left:0!important;
+ right:0!important;
+ bottom:var(--pappi-teclado-altura,0px)!important;
  width:100%!important;
  max-width:100%!important;
  min-width:0!important;
  min-height:64px!important;
  margin:0!important;
- padding:8px 10px calc(8px + env(safe-area-inset-bottom))!important;
+ padding:8px 10px!important;
  box-sizing:border-box!important;
  align-items:center!important;
  background:#fff!important;
  border-top:1px solid #e1e8f2!important;
  visibility:visible!important;
  opacity:1!important;
- z-index:10!important;
+ z-index:9999!important;
 }
 
 </style>
@@ -3299,12 +3298,16 @@ function ajustarAlturaPappi(){
  const viewport=window.visualViewport;
  const altura=viewport?viewport.height:window.innerHeight;
  const topo=viewport?viewport.offsetTop:0;
+ const teclado=Math.max(0,window.innerHeight-altura-topo);
 
  document.documentElement.style.setProperty(
   "--pappi-altura-visivel",altura+"px"
  );
  document.documentElement.style.setProperty(
   "--pappi-topo-visivel",topo+"px"
+ );
+ document.documentElement.style.setProperty(
+  "--pappi-teclado-altura",teclado+"px"
  );
 }
 
