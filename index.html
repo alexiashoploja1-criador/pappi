@@ -1113,9 +1113,9 @@ const htmlFinal=mensagensComDatas.join("");
 if(primeiraCarga)lista.style.visibility="hidden";
 
 if(primeiraCarga){
- lista.innerHTML=mensagensHTML.join("");
+ lista.innerHTML=htmlFinal;
 }else if(mensagensHTML.length){
- lista.insertAdjacentHTML("beforeend",mensagensHTML.join(""));
+ lista.insertAdjacentHTML("beforeend",htmlFinal);
 }
 let menuAcoes=document.getElementById("pappiMenuAcoes");
 
