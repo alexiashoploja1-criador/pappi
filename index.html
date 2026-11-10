@@ -884,6 +884,100 @@ area.style.minHeight="0";
 
   if(meuPerfil)abrirTelaPrincipal(usuarioAtual,meuPerfil);
  };
+if(abrirConversa.canalPresenca){
+ cliente.removeChannel(abrirConversa.canalPresenca);
+ abrirConversa.canalPresenca=null;
+}
+
+if(abrirConversa.intervaloPresenca){
+ clearInterval(abrirConversa.intervaloPresenca);
+ abrirConversa.intervaloPresenca=null;
+}
+
+const statusPresenca=document.getElementById("statusPresencaConversa");
+let ultimoAcessoContato=null;
+
+function atualizarStatusPresenca(){
+ if(!statusPresenca)return;
+
+ if(!ultimoAcessoContato){
+  statusPresenca.textContent="";
+  return;
+ }
+
+ const dataAcesso=new Date(ultimoAcessoContato);
+ const online=Date.now()-dataAcesso.getTime()<45000;
+
+ if(online){
+  statusPresenca.textContent="Online";
+  statusPresenca.style.color="#16a34a";
+  return;
+ }
+
+ const hoje=new Date();
+ hoje.setHours(0,0,0,0);
+
+ const diaAcesso=new Date(dataAcesso);
+ diaAcesso.setHours(0,0,0,0);
+
+ const ontem=new Date(hoje);
+ ontem.setDate(ontem.getDate()-1);
+
+ let horario=dataAcesso.toLocaleTimeString("pt-BR",{
+  hour:"2-digit",
+  minute:"2-digit"
+ });
+
+ let texto;
+
+ if(diaAcesso.getTime()===hoje.getTime()){
+  texto="Visto por último hoje às "+horario;
+ }else if(diaAcesso.getTime()===ontem.getTime()){
+  texto="Visto por último ontem às "+horario;
+ }else{
+  texto="Visto por último em "+
+   dataAcesso.toLocaleDateString("pt-BR")+
+   " às "+horario;
+ }
+
+ statusPresenca.textContent=texto;
+ statusPresenca.style.color="#8190a8";
+}
+
+async function carregarPresencaContato(){
+ const {data,error}=await cliente
+  .from("user_presence")
+  .select("last_seen")
+  .eq("user_id",perfil.user_id)
+  .maybeSingle();
+
+ if(error){
+  console.error("PAPPI presença:",error);
+  return;
+ }
+
+ ultimoAcessoContato=data?.last_seen||null;
+ atualizarStatusPresenca();
+}
+
+carregarPresencaContato();
+
+abrirConversa.canalPresenca=cliente
+ .channel("presenca-contato-"+perfil.user_id)
+ .on("postgres_changes",{
+  event:"*",
+  schema:"public",
+  table:"user_presence",
+  filter:"user_id=eq."+perfil.user_id
+ },payload=>{
+  ultimoAcessoContato=payload.new?.last_seen||null;
+  atualizarStatusPresenca();
+ })
+ .subscribe();
+
+abrirConversa.intervaloPresenca=setInterval(
+ atualizarStatusPresenca,5000
+);
 let versaoCarregamentoMensagens=0;
 let mensagemEmEdicao=null; 
  let rolarAposCarregarMensagens=false;
