@@ -1070,6 +1070,45 @@ return `<div class="pappiMensagem" data-mensagem-id="${m.id}" data-criada-em="${
  </div>
 </div>`;
 }));  
+ const hoje=new Date();
+hoje.setHours(0,0,0,0);
+
+const ontem=new Date(hoje);
+ontem.setDate(ontem.getDate()-1);
+
+let ultimaData="";
+
+const mensagensComDatas=mensagensParaRenderizar.map((m,i)=>{
+ const dataMensagem=new Date(m.created_at);
+ const diaMensagem=new Date(dataMensagem);
+ diaMensagem.setHours(0,0,0,0);
+
+ const chave=diaMensagem.getTime();
+
+ if(chave===ultimaData)return mensagensHTML[i];
+
+ ultimaData=chave;
+
+ let titulo;
+
+ if(chave===hoje.getTime()){
+  titulo="Hoje";
+ }else if(chave===ontem.getTime()){
+  titulo="Ontem";
+ }else{
+  titulo=dataMensagem.toLocaleDateString("pt-BR",{
+   day:"2-digit",
+   month:"long",
+   year:"numeric"
+  });
+ }
+
+ return `<div style="display:flex;justify-content:center;margin:16px 0 10px">
+  <span style="background:#e8eef6;color:#52647c;padding:5px 13px;border-radius:12px;font-size:12px;font-weight:600">${titulo}</span>
+ </div>`+mensagensHTML[i];
+});
+
+const htmlFinal=mensagensComDatas.join("");
  if(minhaVersao!==versaoCarregamentoMensagens)return; 
 if(primeiraCarga)lista.style.visibility="hidden";
 
