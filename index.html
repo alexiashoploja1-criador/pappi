@@ -1112,7 +1112,6 @@ const mensagensComDatas=mensagensParaRenderizar.map((m,i)=>{
 });
 titulo=titulo.charAt(0).toUpperCase()+titulo.slice(1);
 titulo=titulo.replace(/ de ([a-záéíóú])/i,(m,l)=>" de "+l.toUpperCase());
-});
  }
 
  return `<div class="pappiSeparadorData" data-titulo="${titulo}" style="display:flex;justify-content:center;margin:16px 0 10px">
