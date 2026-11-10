@@ -464,6 +464,18 @@ body:has(.app){
 #formMensagem{
  flex-shrink:0;
 }
+ /* PAPPI - ajustar conversa ao espaço acima do teclado */
+.app.conversa-aberta>.layout.somente-conversa{
+ height:auto!important;
+ min-height:0!important;
+ flex:1 1 0%;
+ margin:0 auto!important;
+}
+
+.app.conversa-aberta>.layout.somente-conversa>.conversa{
+ height:100%!important;
+ min-height:0!important;
+}
 </style>
 </head>
 <body>
