@@ -468,16 +468,26 @@ body:has(.app){
 
 #formMensagem{
  display:flex!important;
- position:relative!important;
- flex:0 0 auto!important;
- flex-shrink:0!important;
- width:100%!important;
+ position:fixed!important;
+ left:12px!important;
+ right:12px!important;
+ bottom:0!important;
+ width:calc(100% - 24px)!important;
+ max-width:876px!important;
  min-height:64px!important;
- margin-top:auto!important;
+ margin:0 auto!important;
+ padding:8px 10px!important;
+ flex-shrink:0!important;
+ align-items:center!important;
+ background:#fff!important;
+ border-top:1px solid #e1e8f2!important;
  visibility:visible!important;
  opacity:1!important;
- background:#fff!important;
- z-index:50!important;
+ z-index:9999!important;
+}
+
+#listaMensagens{
+ padding-bottom:90px!important;
 }
 
 </style>
