@@ -464,17 +464,16 @@ body:has(.app){
 #formMensagem{
  flex-shrink:0;
 }
- /* PAPPI - ajustar conversa ao espaço acima do teclado */
-.app.conversa-aberta>.layout.somente-conversa{
- height:auto!important;
- min-height:0!important;
+ /* PAPPI - restaurar área da conversa e digitação */
+.app.conversa-aberta>.conversa{
  flex:1 1 0%;
- margin:0 auto!important;
-}
-
-.app.conversa-aberta>.layout.somente-conversa>.conversa{
- height:100%!important;
+ height:0!important;
  min-height:0!important;
+ max-height:100%;
+ margin:0 auto!important;
+ overflow:hidden;
+ display:flex;
+ flex-direction:column;
 }
 </style>
 </head>
