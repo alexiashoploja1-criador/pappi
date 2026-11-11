@@ -460,7 +460,8 @@ body {
 
 .app.conversa-aberta > .conversa {
   position: relative !important;
-  display: flex !important;
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) auto auto !important;
   flex-direction: column !important;
   justify-content: flex-start !important;
   align-items: stretch !important;
@@ -483,8 +484,8 @@ body {
   width: 100% !important;
   min-width: 0 !important;
   min-height: 0 !important;
-  height: 0 !important;
-  flex: 1 1 0% !important;
+  height: auto !important;
+  flex: none !important;
   margin: 0 !important;
   padding: 15px 0 !important;
   padding-bottom: 15px !important;
