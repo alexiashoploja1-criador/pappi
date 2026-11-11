@@ -3315,6 +3315,7 @@ cliente.auth.onAuthStateChange((evento,sessao)=>{
 function ajustarAlturaPappi(){
   const viewport = window.visualViewport;
   const altura = viewport ? viewport.height : window.innerHeight;
+  const topo = viewport ? viewport.offsetTop : 0;
 
   document.documentElement.style.setProperty(
     "--pappi-altura-visivel",
@@ -3323,7 +3324,7 @@ function ajustarAlturaPappi(){
 
   document.documentElement.style.setProperty(
     "--pappi-topo-visivel",
-    "0px"
+    topo + "px"
   );
 }
 
