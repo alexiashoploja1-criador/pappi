@@ -459,9 +459,10 @@ html,body{
 
 .app.conversa-aberta>.conversa{
  position:relative!important;
- display:flex!important;
+ display:grid!important;
+ grid-template-columns:minmax(0,1fr)!important;
+ grid-template-rows:auto minmax(0,1fr) auto auto!important;
  flex:1 1 0%!important;
- flex-direction:column!important;
  width:calc(100% - 24px)!important;
  min-width:0!important;
  min-height:0!important;
@@ -469,19 +470,24 @@ html,body{
  margin:0 auto!important;
  padding:0 10px!important;
  overflow:hidden!important;
+ align-items:stretch!important;
+ justify-content:normal!important;
 }
 
 .cabecalhoConversa{
+ grid-column:1;
+ grid-row:1;
+ min-width:0;
  position:relative!important;
- flex:0 0 auto!important;
 }
 
 #listaMensagens{
- flex:1 1 0%!important;
+ grid-column:1;
+ grid-row:2;
+ width:100%!important;
  min-width:0!important;
  min-height:0!important;
- width:100%!important;
- box-sizing:border-box!important;
+ height:auto!important;
  margin:0!important;
  padding:15px 0!important;
  overflow-x:hidden!important;
@@ -489,13 +495,18 @@ html,body{
  -webkit-overflow-scrolling:touch;
 }
 
+#avisoEdicaoMensagem{
+ grid-column:1;
+ grid-row:3;
+ min-width:0;
+}
+
 #formMensagem{
+ grid-column:1;
+ grid-row:4;
  display:flex!important;
  position:relative!important;
- flex:0 0 auto!important;
- left:auto!important;
- right:auto!important;
- bottom:auto!important;
+ flex:none!important;
  width:100%!important;
  max-width:100%!important;
  min-width:0!important;
@@ -509,6 +520,7 @@ html,body{
  visibility:visible!important;
  opacity:1!important;
  z-index:2!important;
+ overflow:visible!important;
 }
 
 </style>
