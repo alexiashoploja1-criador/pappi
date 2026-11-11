@@ -418,23 +418,22 @@ h1{font-size:29px;margin:25px 0 10px;color:#102653}
  -webkit-overflow-scrolling:touch;
 }
 
-/* PAPPI - conversa com cabeçalho e digitação fixos */
+
+/* PAPPI - estrutura fixa da conversa */
 
 html,
 body {
   width: 100% !important;
-  max-width: 100% !important;
   height: 100% !important;
   overflow: hidden !important;
 }
 
 #app {
   position: fixed !important;
-  top: var(--pappi-deslocamento-vertical, 0px) !important;
+  top: 0 !important;
   left: 0 !important;
   right: 0 !important;
   width: 100% !important;
-  max-width: 100% !important;
   height: var(--pappi-altura-visivel, 100dvh) !important;
   overflow: hidden !important;
 }
@@ -443,7 +442,6 @@ body {
   display: flex !important;
   flex-direction: column !important;
   width: 100% !important;
-  max-width: 100% !important;
   height: 100% !important;
   min-height: 0 !important;
   overflow: hidden !important;
@@ -458,7 +456,6 @@ body {
 .app.conversa-aberta > .cabecalho {
   display: none !important;
 }
-
 
 .app.conversa-aberta > .conversa {
   position: relative !important;
@@ -475,7 +472,6 @@ body {
   margin: 0 auto !important;
   padding: 0 10px !important;
   overflow: hidden !important;
-  text-align: left !important;
   box-sizing: border-box !important;
 }
 
@@ -495,10 +491,11 @@ body {
   min-height: 0 !important;
   height: auto !important;
   margin: 0 !important;
-  padding: 15px 0 90px !important;
+  padding: 15px 0 !important;
   overflow-x: hidden !important;
   overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
 }
 
 #avisoEdicaoMensagem {
@@ -508,11 +505,11 @@ body {
 
 #formMensagem {
   display: flex !important;
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
   flex: 0 0 auto !important;
-  position: absolute !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
   width: 100% !important;
   max-width: 100% !important;
   min-width: 0 !important;
@@ -528,7 +525,6 @@ body {
   z-index: 20 !important;
   overflow: visible !important;
 }
-
 
 </style>
 </head>
@@ -3316,19 +3312,16 @@ cliente.auth.onAuthStateChange((evento,sessao)=>{
  }
 });
 
+
 function ajustarAlturaPappi(){
- const viewport=window.visualViewport;
- const altura=viewport?viewport.height:window.innerHeight;
- const deslocamento=viewport?viewport.offsetTop:0;
+  const viewport = window.visualViewport;
+  const altura = viewport ? viewport.height : window.innerHeight;
 
- document.documentElement.style.setProperty(
-  "--pappi-altura-visivel",altura+"px"
- );
- document.documentElement.style.setProperty(
-  "--pappi-deslocamento-vertical",deslocamento+"px"
- );
+  document.documentElement.style.setProperty(
+    "--pappi-altura-visivel",
+    altura + "px"
+  );
 }
-
 
 ajustarAlturaPappi();
 
