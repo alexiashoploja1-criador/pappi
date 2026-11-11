@@ -3289,7 +3289,11 @@ cliente.auth.onAuthStateChange((evento,sessao)=>{
 function ajustarAlturaPappi(){
   const viewport = window.visualViewport;
   const altura = viewport ? viewport.height : window.innerHeight;
-  
+
+ document.documentElement.style.setProperty(
+  "--pappi-altura-visivel",
+  altura + "px"
+);
 }
 
 ajustarAlturaPappi();
