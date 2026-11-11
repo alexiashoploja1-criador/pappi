@@ -3311,11 +3311,10 @@ cliente.auth.onAuthStateChange((evento,sessao)=>{
 });
 
 
+
 function ajustarAlturaPappi(){
   const viewport = window.visualViewport;
-
   const altura = viewport ? viewport.height : window.innerHeight;
-  const topo = viewport ? viewport.offsetTop : 0;
 
   document.documentElement.style.setProperty(
     "--pappi-altura-visivel",
@@ -3324,19 +3323,19 @@ function ajustarAlturaPappi(){
 
   document.documentElement.style.setProperty(
     "--pappi-topo-visivel",
-    topo + "px"
+    "0px"
   );
 }
 
 ajustarAlturaPappi();
 
 if(window.visualViewport){
-  window.visualViewport.addEventListener("resize",ajustarAlturaPappi);
-  window.visualViewport.addEventListener("scroll",ajustarAlturaPappi);
+  window.visualViewport.addEventListener("resize", ajustarAlturaPappi);
 }
 
-window.addEventListener("resize",ajustarAlturaPappi);
-window.addEventListener("orientationchange",ajustarAlturaPappi);
+window.addEventListener("resize", ajustarAlturaPappi);
+window.addEventListener("orientationchange", ajustarAlturaPappi);
+
 async function iniciar(){
  mostrarEntrada();
  const {data,error}=await cliente.auth.getSession();
