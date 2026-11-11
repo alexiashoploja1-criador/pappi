@@ -407,7 +407,7 @@ body {
 
 #app {
   position: fixed !important;
-  top: var(--pappi-topo-visivel, 0px) !important;
+  top: 0 !important;
   left: 0 !important;
   right: 0 !important;
   width: 100% !important;
@@ -425,7 +425,7 @@ body {
 }
 
 .app.conversa-aberta {
-  height: var(--pappi-altura-visivel, 100dvh) !important;
+  height: 100% !important;
   min-height: 0 !important;
   display: flex !important;
   flex-direction: column !important;
@@ -3290,13 +3290,7 @@ cliente.auth.onAuthStateChange((evento,sessao)=>{
 function ajustarAlturaPappi(){
   const viewport = window.visualViewport;
   const altura = viewport ? viewport.height : window.innerHeight;
-  const topo = viewport ? viewport.offsetTop : 0;
-
-  document.documentElement.style.setProperty(
-    "--pappi-altura-visivel",
-    altura + "px"
-  );
-
+  
   document.documentElement.style.setProperty(
     "--pappi-topo-visivel",
     topo + "px"
