@@ -3284,17 +3284,24 @@ cliente.auth.onAuthStateChange((evento,sessao)=>{
 function ajustarAlturaPappi(){
   const viewport = window.visualViewport;
   const altura = viewport ? viewport.height : window.innerHeight;
+  const deslocamento = viewport ? viewport.offsetTop : 0;
 
- document.documentElement.style.setProperty(
-  "--pappi-altura-visivel",
-  altura + "px"
-);
+  document.documentElement.style.setProperty(
+    "--pappi-altura-visivel",
+    altura + "px"
+  );
+
+  document.documentElement.style.setProperty(
+    "--pappi-deslocamento-visual",
+    deslocamento + "px"
+  );
 }
 
 ajustarAlturaPappi();
 
 if(window.visualViewport){
   window.visualViewport.addEventListener("resize", ajustarAlturaPappi);
+  window.visualViewport.addEventListener("scroll", ajustarAlturaPappi);
 }
 
 window.addEventListener("resize", ajustarAlturaPappi);
